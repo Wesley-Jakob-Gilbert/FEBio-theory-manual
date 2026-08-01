@@ -1,0 +1,269 @@
+{
+  "sections": [
+    {
+      "section": "2.1",
+      "title": "Vectors and Tensors",
+      "file": "2.1-vectors-and-tensors.md",
+      "inline_formulas": 42,
+      "display_formulas": 26,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.2",
+      "title": "The Directional Derivative",
+      "file": "2.2-the-directional-derivative.md",
+      "inline_formulas": 10,
+      "display_formulas": 6,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.3",
+      "title": "Cauchy Stress",
+      "file": "2.3-cauchy-stress.md",
+      "inline_formulas": 21,
+      "display_formulas": 1,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.4",
+      "title": "Axioms of Conservation",
+      "file": "2.4-axioms-of-conservation.md",
+      "inline_formulas": 30,
+      "display_formulas": 11,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.5",
+      "title": "Kinematics of the Continuum",
+      "file": "2.5-kinematics-of-the-continuum.md",
+      "inline_formulas": 210,
+      "display_formulas": 57,
+      "citations": 1,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigKinematicsContinuum.png' referenced (source path 'Figures/FigKinematicsContinuum.png') -- placeholder written to figs/FigKinematicsContinuum.png, original binary not available in inputs.",
+        "Figure image 'FigShearStrain.png' referenced (source path 'Figures/FigShearStrain.png') -- placeholder written to figs/FigShearStrain.png, original binary not available in inputs.",
+        "Figure image 'FigReferentialVolume.png' referenced (source path 'Figures/FigReferentialVolume.png') -- placeholder written to figs/FigReferentialVolume.png, original binary not available in inputs.",
+        "Unresolved \\ref target: 'subsubsec:determinant'"
+      ]
+    },
+    {
+      "section": "2.6",
+      "title": "Hyperelasticity",
+      "file": "2.6-hyperelasticity.md",
+      "inline_formulas": 144,
+      "display_formulas": 79,
+      "citations": 11,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'chap:Constitutive-Models'",
+        "Unresolved \\ref target: 'eq87'"
+      ]
+    },
+    {
+      "section": "2.7",
+      "title": "Biphasic Material",
+      "file": "2.7-biphasic-material.md",
+      "inline_formulas": 26,
+      "display_formulas": 6,
+      "citations": 3,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.8",
+      "title": "Biphasic-Solute Material",
+      "file": "2.8-biphasic-solute-material.md",
+      "inline_formulas": 109,
+      "display_formulas": 13,
+      "citations": 14,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.9",
+      "title": "Triphasic and Multiphasic Materials",
+      "file": "2.9-triphasic-and-multiphasic-materials.md",
+      "inline_formulas": 66,
+      "display_formulas": 15,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.10",
+      "title": "Constrained Reactive Mixture of Solids",
+      "file": "2.10-constrained-reactive-mixture-of-solids.md",
+      "inline_formulas": 201,
+      "display_formulas": 29,
+      "citations": 6,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.11",
+      "title": "Equilibrium Swelling",
+      "file": "2.11-equilibrium-swelling.md",
+      "inline_formulas": 56,
+      "display_formulas": 9,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.12",
+      "title": "Chemical Reactions",
+      "file": "2.12-chemical-reactions.md",
+      "inline_formulas": 105,
+      "display_formulas": 41,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.13",
+      "title": "Fluid Mechanics",
+      "file": "2.13-fluid-mechanics.md",
+      "inline_formulas": 127,
+      "display_formulas": 24,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'sec:Viscous-Fluids'"
+      ]
+    },
+    {
+      "section": "2.14",
+      "title": "Fluid-Structure Interactions",
+      "file": "2.14-fluid-structure-interactions.md",
+      "inline_formulas": 27,
+      "display_formulas": 15,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.15",
+      "title": "Hybrid Biphasic Material",
+      "file": "2.15-hybrid-biphasic-material.md",
+      "inline_formulas": 137,
+      "display_formulas": 17,
+      "citations": 8,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'sec:Hydraulic-Permeability'"
+      ]
+    },
+    {
+      "section": "2.16",
+      "title": "Fluid-Solutes Analyses",
+      "file": "2.16-fluid-solutes-analyses.md",
+      "inline_formulas": 144,
+      "display_formulas": 19,
+      "citations": 12,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    }
+  ],
+  "totals": {
+    "inline_formulas": 1455,
+    "display_formulas": 368,
+    "citations": 58,
+    "labels": 0,
+    "refs": 0,
+    "figures": 3,
+    "unhandled": 0
+  },
+  "needs_review": [],
+  "chapter_title": "Continuum Mechanics",
+  "nav": [
+    [
+      "2.1 Vectors and Tensors",
+      "theory/chapter2/2.1-vectors-and-tensors.md"
+    ],
+    [
+      "2.2 The Directional Derivative",
+      "theory/chapter2/2.2-the-directional-derivative.md"
+    ],
+    [
+      "2.3 Cauchy Stress",
+      "theory/chapter2/2.3-cauchy-stress.md"
+    ],
+    [
+      "2.4 Axioms of Conservation",
+      "theory/chapter2/2.4-axioms-of-conservation.md"
+    ],
+    [
+      "2.5 Kinematics of the Continuum",
+      "theory/chapter2/2.5-kinematics-of-the-continuum.md"
+    ],
+    [
+      "2.6 Hyperelasticity",
+      "theory/chapter2/2.6-hyperelasticity.md"
+    ],
+    [
+      "2.7 Biphasic Material",
+      "theory/chapter2/2.7-biphasic-material.md"
+    ],
+    [
+      "2.8 Biphasic-Solute Material",
+      "theory/chapter2/2.8-biphasic-solute-material.md"
+    ],
+    [
+      "2.9 Triphasic and Multiphasic Materials",
+      "theory/chapter2/2.9-triphasic-and-multiphasic-materials.md"
+    ],
+    [
+      "2.10 Constrained Reactive Mixture of Solids",
+      "theory/chapter2/2.10-constrained-reactive-mixture-of-solids.md"
+    ],
+    [
+      "2.11 Equilibrium Swelling",
+      "theory/chapter2/2.11-equilibrium-swelling.md"
+    ],
+    [
+      "2.12 Chemical Reactions",
+      "theory/chapter2/2.12-chemical-reactions.md"
+    ],
+    [
+      "2.13 Fluid Mechanics",
+      "theory/chapter2/2.13-fluid-mechanics.md"
+    ],
+    [
+      "2.14 Fluid-Structure Interactions",
+      "theory/chapter2/2.14-fluid-structure-interactions.md"
+    ],
+    [
+      "2.15 Hybrid Biphasic Material",
+      "theory/chapter2/2.15-hybrid-biphasic-material.md"
+    ],
+    [
+      "2.16 Fluid-Solutes Analyses",
+      "theory/chapter2/2.16-fluid-solutes-analyses.md"
+    ]
+  ]
+}

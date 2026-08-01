@@ -1,0 +1,52 @@
+site_name: "FEBio 4.12 - Theory Manual"
+site_description: This manual provides the theoretical background for FEBio.
+site_author: FEBio Team
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  font:
+    text: 'Roboto'
+    code: 'Roboto Mono'
+  features:
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - toc.integrate
+    - content.external.links
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite
+  - footnotes
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.superfences
+  - pymdownx.blocks.caption
+  - pymdownx.details
+extra_javascript:
+  - js/mathjax_config.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+nav:
+  - Home: index.md
+  - Chapter 2 - Continuum Mechanics:
+    - 2.1 Vectors and Tensors: theory/chapter2/2.1-vectors-and-tensors.md
+    - 2.2 The Directional Derivative: theory/chapter2/2.2-the-directional-derivative.md
+    - 2.3 Cauchy Stress: theory/chapter2/2.3-cauchy-stress.md
+    - 2.4 Axioms of Conservation: theory/chapter2/2.4-axioms-of-conservation.md
+    - 2.5 Kinematics of the Continuum: theory/chapter2/2.5-kinematics-of-the-continuum.md
+    - 2.6 Hyperelasticity: theory/chapter2/2.6-hyperelasticity.md
+    - 2.7 Biphasic Material: theory/chapter2/2.7-biphasic-material.md
+    - 2.8 Biphasic-Solute Material: theory/chapter2/2.8-biphasic-solute-material.md
+    - 2.9 Triphasic and Multiphasic Materials: theory/chapter2/2.9-triphasic-and-multiphasic-materials.md
+    - 2.10 Constrained Reactive Mixture of Solids: theory/chapter2/2.10-constrained-reactive-mixture-of-solids.md
+    - 2.11 Equilibrium Swelling: theory/chapter2/2.11-equilibrium-swelling.md
+    - 2.12 Chemical Reactions: theory/chapter2/2.12-chemical-reactions.md
+    - 2.13 Fluid Mechanics: theory/chapter2/2.13-fluid-mechanics.md
+    - 2.14 Fluid-Structure Interactions: theory/chapter2/2.14-fluid-structure-interactions.md
+    - 2.15 Hybrid Biphasic Material: theory/chapter2/2.15-hybrid-biphasic-material.md
+    - 2.16 Fluid-Solutes Analyses: theory/chapter2/2.16-fluid-solutes-analyses.md
