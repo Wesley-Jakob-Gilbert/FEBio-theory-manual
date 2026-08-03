@@ -80,6 +80,7 @@ with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
     f.write("  features:\n")
     f.write("    - navigation.tabs\n")
     f.write("    - navigation.top\n")
+    f.write("    - navigation.footer\n")
     f.write("    - search.highlight\n")
     f.write("    - search.suggest\n")
     f.write("    - toc.integrate\n")

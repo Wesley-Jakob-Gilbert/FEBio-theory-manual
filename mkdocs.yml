@@ -12,6 +12,7 @@ theme:
   features:
     - navigation.tabs
     - navigation.top
+    - navigation.footer
     - search.highlight
     - search.suggest
     - toc.integrate
