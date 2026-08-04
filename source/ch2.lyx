@@ -68,11 +68,11 @@ v
 \begin_inset Formula $i$
 \end_inset
 
-or 
+ or 
 \begin_inset Formula $I$
 \end_inset
 
-will range from 1 to 3.
+ will range from 1 to 3.
  In matrix form a vector will be represented as a column vector and its transpose as a row vector:
  
 \begin_inset Formula 
@@ -6248,11 +6248,11 @@ The three constituents of the mixture are the porous-permeable solid matrix (
 \end_inset
 
 ,
- the pressure of the interstitial fluid (solvent
+ the pressure of the interstitial fluid (solvent 
 \begin_inset Formula $+$
 \end_inset
 
-solute) is 
+ solute) is 
 \begin_inset Formula $p$
 \end_inset
 
@@ -6707,11 +6707,11 @@ where
 \begin_inset Formula $\mathbf{d}$
 \end_inset
 
- is the solute diffusivity tensor in the mixture (solid
+ is the solute diffusivity tensor in the mixture (solid 
 \begin_inset Formula $+$
 \end_inset
 
-solution),
+ solution),
  
 \begin_inset Formula $d_{0}$
 \end_inset
@@ -6721,11 +6721,11 @@ solution),
 \begin_inset Formula $\mathbf{\tilde{k}}$
 \end_inset
 
- is the hydraulic permeability tensor of the solution (solvent
+ is the hydraulic permeability tensor of the solution (solvent 
 \begin_inset Formula $+$
 \end_inset
 
-solute) through the porous solid matrix,
+ solute) through the porous solid matrix,
  which depends explicitly on concentration according to 
 \begin_inset Formula 
 \begin{equation}
@@ -7712,11 +7712,11 @@ where
 
 \end_inset
 
-is the effective hydraulic permeability of the solution (solvent
+is the effective hydraulic permeability of the solution (solvent 
 \begin_inset Formula $+$
 \end_inset
 
-solutes) in the mixture.
+ solutes) in the mixture.
  The momentum equation for the mixture is 
 \begin_inset Formula 
 \begin{equation}
@@ -9874,7 +9874,7 @@ Consider a porous medium with an interstitial fluid that consists of a solvent a
 \begin_inset Formula $c^{\ast}$
 \end_inset
 
-is the osmolarity of the external environment.
+ is the osmolarity of the external environment.
  Using eq.
 \begin_inset CommandInset ref
 LatexCommand eqref
