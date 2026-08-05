@@ -916,6 +916,21 @@ def render_paragraph(layout_kind, items, ctx):
     return text
 
 
+def format_list_item(marker, body):
+    """Render a single Markdown list item, indenting any continuation
+    lines (e.g. a display-equation block LyX nests inside an Enumerate/
+    Itemize paragraph) so they stay part of the same list item -- and the
+    same list -- instead of breaking out into their own top-level
+    paragraph. An un-indented line after a blank line ends a Markdown
+    list, which would make every subsequent item start a brand-new
+    <ol> that restarts numbering at 1."""
+    lines = body.split("\n")
+    out = [f"{marker} {lines[0]}"]
+    for line in lines[1:]:
+        out.append("    " + line if line.strip() else "")
+    return "\n".join(out)
+
+
 def render_section_body(items, ctx, section_num, section_title, level_base=2):
     """items: list of top-level ('layout', kind, subitems) for everything
     following the Section header line, up to (not including) the next
@@ -951,10 +966,10 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             md_parts.append("\n\n" + quoted + "\n")
         elif spec == "Enumerate":
             body = render_paragraph(spec, sub_items, ctx)
-            md_parts.append(f"\n\n1. {body}\n")
+            md_parts.append("\n\n" + format_list_item("1.", body) + "\n")
         elif spec == "Itemize":
             body = render_paragraph(spec, sub_items, ctx)
-            md_parts.append(f"\n\n- {body}\n")
+            md_parts.append("\n\n" + format_list_item("-", body) + "\n")
         elif spec == "Plain" or spec.startswith("Plain "):
             body = render_paragraph(spec, sub_items, ctx)
             if body:
