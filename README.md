@@ -163,16 +163,20 @@ breakdown and every item flagged for manual review.
   `macros` so they render instead of leaving raw command names on the page),
   but `\obslash` — used 8 times in Chapter 2 for a tensor "conjugate"
   transpose-product operator — is never defined, even in the full manual.
-  It has been approximated as an overlined `\oslash` (⊘ with a bar over it),
-  which is visually consistent with its usage alongside the already-defined
-  `\oslash` operator. **Action needed:** confirm the intended glyph with the
-  FEBio documentation maintainers.
+  It was initially approximated as an overlined `\oslash`; visual comparison
+  against the published manual (2026-08-04) showed the actual glyph is a
+  backslash-in-a-circle rather than an overlined forward-slash-in-a-circle,
+  so it now renders as U+29B8 CIRCLED REVERSE SOLIDUS (`⦸`), the mirror
+  image of `\oslash`'s U+2298 CIRCLED DIVISION SLASH. This depends on the
+  MathJax web font covering that codepoint — reconfirm visually if the
+  MathJax CDN version ever changes.
 - **`\mbox{...}` is aliased to keep its argument in math mode** rather than
   switching to true text mode, because the LyX source nests math macros
   (`\dot{}`, `\thinspace`) inside `\mbox{}` in a few places, and MathJax's
-  `\text{}` does not expand macros in its argument. The tradeoff is that
-  plain-word arguments to `\mbox` (`grad`, `div`, `M`) render in italic math
-  font rather than upright text font — a minor, cosmetic-only difference.
+  `\text{}` does not expand macros in its argument. It's aliased to
+  `\mathrm{#1}` rather than a no-op group, so plain-word arguments (`and`,
+  `grad`, `div`, `M`) render in upright text font while nested macros like
+  `\dot{}` and `\thinspace` still expand correctly.
 - **No `Tabular` insets occur in Chapter 2**, so table conversion is
   implemented but untested against a real table; if a future chapter
   contains one, treat its first render with extra scrutiny.
