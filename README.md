@@ -7,8 +7,10 @@ the sibling [`febio-feature-manual`](https://github.com/febiosoftware/febio-feat
 MathJax for equations, footnote-based citations).
 
 ## Table of Contents
+- [Repository layout](#repository-layout)
 - [Prerequisites](#prerequisites)
 - [Building the manual](#building-the-manual)
+- [Deployment](#deployment)
 - [How the converter works](#how-the-converter-works)
 - [Conversion statistics](#conversion-statistics)
 - [Known limitations / needs manual review](#known-limitations--needs-manual-review)
@@ -22,8 +24,9 @@ source/                   vendored copies of the LyX chapter + BibTeX bibliograp
   FEBio3.bib               (from febio-docs/FEBio3.bib)
 tools/lyx2md.py            the converter (stdlib-only)
 build.py                   runs the converter, generates mkdocs.yml
-docs/                      generated Markdown site source (+ index.md, js/mathjax_config.js)
-.github/workflows/deploy.yml   GitHub Pages deploy action
+docs/                      generated Markdown SOURCE for mkdocs (+ index.md, js/mathjax_config.js) --
+                           this is mkdocs's input, not the deployed site; see "Deployment" below
+.github/workflows/deploy.yml   GitHub Actions workflow that builds and deploys to the gh-pages branch
 ```
 
 `source/ch2.lyx` and `source/FEBio3.bib` are vendored (checked-in) copies of
@@ -53,6 +56,32 @@ mkdocs build --strict  # build the static site into site/
 figure counts and the nav ordering), and uses that to generate `mkdocs.yml`
 with the correct Chapter 2 navigation automatically — the nav never needs to
 be hand-maintained.
+
+## Deployment
+
+The live site (<https://wesley-jakob-gilbert.github.io/FEBio-theory-manual/>)
+is served by GitHub Pages **from the `gh-pages` branch**, not from the
+`docs/` folder on `main`. `docs/` on `main` is mkdocs's *source* input
+(Markdown); the `gh-pages` branch holds the fully rendered, compiled HTML
+output that `mkdocs build` produces into a local, gitignored `site/`
+directory. These are two different branches with two different kinds of
+content — pushing to `main` alone does not, by itself, change what's live.
+
+Two ways the `gh-pages` branch gets updated:
+
+- **Automatically:** `.github/workflows/deploy.yml` runs on every push to
+  `main`. It re-generates `docs/`/`mkdocs.yml` from `source/ch2.lyx` (so the
+  deploy can never drift from what's actually committed), validates with
+  `mkdocs build --strict`, then runs `mkdocs gh-deploy --force`, which
+  builds the site and pushes the result to `gh-pages`. GitHub's own internal
+  "pages build and deployment" step then republishes that branch to the live
+  CDN — this second step happens outside our workflow and isn't always
+  instant.
+- **Manually**, e.g. to deploy local changes right away:
+  ```
+  mkdocs gh-deploy --force
+  ```
+  (requires push access to this repository).
 
 ## How the converter works
 
