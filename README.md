@@ -2,7 +2,7 @@
 
 A pilot MkDocs site converting **Chapter 2 (Continuum Mechanics)** of the
 FEBio Theory Manual from LyX to Markdown, built to mirror the conventions of
-the sibling [`febio-feature-manual`](../febio-feature-manual/) repository
+the sibling [`febio-feature-manual`](https://github.com/febiosoftware/febio-feature-manual) repository
 (Material for MkDocs theme, indigo palette, `pymdownx.arithmatex` +
 MathJax for equations, footnote-based citations).
 
