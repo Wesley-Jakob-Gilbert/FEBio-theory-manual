@@ -614,6 +614,8 @@ def top_level_parse(lines):
 # ------------------------------------------------------------------
 
 EMPHASIS_SPAN_RE = re.compile(r"(\*\*|`|_)([^\n]*?)\1")
+INLINE_MATH_RE = re.compile(r"\$[^$\n]*\$")
+MATH_UNDERSCORE_PLACEHOLDER = "\x00"
 
 
 def fix_emphasis_whitespace(text):
@@ -640,15 +642,31 @@ def fix_emphasis_whitespace(text):
         trail = inner[len(inner.rstrip(" ")):]
         return lead + marker + stripped + marker + trail
 
+    # Inline math ($...$) commonly contains a literal LaTeX subscript/
+    # superscript underscore (e.g. "$t_{0}$"), which is indistinguishable
+    # from a real emphasis delimiter to a naive regex. Left as-is, one
+    # such "fake" underscore between two genuine \emph on/off toggles
+    # shifts the marker pairing for the rest of the paragraph, swallowing
+    # large unrelated spans of text (including further math and other
+    # \emph runs) into bogus "emphasis" matches. Neutralize underscores
+    # inside math spans in place (restored at the end) rather than
+    # splitting the string around them, so markers that legitimately wrap
+    # a whole math span (e.g. "**$\\mathbf{x}$**") still pair correctly.
+    def mask_math(m):
+        return m.group(0).replace("_", MATH_UNDERSCORE_PLACEHOLDER)
+
+    masked = INLINE_MATH_RE.sub(mask_math, text)
+
     prev = None
-    out = text
+    out = masked
     # iterate a few times in case adjacent fixes reveal new fixable spans
     for _ in range(3):
         out = EMPHASIS_SPAN_RE.sub(repl, out)
         if out == prev:
             break
         prev = out
-    return out
+
+    return out.replace(MATH_UNDERSCORE_PLACEHOLDER, "_")
 
 
 def render_items_inline(items, ctx):
@@ -875,11 +893,15 @@ def render_float(spec, sub_items, ctx):
 
 def render_graphics(sub_items, ctx):
     filename = None
+    scale = None
     for it in sub_items:
         if it[0] == "text":
             m = re.match(r"^\s*filename\s+(.+)$", it[1])
             if m:
                 filename = m.group(1).strip()
+            m2 = re.match(r"^\s*scale\s+(\d+(?:\.\d+)?)\s*$", it[1])
+            if m2:
+                scale = m2.group(1)
     if not filename:
         ctx.needs_review.append("Graphics inset with no filename")
         return "<!-- MISSING GRAPHICS FILENAME -->"
@@ -889,7 +911,18 @@ def render_graphics(sub_items, ctx):
         f"Figure image '{base}' referenced (source path '{filename}') -- "
         f"placeholder written to figs/{base}, original binary not available in inputs."
     )
-    return f"![{name_no_ext}](figs/{base})"
+    # LyX's "scale NN" is the percentage of the image's natural size it
+    # should be displayed at (all three Chapter 2 figures specify 50, but
+    # the converter previously dropped this attribute entirely, embedding
+    # each image at full native pixel size with no width constraint --
+    # e.g. FigKinematicsContinuum.png is 951x992px, requiring the reader
+    # to scroll to see it in full). attr_list (already enabled in
+    # mkdocs.yml) lets us carry the scale through as inline CSS.
+    # Note: unlike heading attr_list syntax (which needs a leading space
+    # before "{:"), attr_list requires the block glued directly onto an
+    # inline image with no space, or it's left as literal trailing text.
+    attr = f'{{: style="width:{scale}%" }}' if scale else ""
+    return f"![{name_no_ext}](figs/{base}){attr}"
 
 
 def render_tabular(sub_items, ctx):
