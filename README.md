@@ -179,13 +179,36 @@ breakdown and every item flagged for manual review.
   `docs/theory/chapter2/figs/` (skipping the fetch if a real copy is
   already present). The original LyX-authored captions are preserved
   intact either way.
-- **Seven cross-references point outside Chapter 2's scope** (into Chapter 3's
-  constitutive-models appendix, or to a subsection/label that doesn't exist
-  in this pilot's single-chapter extract). These render as literal
-  `#anchor-not-found` links and are flagged by `mkdocs build --strict` as
-  `INFO`-level messages (not warnings/errors, so `--strict` still exits 0).
-  This is expected for a single-chapter pilot; a full-manual build would
-  resolve all of them. See the table in `CONVERSION_NOTES.md` for the exact
+- **Cross-section `\eqref{}` references are resolved to static links, not
+  left as `\eqref{}`.** Each Section is a separately-loaded page, and
+  MathJax's `tags: 'ams'` auto-numbering is per-page -- it has no way to
+  resolve a `\eqref{}` to a `\label{}` defined on a *different* page, which
+  renders as a bare "???" with nothing to click. `EQ_LABEL_REGISTRY` in
+  `tools/lyx2md.py` tracks every labeled equation's 1-indexed position
+  among its own page's AMS-numbered equations (verified to exactly match
+  what MathJax itself displays); a same-chapter cross-section `\eqref{}` is
+  then replaced with a real link like `(2.5-35)` to the target page's
+  MathJax-generated `#mjx-eqn:<label>` anchor, mirroring how the published
+  manual itself handles the identical problem at its finer per-subsection
+  pagination (there it reads `(2.5.4-2)`). Because that anchor is injected
+  by MathJax *after* the browser's initial page-load fragment-scroll
+  already ran (and thus failed to find it), `docs/js/mathjax_config.js`
+  also re-attempts the scroll once typesetting finishes, via MathJax's
+  `startup.pageReady` hook. Same-page `\eqref{}`s are untouched since
+  MathJax already resolves those correctly on its own.
+- **Nine cross-references point outside Chapter 2's scope or are broken in
+  the source itself** (into Chapter 3's constitutive-models appendix, to a
+  subsection/label that doesn't exist in this pilot's single-chapter
+  extract, or -- for `eq87`, `eq:viscous-stress`, and `eq:virtual work` --
+  to an equation label that doesn't exist anywhere in `ch2.lyx`, i.e. a
+  pre-existing broken reference in FEBio's own document, not something this
+  converter introduced). These render as literal `#anchor-not-found` links
+  (or, for the equation cases, a passthrough `\eqref{}` that MathJax can't
+  resolve either) and are flagged by `mkdocs build --strict` as `INFO`-level
+  messages (not warnings/errors, so `--strict` still exits 0). The
+  out-of-scope ones are expected for a single-chapter pilot and would
+  resolve on a full-manual build; the broken-in-source ones would need a
+  fix upstream. See the table in `CONVERSION_NOTES.md` for the exact
   targets.
 - **`\obslash` has no LaTeX macro definition anywhere in the LyX source.**
   The document's preamble defines `\tr`, `\dev`, `\grad`, `\divg`, etc. as

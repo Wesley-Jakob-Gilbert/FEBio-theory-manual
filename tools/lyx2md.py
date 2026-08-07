@@ -830,6 +830,13 @@ def render_command_inset(spec, sub_items, ctx):
     if subtype == "ref":
         reference = attrs.get("reference", "")
         if cmd == "eqref":
+            eq_entry = EQ_LABEL_REGISTRY.get(reference)
+            if eq_entry and eq_entry["file"] and eq_entry["file"] != ctx.section_file:
+                # Cross-section: MathJax can't resolve this (separate page,
+                # separate auto-numbering), so resolve it statically instead
+                # of emitting \eqref{} (which would just render as "???").
+                label_text = f"({eq_entry['section']}-{eq_entry['number']})"
+                return f"[{label_text}]({eq_entry['file']}#mjx-eqn:{reference})"
             return f"\\eqref{{{reference}}}"
         else:
             entry = LABEL_REGISTRY.get(reference)
@@ -1030,6 +1037,57 @@ LABEL_ANCHOR_RE = re.compile(r'<a id="([^"]+)"></a>')
 # link and flagged in needs_review.
 LABEL_REGISTRY = {}
 
+# Global registry mapping an equation \label{} name -> {"section": sec_num,
+# "file": fname, "number": N}, where N is that equation's 1-indexed
+# position among AMS-numbered (\begin{equation}-wrapped) display equations
+# on its own page. Populated by prescan_equation_labels() before rendering.
+#
+# Why this exists: each Section becomes a separately-loaded HTML page, and
+# MathJax's tags:'ams' auto-numbering is per-page -- it has no way to know
+# about a \label{} defined on a *different* page, so a same-chapter
+# \eqref{} to another section's equation renders as "???" with no way to
+# resolve it client-side. The published FEBio Theory Manual hits the same
+# problem (it paginates even more granularly, at the subsection level) and
+# solves it by replacing such cross-page \eqref{}s with static resolved
+# text (e.g. "eq.(2.5.4-2)") linked directly to the target page's anchor,
+# rather than relying on live cross-page numbering. render_command_inset's
+# eqref branch does the same thing here, adapted to this pilot's coarser
+# per-*section* (not per-subsection) pagination -- e.g. "(2.5-4)" -- and
+# linking to MathJax's own auto-generated "mjx-eqn:<label>" anchor id
+# (verified empirically against the rendered DOM; stable as long as the
+# MathJax CDN stays on v3.x). Same-page \eqref{}s are left untouched since
+# MathJax already resolves those correctly on its own.
+EQ_LABEL_REGISTRY = {}
+
+
+def prescan_equation_labels(items, sec_num, fname, counter):
+    """Walk a section's body items (pre-render) to find display-equation
+    \\label{} occurrences and register each one's 1-indexed position among
+    that page's AMS-numbered equations into EQ_LABEL_REGISTRY. `counter`
+    is a mutable single-element list so the running count can be threaded
+    through recursive calls; pass a fresh [0] per section.
+
+    Only bodies starting with "\\begin{equation}" are counted, since that's
+    the only outer-wrapper pattern MathJax's tags:'ams' actually assigns a
+    visible number to in this document -- confirmed empirically against
+    the whole corpus: every one of the 29 bare "\\[...\\]" (no environment)
+    and 2 standalone "\\begin{aligned}...\\end{aligned}" display formulas in
+    Chapter 2 is unlabeled, i.e. nothing here ever needs to reference them.
+    """
+    for item in items:
+        if item[0] == "inset" and item[1] == "Formula":
+            raw = "\n".join(it[1] for it in item[2] if it[0] == "text").strip()
+            if raw.startswith("\\begin{equation}"):
+                counter[0] += 1
+                for lbl in re.findall(r"\\label\{([^}]+)\}", raw):
+                    EQ_LABEL_REGISTRY[lbl] = {
+                        "section": sec_num,
+                        "file": fname,
+                        "number": counter[0],
+                    }
+        elif item[0] in ("inset", "layout"):
+            prescan_equation_labels(item[2], sec_num, fname, counter)
+
 
 def strip_label_markup(title):
     return LABEL_ANCHOR_RE.sub("", title).strip()
@@ -1156,6 +1214,7 @@ def main():
 
     for sec in sections_data:
         prescan(sec["items"], sec["sec_num"], sec["file"])
+        prescan_equation_labels(sec["items"], sec["sec_num"], sec["file"], [0])
 
     nav_entries = []
     section_stats = []

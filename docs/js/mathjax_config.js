@@ -46,5 +46,27 @@ window.MathJax = {
       mbox: ['\\mathrm{#1}', 1],
       thinspace: '\\,'
     }
+  },
+  startup: {
+    // Equation anchors (id="mjx-eqn:<label>") are only added to the DOM
+    // once MathJax finishes typesetting a labeled \begin{equation}, which
+    // happens *after* the browser's own initial "scroll to #fragment on
+    // page load" attempt has already run and failed (the anchor didn't
+    // exist yet). This matters here because cross-section equation
+    // references (e.g. section 2.6 linking to an equation defined in
+    // section 2.5) are resolved at build time to real links landing on
+    // exactly this kind of anchor -- see EQ_LABEL_REGISTRY in
+    // tools/lyx2md.py. Without this, following such a link lands on the
+    // right page but not scrolled to the right equation. Re-attempting
+    // the scroll after typesetting completes is MathJax's documented
+    // pattern for this.
+    pageReady: () => {
+      return MathJax.startup.defaultPageReady().then(() => {
+        if (location.hash) {
+          const el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+          if (el) el.scrollIntoView();
+        }
+      });
+    }
   }
 };
