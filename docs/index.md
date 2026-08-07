@@ -17,11 +17,14 @@ Use the navigation menu (or the tabs above) to browse sections 2.1 through 2.16.
 
 ## About this pilot
 
-* **Source:** `febio-docs/ch2.lyx` (extracted from `FEBio_Theory_Manual.lyx`, lines 808–16401).
+* **Source:** `source/ch2.lyx`, a vendored copy of `ch2.lyx` (extracted from `FEBio_Theory_Manual.lyx`, lines 808–16401), checked into
+  this repository so it builds standalone from a bare clone.
 * **Converter:** `tools/lyx2md.py` — a dependency-free, deterministic LyX → Markdown parser (see `README.md` for details).
-* **Bibliography:** citations are resolved against `febio-docs/FEBio3.bib` and rendered as page-level Markdown footnotes.
+* **Bibliography:** citations are resolved against `source/FEBio3.bib` and rendered as page-level Markdown footnotes.
 * **Equations:** rendered with [MathJax](https://www.mathjax.org/) via `pymdownx.arithmatex` (`generic` mode), using the same
   `\( ... \)` / `\[ ... \]` delimiters and `ams` ▸ `\eqref` numbering convention as the Feature Manual.
+* **Figures:** the three images in section 2.5 aren't part of the pilot's LyX/BibTeX inputs, so `build.py` fetches them from the
+  upstream [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio) repository at build time.
 
 See `CONVERSION_NOTES.md` in the repository root for a per-section breakdown of what converted cleanly and what still needs a human
-pass (mostly: the three referenced figures, whose original image binaries were not available in the pilot's inputs).
+pass.

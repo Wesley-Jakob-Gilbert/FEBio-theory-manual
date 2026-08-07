@@ -131,7 +131,7 @@ Output: one Markdown file per Section (2.1–2.16) in
 | **Formula reconciliation** | **1455 + 368 = 1823 — exact match** |
 | Citation insets in source | 59 |
 | Unique footnote definitions emitted | 58 (one BibTeX key cited twice on the same page shares one footnote number) |
-| Figures (Float + Graphics + Caption) | 3 of 3 converted (placeholders — see below) |
+| Figures (Float + Graphics + Caption) | 3 of 3 converted (artwork fetched at build time — see below) |
 | Unhandled/unknown inset kinds | 0 |
 | Leftover LyX bookkeeping artifacts in output | 0 |
 
@@ -140,15 +140,16 @@ breakdown and every item flagged for manual review.
 
 ## Known limitations / needs manual review
 
-- **Figure artwork is placeholder only.** The three figures referenced in
-  section 2.5 (`FigKinematicsContinuum.png`, `FigShearStrain.png`,
-  `FigReferentialVolume.png`) are not present anywhere in the workspace
-  inputs (`febio-docs/`, `febio-feature-manual/`) — no `Figures/` directory
-  or matching binaries were found. Simple gray-bordered 480×300 placeholder
-  PNGs were generated in their place at `docs/theory/chapter2/figs/`, with
-  the original LyX-authored captions preserved intact. **Action needed:**
-  drop in the real artwork from the FEBio documentation source repo before
-  publishing.
+- **Figure artwork is fetched automatically at build time.** The three
+  figures referenced in section 2.5 (`FigKinematicsContinuum.png`,
+  `FigShearStrain.png`, `FigReferentialVolume.png`) were not present
+  anywhere in the pilot's original inputs, so `build.py` fetches the real
+  artwork from the upstream
+  [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio)
+  repository's `Documentation/Figures/` directory into
+  `docs/theory/chapter2/figs/` (skipping the fetch if a real copy is
+  already present). The original LyX-authored captions are preserved
+  intact either way.
 - **Seven cross-references point outside Chapter 2's scope** (into Chapter 3's
   constitutive-models appendix, or to a subsection/label that doesn't exist
   in this pilot's single-chapter extract). These render as literal
