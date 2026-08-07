@@ -1,0 +1,1181 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.9-triphasic-and-multiphasic-materials/">
+      
+      
+        <link rel="next" href="../2.11-equilibrium-swelling/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.10 Constrained Reactive Mixture of Solids - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Mixture-of-Solids" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.10 Constrained Reactive Mixture of Solids
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Mixture-Kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixture Kinematics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Mixture-Composition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixture Composition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Mixture-Free-Energy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixture Free Energy and Stress
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mixture Free Energy and Stress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#closed-system-of-solid-constituents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closed System of Solid Constituents
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-system-of-solid-constituents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open System of Solid Constituents
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Frame-Indifference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frame Indifference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Simple-Solid-Mixtures" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple Solid Mixtures
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Multigen-Interstitial-Growth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multigenerational Interstitial Growth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Prescribed-Deposition-Stretch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prescribed Pre-Stretch
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Mixture-of-Solids">2.10 Constrained Reactive Mixture of Solids<a class="headerlink" href="#sec:Mixture-of-Solids" title="Permanent link">&para;</a></h1>
+<p>A solid material may consist of a heterogeneous mixture of various solid constituents that are constrained to move together. In this section we describe fundamental considerations for such constrained mixtures.</p>
+<h2 id="subsec:Mixture-Kinematics">Mixture Kinematics<a class="headerlink" href="#subsec:Mixture-Kinematics" title="Permanent link">&para;</a></h2>
+<p>Consider a constrained mixture of multiple solid constituents <span class="arithmatex">\(\sigma\)</span>. The motion of each constituent is given by <span class="arithmatex">\(\boldsymbol{\chi}^{\sigma}\left(\mathbf{X}^{\sigma},t\right)\)</span>, where <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span> denotes a material point in the reference configuration of that constituent. At the current time <span class="arithmatex">\(t\)</span>, various constituents <span class="arithmatex">\(\sigma\)</span> which occupy an elemental region with a spatial position <span class="arithmatex">\(\mathbf{x}\)</span> may have originated from distinct referential positions <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span>. We often label a convenient constituent as the <em>master constituent</em> <span class="arithmatex">\(s\)</span> (e.g., the oldest constituent in a reactive mixture with evolving composition) and call the reference configuration <span class="arithmatex">\(\mathbf{X}^{s}\)</span> the <em>master reference configuration</em>. All the referential mass densities and mass density supplies (see below) are evaluated relative to the master reference configuration <span class="arithmatex">\(\mathbf{X}^{s}\)</span>. The kinematics of each constituent <span class="arithmatex">\(\sigma\)</span> may be related to the kinematics of the master constituent <span class="arithmatex">\(s\)</span> through</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{x}=\boldsymbol{\chi}^{s}\left(\mathbf{X}^{s},t\right)=\boldsymbol{\chi}^{\sigma}\left(\mathbf{X}^{\sigma},t\right)\,.\label{eq:general-mixture-kinematics} \end{equation} \]</div>
+<p>Taking the material time derivative of this relation in the material frame and recognizing that this relation must hold for all <span class="arithmatex">\(t\)</span> in the case of a constrained mixture establishes that all constituents share the same velocity <span class="arithmatex">\(\mathbf{v}^{\sigma}=\mathbf{v}^{s}\)</span>. However, as detailed previously <sup id="fnref:2.10-1"><a class="footnote-ref" href="#fn:2.10-1">1</a></sup><sup id="fnref:2.10-2"><a class="footnote-ref" href="#fn:2.10-2">2</a></sup>, constituents may have distinct deformation gradients <span class="arithmatex">\(\mathbf{F}^{\sigma}=\partial\boldsymbol{\chi}^{\sigma}/\partial\mathbf{X}^{\sigma}\)</span>. When a reaction converts a reactant <span class="arithmatex">\(\sigma=a\)</span> into a product <span class="arithmatex">\(\sigma=b\)</span>, these constituents may have distinct reference configurations. The deformation gradient of the master constituent <span class="arithmatex">\(\mathbf{F}^{s}\)</span>, which also serves as the total deformation gradient, may be related to the <em>relative deformation gradient</em> <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span> of constituent <span class="arithmatex">\(\sigma\)</span> by applying the chain rule to eq.\eqref{eq:general-mixture-kinematics}, producing</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}^{s}\left(\mathbf{X}^{s},t\right)=\frac{\partial\boldsymbol{\chi}^{s}\left(\mathbf{X}^{s},t\right)}{\partial\mathbf{X}^{\sigma}}\cdot\frac{\partial\mathbf{X}^{\sigma}\left(\mathbf{X}^{s}\right)}{\partial\mathbf{X}^{s}}=\mathbf{F}^{\sigma}\left(\mathbf{X}^{s},t\right)\cdot\mathbf{F}^{\sigma s}\left(\mathbf{X}^{s}\right)\,.\label{eq:general-total-def-grad} \end{equation} \]</div>
+<p>In this expression, <span class="arithmatex">\(\mathbf{F}^{\sigma s}\left(\mathbf{X}^{s}\right)\)</span> is the deformation gradient of <span class="arithmatex">\(\sigma\)</span> relative to <span class="arithmatex">\(s\)</span>, which must be <em>postulated by constitutive assumption</em>. The relationship between <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span> and <span class="arithmatex">\(\mathbf{X}^{s}\)</span> is time-invariant; consequently, <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> is a time-invariant spatial mapping. It follows that only one deformation gradient represents an independent state variable in a constrained mixture framework, whereas all others are related to it via eq.\eqref{eq:general-total-def-grad}; any of the <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span>'s may be selected, based on convenience. In eq.\eqref{eq:general-total-def-grad} the spatio-temporal arguments have been written explicitly for clarity. These dependencies are implied in the forthcoming sections and henceforth those arguments may be selectively suppressed. Taking the determinant of eq.\eqref{eq:general-total-def-grad} produces a relation between the volume ratios <span class="arithmatex">\(J^{\sigma}=\det\mathbf{F}^{\sigma}\)</span> and <span class="arithmatex">\(J^{s}=\det\mathbf{F}^{s}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} J^{s}=J^{\sigma}J^{\sigma s}\,,\label{eq:general-jacobian-relation} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(J^{\sigma s}=\det\mathbf{F}^{\sigma s}\)</span>.</p>
+<h2 id="subsec:Mixture-Composition">Mixture Composition<a class="headerlink" href="#subsec:Mixture-Composition" title="Permanent link">&para;</a></h2>
+<p>Each constituent <span class="arithmatex">\(\sigma\)</span> has an <em>apparent mass density</em> <span class="arithmatex">\(\rho^{\sigma}\)</span> which may evolve due to deformation, or due to reactive processes which alter the mixture composition. Following <sup id="fnref:2.10-3"><a class="footnote-ref" href="#fn:2.10-3">3</a></sup><sup id="fnref:2.10-4"><a class="footnote-ref" href="#fn:2.10-4">4</a></sup>, we define the <em>referential apparent mass density</em> <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> of each constituent as</p>
+<div class="arithmatex">\[ \begin{equation} \rho_{r}^{\sigma}=J^{s}\rho^{\sigma}\,.\label{eq:general-referential-mass-density} \end{equation} \]</div>
+<p>Equation \eqref{eq:general-referential-mass-density} expresses the mass of constituent <span class="arithmatex">\(\sigma\)</span> per referential volume of the master constituent <span class="arithmatex">\(s\)</span>; thus <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> may only evolve if the mass content changes via reactions, making it a suitable state variable for tracking composition in a reactive framework. The axiom of mass balance for each constituent <span class="arithmatex">\(\sigma\)</span> may be written as</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\rho}_{r}^{\sigma}=\hat{\rho}_{r}^{\sigma}\,,\label{eq:mass-balance-alpha-1} \end{equation} \]</div>
+<p>where the dot operator represents the material time derivative and <span class="arithmatex">\(\hat{\rho}_{r}^{\sigma}\)</span> is the <em>referential mass supply density</em> for constituent <span class="arithmatex">\(\sigma\)</span>, representing the rate at which mass (per referential volume) is added to <span class="arithmatex">\(\sigma\)</span> due to reactions with all other mixture constituents <sup id="fnref2:2.10-1"><a class="footnote-ref" href="#fn:2.10-1">1</a></sup><sup id="fnref2:2.10-2"><a class="footnote-ref" href="#fn:2.10-2">2</a></sup>. A constitutive relation must be provided for <span class="arithmatex">\(\hat{\rho}_{r}^{\sigma}\)</span> for various types of reactions. The mixture referential mass density <span class="arithmatex">\(\rho_{r}\)</span> is given by</p>
+<div class="arithmatex">\[ \begin{equation} \rho_{r}=\sum_{\sigma}\rho_{r}^{\sigma}\,.\label{eq:general-mass-balance} \end{equation} \]</div>
+<p>This summation is carried out over all constituents. When a constrained mixture of solid constituents represents a closed system, <span class="arithmatex">\(\rho_{r}\)</span> remains constant over time. Taking the material time derivative of eq.\eqref{eq:general-mass-balance} and using eq.\eqref{eq:mass-balance-alpha-1} shows that the referential mass density supplies must satisfy</p>
+<div class="arithmatex">\[ \begin{equation} \sum_{\sigma}\hat{\rho}_{r}^{\sigma}=0\,.\label{eq:mass-balance-constraint} \end{equation} \]</div>
+<p>However, if a constrained mixture of solid constituents represents an open system (i.e., if fluid constituents are present in the mixture, either explicitly or implicitly), then <span class="arithmatex">\(\rho_{r}\)</span> is no longer necessarily constant, since there may be mass exchange between fluid and solid constituents.</p>
+<h2 id="subsec:Mixture-Free-Energy">Mixture Free Energy and Stress<a class="headerlink" href="#subsec:Mixture-Free-Energy" title="Permanent link">&para;</a></h2>
+<p>The <em>referential free energy density</em> of the mixture is obtained as</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}=\rho_{r}\psi=\sum_{\sigma}\rho_{r}^{\sigma}\psi^{\sigma}\,,\label{eq:general-free-energy} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\psi^{\sigma}\)</span> is the <em>specific free energy</em> of constituent <span class="arithmatex">\(\sigma\)</span> and <span class="arithmatex">\(\psi\)</span> is the specific free energy of the mixture. An important function of state which arises later in our treatment is the <em>chemical potential</em> of constituent <span class="arithmatex">\(\sigma\)</span>, given by</p>
+<div class="arithmatex">\[ \begin{equation} \mu^{\sigma}=\frac{\partial\Psi_{r}}{\partial\rho_{r}^{\sigma}}\,.\label{eq:general-chemical-potential} \end{equation} \]</div>
+<p>The mixture Cauchy stress is given by</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\frac{1}{J^{s}}\frac{\partial\Psi_{r}}{\partial\mathbf{F}^{s}}\cdot\left(\mathbf{F}^{s}\right)^{T}=\frac{2}{J^{s}}\mathbf{F}^{s}\cdot\frac{\partial\Psi_{r}}{\partial\mathbf{C}^{s}}\cdot\left(\mathbf{F}^{s}\right)^{T}\,,\label{eq:general-mixture-stress} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{C}^{s}=\mathbf{F}^{s}\cdot\left(\mathbf{F}^{s}\right)^{T}\)</span> is the right Cauchy-Green tensor. The spatial elasticity tensor may be evaluated from</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{C}}=\frac{4}{J^{s}}\left(\mathbf{F}^{s}\oslash\mathbf{F}^{s}\right):\frac{\partial^{2}\Psi_{r}}{\partial\mathbf{C}^{s}\partial\mathbf{C}^{s}}:\left(\left(\mathbf{F}^{s}\right)^{T}\oslash\left(\mathbf{F}^{s}\right)^{T}\right)\,.\label{eq:general-mixture-elasticity} \end{equation} \]</div>
+<h3 id="closed-system-of-solid-constituents">Closed System of Solid Constituents<a class="headerlink" href="#closed-system-of-solid-constituents" title="Permanent link">&para;</a></h3>
+<p>In reactive frameworks where <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> evolves according to eq.\eqref{eq:mass-balance-alpha-1}, and where <span class="arithmatex">\(\rho_{r}\)</span> remains constant due to the fact that the solid mixture represents a closed system, it may be convenient to define the mass fraction</p>
+<div class="arithmatex">\[ \begin{equation} w^{\sigma}=\frac{\rho_{r}^{\sigma}}{\rho_{r}}\,,\label{eq:mass-fraction} \end{equation} \]</div>
+<p>in which case we may rewrite eq.\eqref{eq:general-free-energy} as <span class="arithmatex">\(\Psi_{r}=\sum_{\sigma}w^{\sigma}\Psi_{r}^{\sigma}\)</span> where <span class="arithmatex">\(\Psi_{r}^{\sigma}\equiv\rho_{r}\psi^{\sigma}\)</span> is the referential strain energy density of solid <span class="arithmatex">\(\sigma\)</span> under the assumption that it is the sole mixture constituent, normalized by the referential volume of the master constituent <span class="arithmatex">\(s\)</span>. Based on eq.\eqref{eq:general-mass-balance} the mass fractions satisfy <span class="arithmatex">\(\sum_{\sigma}w^{\sigma}=1\)</span>. In this case, when <span class="arithmatex">\(\mathbf{X}^{\sigma}\ne\mathbf{X}^{s}\)</span> and <span class="arithmatex">\(\psi^{\sigma}\)</span> is most conveniently expressed as a function of <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span>, we may use eq.\eqref{eq:general-total-def-grad} to evaluate <span class="arithmatex">\(\partial\mathbf{F}^{s}/\partial\mathbf{F}^{\sigma}=\mathbf{I}\oslash\left(\mathbf{F}^{\sigma s}\right)^{-T}\)</span> and calculate the mixture stress using the alternative form</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\frac{1}{J^{s}}\sum_{\sigma}w^{\sigma}\frac{\partial\Psi_{r}^{\sigma}}{\partial\mathbf{F}^{\sigma}}\cdot\left(\mathbf{F}^{\sigma}\right)^{T}\,.\label{eq:general-mixture-stress-redux} \end{equation} \]</div>
+<p>This expression shows that the mixture stress may evolve not only due to temporal changes in the state of strain but also due to reactive changes in the mass fractions <span class="arithmatex">\(w^{\sigma}\)</span>.</p>
+<p>In FEBio the referential strain energy density for any solid mixture constituent <span class="arithmatex">\(\sigma\)</span> is evaluated from the same library of constitutive models used in single-constituent solids. In this library the calculation of the referential strain energy density is based on the assumption that the reference configuration corresponds to the configuration when the deformation gradient passed to those functions is equal to the identity tensor. Thus, passing <span class="arithmatex">\(\mathbf{F}^{s}\)</span> to those functions returns the correct <span class="arithmatex">\(\Psi_{r}^{\sigma}\)</span>. However, when passing <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span> as an argument to those functions, the referential volume is based on the configuration <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span>. Let the referential free energy density returned by FEBio for an argument <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span> be denoted by <span class="arithmatex">\(\Psi_{0}^{\sigma}\)</span>. We may similarly denote the corresponding Cauchy stress and spatial elasticity tensors by <span class="arithmatex">\(\boldsymbol{\sigma}_{0}^{\sigma}\)</span> and <span class="arithmatex">\(\boldsymbol{\mathcal{C}}_{0}^{\sigma}\)</span>. Here, the subscript <span class="arithmatex">\(0\)</span> has two meanings: First it emphasizes that the corresponding function is evaluated using <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span> for the mixture constituent <span class="arithmatex">\(\sigma\)</span>; second it emphasizes that the calculation returns the corresponding measure under the assumption that the mixture consists entirely of that constituent, so that its multiplication by the scale factor <span class="arithmatex">\(w^{\sigma}\)</span> returns the actual contribution of that measure to the entire mixture. Based on eq.\eqref{eq:general-jacobian-relation} we find that <span class="arithmatex">\(\Psi_{r}^{\sigma}=J^{\sigma s}\Psi_{0}^{\sigma}\)</span> so that the mixture free energy density may be evaluated from</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}=\sum_{\sigma}w^{\sigma}J^{\sigma s}\Psi_{0}^{\sigma}\left(\mathbf{F}^{\sigma}\right)\,,\label{eq:febio-mixture-sed} \end{equation} \]</div>
+<p>whereas the mixture Cauchy stress and spatial elasticity are given by</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\sum_{\sigma}w^{\sigma}\boldsymbol{\sigma}_{0}^{\sigma}\,,\quad\boldsymbol{\mathcal{C}}=\sum_{\sigma}w^{\sigma}\boldsymbol{\mathcal{C}}_{0}^{\sigma}\,,\label{eq:febio-mixture-stress} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}_{0}^{\sigma}=\frac{1}{J^{\sigma}}\frac{\partial\Psi_{0}^{\sigma}}{\partial\mathbf{F}^{\sigma}}\cdot\left(\mathbf{F}^{\sigma}\right)^{T}=\frac{1}{J^{s}}\frac{\partial\Psi_{r}^{\sigma}}{\partial\mathbf{F}^{\sigma}}\cdot\left(\mathbf{F}^{\sigma}\right)^{T}\label{eq:febio-stress-function} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{C}}_{0}^{\sigma}=\frac{4}{J^{\sigma}}\left(\mathbf{F}^{\sigma}\oslash\mathbf{F}^{\sigma}\right):\frac{\partial^{2}\Psi_{0}^{\sigma}}{\partial\mathbf{C}^{\sigma}\partial\mathbf{C}^{\sigma}}:\left(\left(\mathbf{F}^{\sigma}\right)^{T}\oslash\left(\mathbf{F}^{\sigma}\right)^{T}\right)\,.\label{eq:febio-elasticity-function} \end{equation} \]</div>
+<p>These relations show that the Cauchy stress and spatial elasticity tensor of constituent <span class="arithmatex">\(\sigma\)</span> in eq.\eqref{eq:febio-mixture-stress} may be evaluated using existing FEBio functions without needing to adjust for the choice of reference configuration <span class="arithmatex">\(\mathbf{X}^{s}\)</span> or <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span>, as evidenced by eq.\eqref{eq:febio-stress-function} in the case of the stress. However the referential strain energy density needs to be properly scaled by <span class="arithmatex">\(J^{\sigma s}\)</span> as shown in eq.\eqref{eq:febio-mixture-sed}.</p>
+<p>The calculation of the 2nd Piola-Kirchhoff stress <span class="arithmatex">\(\mathbf{S}\)</span> for each generation <span class="arithmatex">\(\sigma\)</span> is more elaborate. When using the master reference configuration <span class="arithmatex">\(\mathbf{X}^{s}\)</span>, this stress is given by</p>
+<div class="arithmatex">\[ \mathbf{S}^{\sigma}\left(\mathbf{F}^{s}\right)=2\frac{\partial\Psi_{r}^{\sigma}\left(\mathbf{F}^{s}\right)}{\partial\mathbf{C}^{s}}\,. \]</div>
+<p>When using the reference configuration <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span>, the stress is evaluated from a similar relation</p>
+<div class="arithmatex">\[ \mathbf{S}_{0}^{\sigma}\left(\mathbf{F}^{\sigma}\right)=2\frac{\partial\Psi_{0}^{\sigma}\left(\mathbf{F}^{\sigma}\right)}{\partial\mathbf{C}^{\sigma}}\,. \]</div>
+<p>It can be shown that these stresses are related according to</p>
+<div class="arithmatex">\[ \mathbf{S}^{\sigma}\left(\mathbf{F}^{s}\right)=J^{\sigma s}\left(\mathbf{F}^{\sigma s}\right)^{-1}\cdot\mathbf{S}_{0}^{\sigma}\left(\mathbf{F}^{\sigma}\right)\cdot\left(\mathbf{F}^{\sigma s}\right)^{-T}\,. \]</div>
+<p>FEBio does not use this calculation for solid mixtures, as all internal calculations employ the Cauchy stress.</p>
+<h3 id="open-system-of-solid-constituents">Open System of Solid Constituents<a class="headerlink" href="#open-system-of-solid-constituents" title="Permanent link">&para;</a></h3>
+<p>When <span class="arithmatex">\(\rho_{r}\)</span> as defined in eq.\eqref{eq:general-mass-balance} does not remain constant due to the implicit or explicit presence of fluid constituents, we may choose to define the mass fraction <span class="arithmatex">\(\omega^{\sigma}\)</span> of constituent <span class="arithmatex">\(\sigma\)</span> based on the true density <span class="arithmatex">\(\rho_{0}^{\sigma}\)</span> of the solid constituent,</p>
+<div class="arithmatex">\[ \begin{equation} \omega^{\sigma}=\frac{\rho_{r}^{\sigma}}{\rho_{0}^{\sigma}}\,,\label{eq:mass-fraction-1} \end{equation} \]</div>
+<p>In this case, <span class="arithmatex">\(\omega^{\sigma}=1\)</span> when the solid mixture consists entirely of constituent <span class="arithmatex">\(\sigma\)</span>. Unlike <span class="arithmatex">\(w^{\sigma}\)</span> in eq.\eqref{eq:general-mass-balance}, the summation of <span class="arithmatex">\(\omega^{\sigma}\)</span> over all <span class="arithmatex">\(\sigma\)</span> is meaningless here, since the denominator in eq.\eqref{eq:mass-fraction-1} is not common to all <span class="arithmatex">\(\sigma\)</span>. Nevertheless, the mixture free energy density in eq.\eqref{eq:general-free-energy} may be rewritten conveniently as <span class="arithmatex">\(\Psi_{r}=\sum_{\sigma}\omega^{\sigma}\Psi_{0}^{\sigma}\)</span> where <span class="arithmatex">\(\Psi_{0}^{\sigma}\equiv\rho_{0}^{\sigma}\psi^{\sigma}\)</span> represents the free energy density of pure solid <span class="arithmatex">\(\sigma\)</span>. Here again, <span class="arithmatex">\(\psi^{\sigma}\)</span> is most conveniently expressed as a function of <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span>, so that eq.\eqref{eq:general-total-def-grad} may be use to evaluate <span class="arithmatex">\(\partial\mathbf{F}^{s}/\partial\mathbf{F}^{\sigma}=\mathbf{I}\oslash\left(\mathbf{F}^{\sigma s}\right)^{-T}\)</span> and calculate the mixture stress using the alternative form</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\frac{1}{J^{s}}\sum_{\sigma}\omega^{\sigma}\frac{\partial\Psi_{0}^{\sigma}}{\partial\mathbf{F}^{\sigma}}\cdot\left(\mathbf{F}^{\sigma}\right)^{T}\,.\label{eq:general-mixture-stress-redux-1} \end{equation} \]</div>
+<p>This expression shows that the mixture stress may evolve not only due to temporal changes in the state of strain but also due to reactive changes in the mass fractions <span class="arithmatex">\(\omega^{\sigma}\)</span>. In this type of open-system formulation it becomes the user's responsibility to ensure that all other <span class="arithmatex">\(\omega^{\sigma}\)</span> values reduce to zero when one of the <span class="arithmatex">\(\omega^{\sigma}\)</span> reaches unity.</p>
+<h2 id="subsec:Frame-Indifference">Frame Indifference<a class="headerlink" href="#subsec:Frame-Indifference" title="Permanent link">&para;</a></h2>
+<p>To maintain frame indifference for constrained mixtures we must satisfy <span class="arithmatex">\(\boldsymbol{\sigma}\left(\mathbf{Q}\cdot\mathbf{F}^{s}\right)=\mathbf{Q}\cdot\boldsymbol{\sigma}\left(\mathbf{F}^{s}\right)\cdot\mathbf{Q}^{T}\)</span>, where <span class="arithmatex">\(\mathbf{Q}\)</span> is an orthogonal transformation that maintains the symmetry group of <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> <sup id="fnref:2.10-5"><a class="footnote-ref" href="#fn:2.10-5">5</a></sup>. Here, we abbreviated the list of state variables for <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> to just <span class="arithmatex">\(\mathbf{F}^{s}\)</span>, for notational simplicity. This frame indifference is automatically satisfied for <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> based on the hyperelasticity relation of \eqref{eq:general-mixture-stress} and the invariance of <span class="arithmatex">\(\psi\)</span> to <span class="arithmatex">\(\mathbf{Q}\)</span>. By the same argument, <span class="arithmatex">\(\boldsymbol{\sigma}_{0}^{\sigma}\)</span> as given in \eqref{eq:febio-stress-function} satisfies <span class="arithmatex">\(\boldsymbol{\sigma}_{0}^{\sigma}\left(\mathbf{Q}\cdot\mathbf{F}^{\sigma}\right)=\mathbf{Q}\cdot\boldsymbol{\sigma}_{0}^{\sigma}\left(\mathbf{F}^{\sigma}\right)\cdot\mathbf{Q}^{T}\)</span> for transformations that maintain the symmetry group of <span class="arithmatex">\(\psi^{\sigma}\)</span>. Since the symmetry transformations <span class="arithmatex">\(\mathbf{Q}\)</span> of <span class="arithmatex">\(\psi\)</span> must also belong to the symmetry groups of all <span class="arithmatex">\(\psi^{\sigma}\)</span>, we need to ensure that <span class="arithmatex">\(\mathbf{F}^{s*}=\mathbf{Q}\cdot\mathbf{F}^{s}\)</span> and <span class="arithmatex">\(\mathbf{F}^{\sigma*}=\mathbf{Q}\cdot\mathbf{F}^{\sigma}\)</span> also satisfy the kinematic constraint of \eqref{eq:general-total-def-grad} for those transformations <span class="arithmatex">\(\mathbf{Q}\)</span>, namely <span class="arithmatex">\(\mathbf{F}^{s*}=\mathbf{F}^{\sigma*}\cdot\mathbf{F}^{\sigma s}\)</span>. This can be achieved if and only if <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> is invariant under a change of frame. It follows from this argument that the right Cauchy-Green tensors are invariant, <span class="arithmatex">\(\mathbf{C}^{s*}=\left(\mathbf{F}^{s*}\right)^{T}\cdot\mathbf{F}^{s*}=\left(\mathbf{F}^{s}\right)^{T}\cdot\mathbf{F}^{s}=\mathbf{C}^{s}\)</span> and similarly <span class="arithmatex">\(\mathbf{C}^{\sigma*}=\mathbf{C}^{\sigma}\)</span>, while also satisfying <span class="arithmatex">\(\mathbf{C}^{s*}=\mathbf{C}^{s}=\left(\mathbf{F}^{\sigma s}\right)^{T}\cdot\mathbf{C}^{\sigma}\cdot\mathbf{F}^{\sigma s}\)</span>. Right stretch tensors <span class="arithmatex">\(\mathbf{U}^{s}\)</span> and <span class="arithmatex">\(\mathbf{U}^{\sigma}\)</span> are also invariant.</p>
+<h2 id="subsec:Simple-Solid-Mixtures">Simple Solid Mixtures<a class="headerlink" href="#subsec:Simple-Solid-Mixtures" title="Permanent link">&para;</a></h2>
+<p>In the simplest type of non-reactive constrained mixtures of solids all constituents <span class="arithmatex">\(\sigma\)</span> share the same reference configuration <span class="arithmatex">\(\mathbf{X}^{\sigma}=\mathbf{X}^{s}\)</span>, in which case <span class="arithmatex">\(\mathbf{F}^{\sigma}=\mathbf{F}^{s}\)</span> and <span class="arithmatex">\(J^{\sigma s}=1\)</span>. For this type of mixture where <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> does not evolve, it is convenient to set <span class="arithmatex">\(w^{\sigma}=1\)</span> for all <span class="arithmatex">\(\sigma\)</span> and scale the material properties of <span class="arithmatex">\(\Psi_{r}^{\sigma}\)</span> to properly reflect the contribution of each constituent <span class="arithmatex">\(\sigma\)</span> to the mixture. Thus, the relation of eq.\eqref{eq:febio-mixture-stress} reduces to</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\sum_{\sigma}\boldsymbol{\sigma}_{0}^{\sigma}\,.\label{eq:simple-mixture-stress} \end{equation} \]</div>
+<p>This type of non-reactive mixture of solids is represented in FEBio using the material “<em>solid mixture</em>”.</p>
+<p>When each constituent of a solid mixture is modeled using an uncoupled formulation to enforce nearly isochoric responses, the strain energy density of this type of mixture is given by</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}=U\left(J\right)+\sum\limits_{\sigma}\tilde{\Psi}_{r}^{\sigma}\left(\mathbf{\tilde{F}}^{s},\rho_{r}^{\sigma}\right)\,,\label{eq140} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(U\left(J\right)\)</span> is the volumetric energy component, <span class="arithmatex">\(\tilde{\Psi}_{r}=\sum\nolimits_{\sigma}\tilde{\Psi}_{r}^{\sigma}\)</span> is the distortional energy component, and <span class="arithmatex">\(\mathbf{\tilde{F}}^{s}\)</span> is the distortional part of the deformation gradient, as described in Section <a href="#subsec:Nearly-Incompressible-Hyperelast">Nearly-Incompressible Hyperelasticity</a>. This type of non-reactive mixture of uncoupled solids is represented in FEBio using the material “<em>uncoupled solid mixture</em>”.</p>
+<h2 id="subsec:Multigen-Interstitial-Growth">Multigenerational Interstitial Growth<a class="headerlink" href="#subsec:Multigen-Interstitial-Growth" title="Permanent link">&para;</a></h2>
+<p>Multigenerational interstitial growth mechanics may be modeled using a reactive mixture of constrained solids as described in <sup id="fnref:2.10-6"><a class="footnote-ref" href="#fn:2.10-6">6</a></sup>. In this framework it is assumed that a porous solid matrix may gain mass via interstitial growth, such that the porosity of the solid decreases with increasing solid mass content. The history of growth is discretized temporally into generations <span class="arithmatex">\(\sigma\)</span> such that the mass added in the time interval <span class="arithmatex">\(t^{\sigma}\le t&lt;t^{\sigma+1}\)</span> has a reference configuration <span class="arithmatex">\(\mathbf{X}^{\sigma}\)</span>. This model assumes that each generation <span class="arithmatex">\(\sigma\)</span> gets deposited into the existing mixture in a stress-free state. This can be achieved by adopting the constitutive assumption that <span class="arithmatex">\(\mathbf{X}^{\sigma}=\boldsymbol{\chi}^{s}\left(\mathbf{X}^{s},t^{\sigma}\right)\)</span>. In other words, the reference configuration of generation <span class="arithmatex">\(\sigma\)</span> is the current configuration of the solid mixture at time <span class="arithmatex">\(t^{\sigma}\)</span>. An alternative form of this constitutive model, which satisfies frame-indifference, is that <span class="arithmatex">\(\mathbf{F}^{\sigma}\left(\mathbf{X}^{s},t^{\sigma}\right)=\mathbf{R}^{s}\left(\mathbf{X}^{s},t^{\sigma}\right)\)</span> at the time the new generation <span class="arithmatex">\(\sigma\)</span> is being deposited, where <span class="arithmatex">\(\mathbf{R}^{s}\)</span> is the rotation tensor in the polar decomposition of <span class="arithmatex">\(\mathbf{F}^{s}=\mathbf{R}^{s}\cdot\mathbf{U}^{s}\)</span>. Equivalently, <span class="arithmatex">\(\mathbf{F}^{\sigma s}\left(\mathbf{X}^{s}\right)=\mathbf{U}^{s}\left(\mathbf{X}^{s},t^{\sigma}\right)\)</span> according to eq.\eqref{eq:general-total-def-grad}. Since <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> is a right-stretch tensor, it satisfies frame indifference.</p>
+<p>The underlying assumption of multigenerational growth is that <span class="arithmatex">\(\mathbf{U}^{s}\left(\mathbf{X}^{s},t^{\sigma}\right)\)</span> evolves for each generation <span class="arithmatex">\(\sigma\)</span> either due to load-induced deformations or deformations produced by swelling processes, such as cell growth or Donnan swelling.</p>
+<p>This type of multigenerational growth material is implemented in FEBio as “<em>multigeneration</em>” for mixtures of elastic solids, and as “<em>multiphasic-multigeneration</em>” for reactive multiphasic mixtures whose solid constituent is a multigenerational growth material. In this type of material the user needs to prescribe the generation birth times <span class="arithmatex">\(t^{\sigma}\)</span> and the properties of the material of each generation <span class="arithmatex">\(\sigma\)</span>. The code automatically prescribes <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> based on the constitutive model given above, for each generation <span class="arithmatex">\(\sigma\)</span>. For example, one may use a material model whose response depends on the evolving composition <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> of that generation. The composition <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> may evolve either due to chemical reactions modeled in a multiphasic framework, or by associating a user-defined load curve with <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span>. Thus, the material properties (and the stress response) of generation <span class="arithmatex">\(\sigma\)</span> need not remain constant over the generation time interval <span class="arithmatex">\(t^{\sigma}\le t&lt;t^{\sigma+1}\)</span>, even though <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> remains constant during that generation.</p>
+<p>When the growth process is negative (<span class="arithmatex">\(\hat{\rho}_{r}^{\sigma}&lt;0\)</span>), it implies that the solid constituent <span class="arithmatex">\(\sigma\)</span> is losing mass (solid resorption); this loss of mass terminates when <span class="arithmatex">\(\rho_{r}^{\sigma}=0\)</span>. A material model that depends on <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> may exhibit evolving material properties during this resorption process until that generation produces zero stress when <span class="arithmatex">\(\rho_{r}^{\sigma}=0\)</span>.</p>
+<p>As a result of these evolving growth processes, this multigeneration mixture may exhibit residual stresses.</p>
+<h2 id="subsec:Prescribed-Deposition-Stretch">Prescribed Pre-Stretch<a class="headerlink" href="#subsec:Prescribed-Deposition-Stretch" title="Permanent link">&para;</a></h2>
+<p>An alternative approach to multigenerational growth is to prescribe <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> as a user-defined function. For isotropic stretching we may define</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}^{\sigma s}=\lambda^{\sigma s}\mathbf{I}\,,\label{eq:prescribed-defgrad-isotropic} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\lambda^{\sigma s}&gt;0\)</span> is the stretch ratio. A value greater than unity causes swelling whereas a value less than unity causes contraction; <span class="arithmatex">\(\lambda^{\sigma s}=1\)</span> produces <span class="arithmatex">\(\mathbf{F}^{\sigma s}=\mathbf{I}\)</span>, which recovers the simple solid mixture described in Section <a href="#subsec:Simple-Solid-Mixtures">Simple Solid Mixtures</a>. In FEBio a load curve may be associated with <span class="arithmatex">\(\lambda^{\sigma s}\)</span> to ramp up the prescribed deposition stretch.</p>
+<p>For orthotropic stretching we define mutually orthogonal symmetry planes with unit normals <span class="arithmatex">\(\mathbf{a}_{i}\)</span> (<span class="arithmatex">\(i=1,2,3\)</span> and <span class="arithmatex">\(\mathbf{a}_{i}\cdot\mathbf{a}_{j}=\delta_{ij}\)</span>). Then,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}^{\sigma s}=\sum_{i=1}^{3}\lambda_{i}^{\sigma s}\mathbf{a}_{i}\otimes\mathbf{a}_{i}\,,\label{eq:prescribed-defgrad-orthotropic} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\lambda_{i}^{\sigma s}\)</span> is the stretch ratio for the prescribed stretch along <span class="arithmatex">\(\mathbf{a}_{i}\)</span>; in general, <span class="arithmatex">\(\lambda_{1}^{\sigma s}\ne\lambda_{2}^{\sigma s}\ne\lambda_{3}^{\sigma s}\)</span>, though this model can be specialized to transversely isotropic stretch by setting two of these stretch ratios equal to each other.</p>
+<p>At lower symmetries the constitutive model for <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> must necessarily combine stretch and rotation. For monoclinic materials, deformations may be prescribed along three unit vectors <span class="arithmatex">\(\mathbf{a}_{i}\)</span> that satisfy <span class="arithmatex">\(\mathbf{a}_{1}\cdot\mathbf{a}_{2}=0\)</span>, <span class="arithmatex">\(\mathbf{a}_{1}\cdot\mathbf{a}_{3}=0\)</span>, and <span class="arithmatex">\(\mathbf{a}_{2}\cdot\mathbf{a}_{3}\ne0\)</span>, such that <span class="arithmatex">\(\mathbf{a}_{1}\)</span> defines the single plane of symmetry. In this case,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{F}^{\sigma s} &amp; =\lambda_{1}^{\sigma s}\mathbf{a}_{1}\otimes\mathbf{a}_{1}+\frac{\lambda_{2}^{\sigma s}}{1-\alpha_{23}^{2}}\mathbf{a}_{2}\otimes\left(\mathbf{a}_{2}-\alpha_{23}\mathbf{a}_{3}\right)\\ &amp; +\frac{\lambda_{3}^{\sigma s}}{1-\alpha_{23}^{2}}\mathbf{a}_{3}\otimes\left(\mathbf{a}_{3}-\alpha_{23}\mathbf{a}_{2}\right) \end{aligned} \,,\label{eq:prescribed-defgrad-monoclinic} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\lambda_{i}^{\sigma s}\)</span> is the stretch along <span class="arithmatex">\(\mathbf{a}_{i}\)</span> and <span class="arithmatex">\(\alpha_{23}=\mathbf{a}_{2}\cdot\mathbf{a}_{3}\)</span>. Under general conditions (i.e., when <span class="arithmatex">\(\lambda_{1}^{\sigma s}\ne\lambda_{2}^{\sigma s}\ne\lambda_{3}^{\sigma s}\)</span> and <span class="arithmatex">\(\alpha_{23}\ne0\)</span>), the polar decomposition theorem shows that this deformation gradient is not a pure stretch, as it also involves a rotation.</p>
+<p>The deformation gradient for expansion of a triclinic material may be similarly constructed by finding <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> such that <span class="arithmatex">\(\mathbf{F}^{\sigma s}\cdot\mathbf{a}_{i}=\lambda_{i}^{\sigma s}\mathbf{a}_{i}\)</span> (no sum) for non-orthogonal and non-collinear unit vectors <span class="arithmatex">\(\mathbf{a}_{i}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{F}^{\sigma s} &amp; =\frac{\lambda_{1}^{\sigma s}}{d}\mathbf{a}_{1}\otimes\left(\left(1-\alpha_{23}^{2}\right)\mathbf{a}_{1}-\left(\alpha_{12}-\alpha_{13}\alpha_{23}\right)\mathbf{a}_{2}-\left(\alpha_{13}-\alpha_{12}\alpha_{23}\right)\mathbf{a}_{3}\right)\\ &amp; +\frac{\lambda_{2}^{\sigma s}}{d}\mathbf{a}_{2}\otimes\left(-\left(\alpha_{12}-\alpha_{13}\alpha_{23}\right)\mathbf{a}_{1}+\left(1-\alpha_{13}^{2}\right)\mathbf{a}_{2}-\left(\alpha_{23}-\alpha_{12}\alpha_{13}\right)\mathbf{a}_{3}\right)\\ &amp; +\frac{\lambda_{3}^{\sigma s}}{d}\mathbf{a}_{3}\otimes\left(-\left(\alpha_{13}-\alpha_{12}\alpha_{23}\right)\mathbf{a}_{1}-\left(\alpha_{23}-\alpha_{12}\alpha_{13}\right)\mathbf{a}_{2}+\left(1-\alpha_{12}^{2}\right)\mathbf{a}_{3}\right) \end{aligned} \label{eq:prescribed-defgrad-triclinic} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} d=1-\alpha_{12}^{2}-\alpha_{13}^{2}-\alpha_{23}^{2}+2\alpha_{23}\alpha_{13}\alpha_{12}\label{eq:triclinic-defgrad-denominator} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\alpha_{ij}=\mathbf{a}_{i}\cdot\mathbf{a}_{j}\)</span> is the cosine of the angle between <span class="arithmatex">\(\mathbf{a}_{i}\)</span> and <span class="arithmatex">\(\mathbf{a}_{j}\)</span>. All of these constitutive models for <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span> satisy frame indifference since they depend on material vectors <span class="arithmatex">\(\mathbf{a}_{i}\)</span>.</p>
+<p>This type of elastic solid with prescribed pre-stretch is modeled in FEBio using the materials “<em>prestretch elastic</em>” and “<em>prestretch uncoupled elastic</em>”. In the uncoupled version each solid constituent in the mixture has a deformation gradient <span class="arithmatex">\(\mathbf{F}^{\sigma}\)</span> which produces nearly isochoric responses (<span class="arithmatex">\(J^{\sigma}=1\)</span>), whereas no constraint is placed on the volumetric strain of the pre-stretch <span class="arithmatex">\(\mathbf{F}^{\sigma s}\)</span>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.10-1">
+<p>Ateshian, G. A.; Weiss, J. A.. "Anisotropic hydraulic permeability under finite deformation." <em>Journal of biomechanical engineering</em>, vol. 132, pp. 111004 (2010).&#160;<a class="footnote-backref" href="#fnref:2.10-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.10-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.10-2">
+<p>Nims, Robert J; Ateshian, Gerard A. "Reactive constrained mixtures for modeling the solid matrix of biological tissues." <em>Journal of Elasticity</em>, vol. 129, pp. 69--105 (2017).&#160;<a class="footnote-backref" href="#fnref:2.10-2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.10-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.10-3">
+<p>Bowen, Ray M. "The thermochemistry of a reacting mixture of elastic materials with diffusion." <em>Archive for Rational Mechanics and Analysis</em>, vol. 34, pp. 97--127 (1969).&#160;<a class="footnote-backref" href="#fnref:2.10-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.10-4">
+<p>Ateshian, G. A.. "On the theory of reactive mixtures for modeling biological growth." <em>Biomech Model Mechanobiol</em>, vol. 6, pp. 423-45 (2007).&#160;<a class="footnote-backref" href="#fnref:2.10-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.10-5">
+<p>Ateshian, Gerard A; Zimmerman, Brandon K. "Continuum Thermodynamics of Constrained Reactive Mixtures." <em>J Biomech Eng</em>, vol. 144 (2022).&#160;<a class="footnote-backref" href="#fnref:2.10-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.10-6">
+<p>Ateshian, G. A.; Ricken, T.. "Multigenerational interstitial growth of biological tissues." <em>Biomech Model Mechanobiol</em>, vol. 9, pp. 689-702 (2010).&#160;<a class="footnote-backref" href="#fnref:2.10-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.9 Triphasic and Multiphasic Materials">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.9 Triphasic and Multiphasic Materials
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.11-equilibrium-swelling/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.11 Equilibrium Swelling">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.11 Equilibrium Swelling
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

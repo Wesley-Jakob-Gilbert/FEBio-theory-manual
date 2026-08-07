@@ -1,0 +1,1063 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.15-hybrid-biphasic-material/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.16 Fluid-Solutes Analyses - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Fluid-Solutes-Analyses" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.16 Fluid-Solutes Analyses
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:CFD-Solutes-Equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governing Equations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:CFD-Solutes-Jump" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jump Conditions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Fluid-Solutes-Analyses">2.16 Fluid-Solutes Analyses<a class="headerlink" href="#sec:Fluid-Solutes-Analyses" title="Permanent link">&para;</a></h1>
+<p>Fluid-solutes analyses combine solute transport with fluid mechanics. The fluid-solutes domain, denoted by <span class="arithmatex">\(\Omega^{f}\)</span>, is a hybrid multiphasic domain without a deformable porous solid matrix <sup id="fnref:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>. Like the CFD domain, the CFD-solutes domain is fixed in space, and the fluid flows within it and possibly across its boundaries. The boundaries <span class="arithmatex">\(\partial\Omega^{f}\)</span> of <span class="arithmatex">\(\Omega^{f}\)</span>, and interfaces within this domain (such as faces of adjoining finite elements), are denoted generically by <span class="arithmatex">\(\Gamma^{f}\)</span>. In the current implementation, finite element domains that meet at these interfaces share common nodes and element faces, though it is possible to consider future extensions where tied interfaces are used to connect dissimilar meshes. The formulation and finite element implementation of this type of domain are presented below, using only salient governing equations simplified from the more general hybrid multiphasic theory presented in our recent study <sup id="fnref2:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>.</p>
+<h2 id="subsec:CFD-Solutes-Equations">Governing Equations<a class="headerlink" href="#subsec:CFD-Solutes-Equations" title="Permanent link">&para;</a></h2>
+<p>We model the domain <span class="arithmatex">\(\Omega^{f}\)</span> as a mixture of an isothermal, compressible, and viscous solvent which is electrically neutral, and isothermal, intrinsically incompressible, and dilute solute constituents which may be electrically charged. All solute accelerations are neglected, since they contribute insignificantly in comparison with diffusive forces, except in problems such as centrifugation, where they can be represented by an external inertial body force. Unlike the standard (Darcy flow through a porous-deformable) multiphasic domain <sup id="fnref:2.16-2"><a class="footnote-ref" href="#fn:2.16-2">2</a></sup><sup id="fnref:2.16-3"><a class="footnote-ref" href="#fn:2.16-3">3</a></sup><sup id="fnref:2.16-4"><a class="footnote-ref" href="#fn:2.16-4">4</a></sup>, the fluid-solutes domain is fixed in space. We denote the mixture constituents using a superscripted <span class="arithmatex">\(\alpha\)</span>, where <span class="arithmatex">\(\alpha=f,\iota\)</span> for solvent and solutes, respectively. The volume fraction <span class="arithmatex">\(\varphi^{\iota}\)</span> of each solute species <span class="arithmatex">\(\iota\)</span> is assumed to be negligible (<span class="arithmatex">\(\varphi^{\iota}\ll1\)</span>), therefore the volume fraction of the solvent is <span class="arithmatex">\(\varphi^{f}=dV^{f}/dV\approx1\)</span>. The apparent density of each constituent <span class="arithmatex">\(\alpha\)</span> is <span class="arithmatex">\(\rho^{\alpha}=dm^{\alpha}/dV\)</span>, which represents the ratio of the elemental mass <span class="arithmatex">\(dm^{\alpha}\)</span> of constituent <span class="arithmatex">\(\alpha\)</span> in the elemental fluid mixture volume. Under these assumptions, the true density of the solvent simplifies to <span class="arithmatex">\(\rho_{T}^{f}=\rho^{f}\)</span> while the true density <span class="arithmatex">\(\rho_{T}^{\iota}\)</span> of each solute <span class="arithmatex">\(\iota\)</span> is constant due to its intrinsic incompressibility. Since the solvent is compressible, as was done in the fluid mechanics formulation <sup id="fnref:2.16-5"><a class="footnote-ref" href="#fn:2.16-5">5</a></sup> (Section <a href="../2.13-fluid-mechanics/#sec:Fluid-Mechanics">Fluid Mechanics</a>), the solvent volume ratio <span class="arithmatex">\(J^{f}\)</span> was employed as a kinematic state variable to represent the fluid volumetric strain,</p>
+<div class="arithmatex">\[ \begin{equation} J^{f}=\frac{\rho_{r}^{f}}{\rho^{f}}\thinspace,\label{eq:Fluid-Dil-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho_{r}^{f}\)</span> is the referential solvent density (<span class="arithmatex">\(\rho^{f}\)</span> in the reference configuration), which is a user-specified material constant. An alternative representation of fluid volumetric strain is the fluid dilatation, <span class="arithmatex">\(e^{f}=J^{f}-1\)</span>, which is used in the actual finite element code.</p>
+<p>The axiom of mass balance for the mixture takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D^{f}J^{f}}{Dt}=J^{f}\left(\divg\mathbf{v}^{f}-\sum_{\iota}\frac{\hat{\rho}^{\iota}}{\rho_{T}^{\iota}}\right)\thinspace,\label{eq:Mix-Mass-Bal-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{v}^{f}\)</span> is the velocity of the fluid constituent and <span class="arithmatex">\(\hat{\rho}^{\iota}\)</span> is the mass density supply to <span class="arithmatex">\(\iota\)</span> due to reactions with all other solutes. It is assumed that reactions do not add or remove solvent mass (<span class="arithmatex">\(\hat{\rho}^{f}=0\)</span>). Here, <span class="arithmatex">\(D^{f}\left(\cdot\right)/Dt=\partial\left(\cdot\right)/\partial t+\grad\left(\cdot\right)\cdot\mathbf{v}^{f}\)</span> is the material time derivative operator in the spatial frame, following the fluid motion. The mixture mass balance reproduces the kinematic constraint between the fluid velocity and dilatation for the fluid mechanics formulation <sup id="fnref2:2.16-5"><a class="footnote-ref" href="#fn:2.16-5">5</a></sup> (Section <a href="../2.13-fluid-mechanics/#sec:Fluid-Mechanics">Fluid Mechanics</a>), with the addition of reactive mass supply terms. The axiom of mass balance for each solute takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \hat{c}^{\iota}=\frac{\partial c^{\iota}}{\partial t}+\divg\left(c^{\iota}\mathbf{v}^{\iota}\right)=\frac{1}{J^{f}}\frac{D^{f}\left(J^{f}c^{\iota}\right)}{Dt}+\divg\mathbf{j}^{\iota}\thinspace,\label{eq:Mass-Bal-Solute-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\hat{c}^{\iota}=\hat{\rho}^{\iota}/M^{\iota}\)</span> is the molar concentration supply and <span class="arithmatex">\(c^{\iota}=\rho^{\iota}/M^{\iota}\)</span> is the molar concentration of solute <span class="arithmatex">\(\iota\)</span>, and <span class="arithmatex">\(\mathbf{j}^{\iota}=c^{\iota}\left(\mathbf{v}^{\iota}-\mathbf{v}^{f}\right)\)</span> is the molar flux of solute <span class="arithmatex">\(\iota\)</span> relative to the solvent. As shown previously <sup id="fnref3:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>, the molar solute flux may be evaluated from the solute momentum balance when inertia terms have been neglected,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{j}^{\iota}=\tilde{\kappa}^{\iota}d_{0}^{\iota}\left(-\grad\tilde{c}^{\iota}+\frac{M^{\iota}}{R\theta}\tilde{c}^{\iota}\mathbf{b}^{\iota}\right)\thinspace,\label{eq:Solute-Flux-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\tilde{\kappa}^{\iota}\)</span> is the partition coefficient of solute <span class="arithmatex">\(\iota\)</span> relative to an ideal solution <sup id="fnref:2.16-6"><a class="footnote-ref" href="#fn:2.16-6">6</a></sup><sup id="fnref:2.16-7"><a class="footnote-ref" href="#fn:2.16-7">7</a></sup>. It is given by</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\kappa}^{\iota}=\frac{\kappa^{\iota}}{\gamma^{\iota}}\exp\left(-\frac{z^{\iota}F_{c}\psi}{R\theta}\right)\thinspace,\label{eq:Partition-Coeff-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\kappa^{\iota}\)</span> is the solubility of solute <span class="arithmatex">\(\iota\)</span> in the mixture, or the fraction of fluid volume accessible to the solute <sup id="fnref:2.16-8"><a class="footnote-ref" href="#fn:2.16-8">8</a></sup> (<span class="arithmatex">\(\kappa^{\iota}=1\)</span> in a fluid mixture), and <span class="arithmatex">\(\gamma^{\iota}\)</span> is the activity coefficient of solute <span class="arithmatex">\(\iota\)</span>. The ratio <span class="arithmatex">\(\kappa^{\iota}/\gamma^{\iota}\)</span> is a non-dimensional property that describes the deviation of the solute chemical potential from that of an ideal, dilute solution <sup id="fnref:2.16-9"><a class="footnote-ref" href="#fn:2.16-9">9</a></sup>. We can represent this ratio as <span class="arithmatex">\(\hat{\kappa}^{\iota}\equiv\kappa^{\iota}/\gamma^{\iota}\)</span>, and call it the effective solubility of <span class="arithmatex">\(\iota\)</span> in the solution <sup id="fnref:2.16-10"><a class="footnote-ref" href="#fn:2.16-10">10</a></sup>. In \eqref{eq:Partition-Coeff-CFDSol}, <span class="arithmatex">\(z^{\iota}\)</span> is the charge number of solute <span class="arithmatex">\(\iota\)</span>, <span class="arithmatex">\(F_{c}\)</span> is Faraday's constant, <span class="arithmatex">\(\psi\)</span> is the electrical potential, <span class="arithmatex">\(R\)</span> is the universal gas constant, and <span class="arithmatex">\(\theta\)</span> is the absolute temperature. In \eqref{eq:Solute-Flux-CFDSol}, <span class="arithmatex">\(d_{0}^{\iota}\)</span> is the diffusivity of solute <span class="arithmatex">\(\iota\)</span> in the fluid, <span class="arithmatex">\(\mathbf{b}^{\iota}\)</span> is the body force per mass acting on solute <span class="arithmatex">\(\iota\)</span>, and <span class="arithmatex">\(\tilde{c}^{\iota}\)</span> is the effective concentration of solute <span class="arithmatex">\(\iota\)</span>, such that</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{c}^{\iota}=c^{\iota}/\tilde{\kappa}^{\iota}\,.\label{eq:effective-actual-concentration} \end{equation} \]</div>
+<p>The effective solute concentration represents an alternative form of the solute electrochemical potential, expressed in units of molar concentration <sup id="fnref2:2.16-2"><a class="footnote-ref" href="#fn:2.16-2">2</a></sup><sup id="fnref2:2.16-3"><a class="footnote-ref" href="#fn:2.16-3">3</a></sup>. The solute flux in \eqref{eq:Solute-Flux-CFDSol} has contributions from diffusion (as represented by the term containing <span class="arithmatex">\(\grad\tilde{c}^{\iota}\)</span>), sedimentation (<span class="arithmatex">\(\tilde{c}^{\iota}\mathbf{b}^{\iota}\)</span> when <span class="arithmatex">\(\mathbf{b}^{\iota}\)</span> is proportional to an inertial force), electrophoresis (<span class="arithmatex">\(\tilde{c}^{\iota}\mathbf{b}^{\iota}\)</span> when <span class="arithmatex">\(\mathbf{b}^{\iota}\)</span> is proportional to the Lorentz force acting on charged solute <span class="arithmatex">\(\iota\)</span>), and convection (<span class="arithmatex">\(\tilde{c}^{\iota}\mathbf{v}^{f}\)</span>).</p>
+<p>The solute flux in eq.\eqref{eq:Solute-Flux-CFDSol} may also be expressed in terms of its components,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{j}^{\iota}=\underbrace{-\tilde{\kappa}^{\iota}d_{0}^{\iota}\grad\tilde{c}^{\iota}}_{\mathbf{j}_{d}^{\iota}}+\underbrace{s^{\iota}c^{\iota}\mathbf{b}^{\iota}}_{\mathbf{j}_{b}^{\iota}}\label{eq:solute-flux-components} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} s^{\iota}\equiv d_{0}^{\iota}\frac{M^{\iota}}{R\theta}\label{eq:sedimentation-coeff} \end{equation} \]</div>
+<p>is the <em>sedimentation coefficient</em>. In the expression of eq.\eqref{eq:solute-flux-components} <span class="arithmatex">\(\mathbf{j}_{d}^{\iota}\)</span> represents the diffusive flux, and <span class="arithmatex">\(\mathbf{j}_{b}^{\iota}\)</span> is the sedimentation flux. Now the mass balance expression in eq.\eqref{eq:Mass-Bal-Solute-CFDSol} may be combined with eq.\eqref{eq:Mix-Mass-Bal-CFDSol} to produce</p>
+<div class="arithmatex">\[ \begin{equation} \hat{c}^{\iota}-c^{\iota}\sum_{\gamma}\mathcal{V}^{\gamma}\hat{c}^{\gamma}=\frac{1}{J^{f}}\frac{D^{f}\left(J^{f}c^{\iota}\right)}{Dt}+\divg\left(\mathbf{j}_{d}^{\iota}+\mathbf{j}_{b}^{\iota}\right)\label{eq:solute-mass-alt} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathcal{V}^{\iota}\equiv\nicefrac{M^{\iota}}{\rho_{T}^{\iota}}\)</span> is the molar volume of solute <span class="arithmatex">\(\iota\)</span>. Since we have neglected the volume fraction of solutes in the current mixture formulation, it follows that <span class="arithmatex">\(c^{\iota}\mathcal{V}^{\iota}\ll1\)</span>. Thus, we may neglect the second term on the left-hand side of the above equation, as well as the related term on the right-hand side of eq.\eqref{eq:Mix-Mass-Bal-CFDSol}.</p>
+<p>The fluid momentum balance is given by</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{f}\mathbf{a}^{f}=-\grad\tilde{p}+\divg\boldsymbol{\tau}+\rho^{f}\mathbf{b}^{f}+\sum_{\iota}\left(-R\theta\tilde{\kappa}^{\iota}\grad\tilde{c}^{\iota}+M^{\iota}c^{\iota}\mathbf{b}^{\iota}\right)\thinspace,\label{eq:Fluid-Mtm-Bal-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{a}^{f}=D^{f}\mathbf{v}^{f}/Dt\)</span> is the fluid acceleration, <span class="arithmatex">\(\boldsymbol{\tau}\)</span> is the fluid viscous stress, <span class="arithmatex">\(\mathbf{b}^{f}\)</span> is the body force per mass acting on the fluid <span class="arithmatex">\(f\)</span>, and <span class="arithmatex">\(\tilde{p}\)</span> is the effective fluid pressure, related to the fluid pressure <span class="arithmatex">\(p\)</span> via</p>
+<div class="arithmatex">\[ \begin{equation} p=\tilde{p}+R\theta\Phi\sum_{\iota}c^{\iota}\thinspace.\label{eq:Total-fluid-p-CFDSol} \end{equation} \]</div>
+<p>Here, <span class="arithmatex">\(\Phi\)</span> is the osmotic coefficient, a non-dimensional property that describes the deviation of the osmotic pressure from the ideal behavior known as van't Hoff's law <sup id="fnref:2.16-11"><a class="footnote-ref" href="#fn:2.16-11">11</a></sup>, and <span class="arithmatex">\(R\theta\Phi\sum_{\iota}c^{\iota}\)</span> is the osmotic or chemical contribution to the fluid pressure. Therefore, <span class="arithmatex">\(\tilde{p}\)</span>, which is an alternative form of the solvent mechano-chemical potential, may be interpreted as the mechanical or hydraulic contribution to <span class="arithmatex">\(p\)</span>.</p>
+<p>Previously, we showed that the effective pressure must only depend on the fluid volume ratio, such that <span class="arithmatex">\(\tilde{p}=\tilde{p}\left(J^{f}\right)\)</span> <sup id="fnref4:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>. Based on mass, momentum and energy jump conditions for this type of mixture, it can also be shown that <span class="arithmatex">\(J^{f}\)</span> (or alternatively <span class="arithmatex">\(e^{f}\)</span>) is continuous across interfaces <span class="arithmatex">\(\Gamma^{f}\)</span>, and thus may be used as a nodal degree of freedom (DOF). We may choose a constitutive relation valid for arbitrary (but strictly positive) values of <span class="arithmatex">\(J^{f}\)</span></p>
+<div class="arithmatex">\[ \begin{equation} \tilde{p}=K\left(\frac{1}{J^{f}}-1\right)\,,\label{eq:Eff-Pressure-CFDSol} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(K\)</span> is the solvent's bulk modulus (a user-specified material property).</p>
+<p>The solute-dependent terms appearing on the right side of the solvent momentum balance \eqref{eq:Fluid-Mtm-Bal-CFDSol} are typically neglected in classical CFD-solutes formulations, but we included them here since they emerged naturally to describe the phenomena of osmosis (solvent flow due to solute diffusion or sedimentation), and electro-osmosis (solvent flow due to solute electrophoresis). To reproduce classical formulations, by default we turned off these terms (within the summation on the right-hand side of eq.\eqref{eq:Fluid-Mtm-Bal-CFDSol}), and we added a user-defined flag (“include osmosis”) to optionally turn them back on. In addition, users can turn off osmotic pressure by setting the osmotic coefficient <span class="arithmatex">\(\Phi\)</span> to zero, in which case <span class="arithmatex">\(p=\tilde{p}\)</span> according to eq.\eqref{eq:Total-fluid-p-CFDSol}. Both of these approaches were investigated in the test problems described below.</p>
+<p>As done in the standard multiphasic formulation (Section <a href="../2.9-triphasic-and-multiphasic-materials/#sec:Triphasic-Multiphasic-Materials">Triphasic and Multiphasic Materials</a>), we assumed there can be no electric charge accumulation in the mixture, so we enforce the electroneutrality condition</p>
+<div class="arithmatex">\[ \begin{equation} \sum_{\iota}z^{\iota}c^{\iota}=0\,.\label{eq:Electroneutrality-CFDSol} \end{equation} \]</div>
+<p>Multiplying the mass balances from \eqref{eq:Mass-Bal-Solute-CFDSol} by <span class="arithmatex">\(z^{\iota}\)</span> and taking the sum over all the constituents, making use of \eqref{eq:Electroneutrality-CFDSol} and adopting the assumption that reactive processes maintain electroneutrality (<span class="arithmatex">\(\sum_{\iota}z^{\iota}\nu^{\iota}=0\)</span> where <span class="arithmatex">\(\nu^{\alpha}\)</span> is the net stoichiometric coefficient of <span class="arithmatex">\(\alpha\)</span> <sup id="fnref2:2.16-4"><a class="footnote-ref" href="#fn:2.16-4">4</a></sup>) produces the constraint</p>
+<div class="arithmatex">\[ \begin{equation} 0=\divg\sum_{\iota}z^{\iota}\mathbf{j}^{\iota}\,,\label{eq:Current-Density-Constraint} \end{equation} \]</div>
+<p>or equivalently <span class="arithmatex">\(\divg\mathbf{I}_{e}=0\)</span>, where <span class="arithmatex">\(\mathbf{I}_{e}=F_{c}\sum_{\iota}z^{\iota}\mathbf{j}^{\iota}\)</span> is the electric current density.</p>
+<p>In the CFD-solutes implementation the fluid velocity <span class="arithmatex">\(\mathbf{v}^{f}\)</span>, fluid dilatation <span class="arithmatex">\(e^{f}\)</span>, and effective solute concentrations <span class="arithmatex">\(\tilde{c}^{\iota}\)</span> are the nodal degrees of freedom <span class="arithmatex">\(\left(\mathbf{v}^{f},e^{f},\tilde{c}^{\iota}\right)\)</span>, as further addressed in Section <a href="#subsec:CFD-Solutes-Jump">Jump Conditions</a>. These choices imply that <span class="arithmatex">\(\mathbf{\mathbf{v}}^{f}\)</span>, <span class="arithmatex">\(e^{f}\)</span>, and <span class="arithmatex">\(\tilde{c}^{\iota}\)</span> are continuous across finite element boundaries, as justified below when we review jump conditions across interfaces. Note that in the absence of solutes, the governing equations \eqref{eq:Mix-Mass-Bal-CFDSol} and \eqref{eq:Fluid-Mtm-Bal-CFDSol} simplify to the original CFD equations, with <span class="arithmatex">\(p=\tilde{p}\)</span>. More information on calculating the supply terms <span class="arithmatex">\(\hat{c}^{\iota}\)</span> and <span class="arithmatex">\(\hat{\rho}^{\iota}\)</span> can be found in Section <a href="../2.12-chemical-reactions/#sec:Chemical-Reactions">Chemical Reactions</a>. The electric potential <span class="arithmatex">\(\psi\)</span> can be determined as described in the previous standard multiphasic solver <sup id="fnref3:2.16-3"><a class="footnote-ref" href="#fn:2.16-3">3</a></sup><sup id="fnref3:2.16-4"><a class="footnote-ref" href="#fn:2.16-4">4</a></sup>.</p>
+<h2 id="subsec:CFD-Solutes-Jump">Jump Conditions<a class="headerlink" href="#subsec:CFD-Solutes-Jump" title="Permanent link">&para;</a></h2>
+<p>Jump conditions on the axioms of mass, momentum and energy balance are needed to determine which variables may be selected as nodal degrees of freedom in the finite element implementation, and which tractions are naturally continuous across an interface. The jump conditions for the CFD-solutes material were determined from the jump conditions of the general hybrid multiphasic material <sup id="fnref5:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>. Here, we summarize the relevant results, which apply to any interface <span class="arithmatex">\(\Gamma^{f}\)</span>. Here, since the domain is fixed in space, the interface <span class="arithmatex">\(\Gamma^{f}\)</span> is stationary. We employ the notation <span class="arithmatex">\(\left[\left[f\right]\right]=f_{+}-f_{-}\)</span> to denote the jump in an arbitrary function <span class="arithmatex">\(f\)</span> across the interface <span class="arithmatex">\(\Gamma^{f}\)</span>, with <span class="arithmatex">\(f_{+}\)</span> and <span class="arithmatex">\(f_{-}\)</span> denoting the values of <span class="arithmatex">\(f\)</span> on either side of <span class="arithmatex">\(\Gamma^{f}\)</span>. The unit normal on <span class="arithmatex">\(\Gamma^{f}\)</span> is <strong><span class="arithmatex">\(\mathbf{n}\)</span></strong>, which points away from the <span class="arithmatex">\(+\)</span> side. A variable <span class="arithmatex">\(f\)</span> which is continuous across <span class="arithmatex">\(\Gamma^{f}\)</span> satisfies <span class="arithmatex">\(\left[\left[f\right]\right]=0\)</span>.</p>
+<p>Based on the jump condition on the axiom of mass balance for the fluid, the normal component of the mass flux of the fluid is continuous across <span class="arithmatex">\(\Gamma^{f}\)</span>, <span class="arithmatex">\(\left[\left[\rho^{f}\mathbf{v}^{f}\right]\right]\cdot\mathbf{n}=0\)</span>. Furthermore, a sufficient condition to satisfy the jump on the axiom of energy balance is to enforce continuity of the solvent specific free enthalpy (or Gibbs function), such that <span class="arithmatex">\(\left[\left[\psi^{f}+p/\rho_{T}^{f}\right]\right]=\left[\left[\mu^{f}\right]\right]=0\)</span>, where <span class="arithmatex">\(\psi^{f}\)</span> is the fluid specific free energy. In the multiphasic mixture literature, the solvent specific free enthalpy <span class="arithmatex">\(\mu^{f}\)</span> is also called the mechano-chemical potential <sup id="fnref:2.16-12"><a class="footnote-ref" href="#fn:2.16-12">12</a></sup>. This jump condition applies only when there is solvent on both sides of the interface, such as across <span class="arithmatex">\(\Gamma^{f}\)</span>. In an isothermal framework, the solvent mechano-chemical potential is a function of state that only depends on <span class="arithmatex">\(J^{f}\)</span> such that <span class="arithmatex">\(\mu^{f}=\mu^{f}\left(J^{f}\right)\)</span> <sup id="fnref6:2.16-1"><a class="footnote-ref" href="#fn:2.16-1">1</a></sup>. Therefore this energy jump condition implies that <span class="arithmatex">\(J^{f}\)</span> must be continuous across <span class="arithmatex">\(\Gamma^{f}\)</span>, thus</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[J^{f}\right]\right]=0\,,\label{eq:J-Jump-CFDSol} \end{equation} \]</div>
+<p>also implying that <span class="arithmatex">\(\left[\left[\tilde{p}\right]\right]=0\)</span>. Given \eqref{eq:Fluid-Dil-CFDSol}, it follows that <span class="arithmatex">\(\left[\left[\rho^{f}\right]\right]=0\)</span> and the fluid mass balance jump condition reduces to <span class="arithmatex">\(\left[\left[\mathbf{v}^{f}\right]\right]\cdot\mathbf{n}=0\)</span>, implying that the fluid velocity component normal to <span class="arithmatex">\(\Gamma^{f}\)</span> must be continuous. For the tangential component of <span class="arithmatex">\(\mathbf{v}^{f}\)</span> on <span class="arithmatex">\(\Gamma^{f}\)</span> we use the no-slip condition for viscous fluids, which states that the velocity component tangential to <span class="arithmatex">\(\Gamma^{f}\)</span> must be continuous across that interface, as is standard in CFD solvers. Combining these two jump conditions produces</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\mathbf{v}^{f}\right]\right]=0\,.\label{eq:Mass-Jump-Final-CFDSol} \end{equation} \]</div>
+<p>From the solute mass jump condition, we can show that the normal component of the molar solute flux is continuous across <span class="arithmatex">\(\Gamma^{f}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\mathbf{j}^{\iota}\right]\right]\cdot\mathbf{n}=0\,.\label{eq:Mass-Jump-Sol-CFDSol} \end{equation} \]</div>
+<p>The momentum jump condition requires that the mixture traction be continuous across <span class="arithmatex">\(\Gamma^{f}\)</span>, thus <span class="arithmatex">\(\left[\left[-p\mathbf{I}+\boldsymbol{\tau}\right]\right]\cdot\mathbf{n}=\mathbf{0}\)</span>. Another relation which is thermodynamically sufficient to satisfy the jump condition on the energy balance is the continuity of the viscous fluid traction,</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\boldsymbol{\tau}\right]\right]\cdot\mathbf{n}=0\,.\label{eq:Fluid-Mtm-Jump-CFDSol} \end{equation} \]</div>
+<p>This jump condition \eqref{eq:Fluid-Mtm-Jump-CFDSol}, which also applies only if fluid is present on both sides of <span class="arithmatex">\(\Gamma\)</span>, implies that <span class="arithmatex">\(\left[\left[p\right]\right]=0\)</span>.</p>
+<p>Finally, the last relation that is thermodynamically sufficient to satisfy the energy balance jump condition applies to the electrochemical potential for the solutes, where <span class="arithmatex">\(\left[\left[\tilde{\mu}^{\iota}\right]\right]=0\)</span>. For a solute, the general constitutive relation for the electrochemical potential is <span class="arithmatex">\(\tilde{\mu}^{\iota}=\frac{R\theta}{M^{\iota}}\ln\frac{c^{\iota}}{\tilde{\kappa}^{\alpha}c_{0}^{\iota}}\)</span>, and the jump can be simplified to</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\tilde{c}^{\iota}\right]\right]=0\,.\label{eq:Conc-Jump-CFDSol} \end{equation} \]</div>
+<p>Thus, letting <span class="arithmatex">\(\mathbf{v}^{f}\)</span>, <span class="arithmatex">\(e^{f}\)</span>, and <span class="arithmatex">\(\tilde{c}^{\iota}\)</span> be nodal degrees of freedom automatically enforces the jump conditions \eqref{eq:J-Jump-CFDSol}, \eqref{eq:Mass-Jump-Final-CFDSol}, and \eqref{eq:Conc-Jump-CFDSol}, acting as essential boundary conditions. As stated earlier, the jump conditions are the same as the previous CFD formulation in the case of zero solute concentration (all <span class="arithmatex">\(\tilde{c}^{\iota}=0\)</span>) <sup id="fnref3:2.16-5"><a class="footnote-ref" href="#fn:2.16-5">5</a></sup>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.16-1">
+<p>Shim, Jay J; Ateshian, Gerard A. "A Hybrid Reactive Multiphasic Mixture With a Compressible Fluid Solvent." <em>J Biomech Eng</em>, vol. 144 (2022).&#160;<a class="footnote-backref" href="#fnref:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref5:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref6:2.16-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-2">
+<p>Ateshian, G. A.. "On the theory of reactive mixtures for modeling biological growth." <em>Biomech Model Mechanobiol</em>, vol. 6, pp. 423-45 (2007).&#160;<a class="footnote-backref" href="#fnref:2.16-2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.16-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-3">
+<p>Gerard A. Ateshian; Steve Maas; Jeffrey A. Weiss. "Multiphasic Finite Element Framework for Modeling Hydrated Mixtures With Multiple Neutral and Charged Solutes." <em>J. Biomech. Eng.</em>, vol. 135 (2013).&#160;<a class="footnote-backref" href="#fnref:2.16-3" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.16-3" title="Jump back to footnote 3 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:2.16-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-4">
+<p>Gerard A. Ateshian; Robert J. Nims; Steve Maas; Jeffrey A. Weiss. "Computational modeling of chemical reactions and interstitial growth and remodeling involving charged solutes and solid-bound molecules." <em>Biomech. Model. Mechanobiol.</em>, vol. 13, pp. 1105--1120 (2014).&#160;<a class="footnote-backref" href="#fnref:2.16-4" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.16-4" title="Jump back to footnote 4 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:2.16-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-5">
+<p>Ateshian, Gerard A; Shim, Jay J; Maas, Steve A; Weiss, Jeffrey A. "Finite Element Framework for Computational Fluid Dynamics in FEBio." <em>J Biomech Eng</em>, vol. 140 (2018).&#160;<a class="footnote-backref" href="#fnref:2.16-5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.16-5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:2.16-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-6">
+<p>Ogston, A. G.; Phelps, C. F.. "The partition of solutes between buffer solutions and solutions containing hyaluronic acid." <em>Biochem J</em>, vol. 78, pp. 827-33 (1961).&#160;<a class="footnote-backref" href="#fnref:2.16-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-7">
+<p>Laurent, Torvard C.; Killander, Johan. "A Theory of Gel Filtration and its Experimental Verification." <em>J Chromatogr</em>, vol. 14, pp. 317-330 (1963).&#160;<a class="footnote-backref" href="#fnref:2.16-7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-8">
+<p>Mauck, R. L.; Hung, C. T.; Ateshian, G. A.. "Modeling of neutral solute transport in a dynamically loaded porous permeable gel: implications for articular cartilage biosynthesis and tissue engineering." <em>J Biomech Eng</em>, vol. 125, pp. 602-14 (2003).&#160;<a class="footnote-backref" href="#fnref:2.16-8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-9">
+<p>Tinoco Jr., I.; Sauer, K.; Wang, J. C.. "Physical chemistry : principles and applications in biological sciences." <em>Prentice Hall</em> (1995).&#160;<a class="footnote-backref" href="#fnref:2.16-9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-10">
+<p>Ateshian, G.A.; Albro, M. B.; Maas, S.A.; Weiss, J.A.. "Finite element implementation of mechanochemical phenomena in neutral deformable porous media under finite deformation.." <em>Journal of Biomechanical Engineering</em>, vol. 133, pp. 1005-1017 (2011).&#160;<a class="footnote-backref" href="#fnref:2.16-10" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-11">
+<p>McNaught, Alan. "Compendium of chemical terminology : IUPAC recommendations." <em>Blackwell Science</em> (1997).&#160;<a class="footnote-backref" href="#fnref:2.16-11" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.16-12">
+<p>Gerard A. Ateshian. "Mixture Theory for Modeling Biological Tissues: Illustrations from Articular Cartilage." <em>Studies in Mechanobiology, Tissue Engineering and Biomaterials</em>, pp. 1--51 (2016).&#160;<a class="footnote-backref" href="#fnref:2.16-12" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.15-hybrid-biphasic-material/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.15 Hybrid Biphasic Material">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.15 Hybrid Biphasic Material
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

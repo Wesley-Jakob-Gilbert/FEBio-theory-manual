@@ -1,0 +1,1033 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.10-constrained-reactive-mixture-of-solids/">
+      
+      
+        <link rel="next" href="../2.12-chemical-reactions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.11 Equilibrium Swelling - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Equilibrium-swelling" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.11 Equilibrium Swelling
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Perfect-osmometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Perfect Osmometer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Cell-Growth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cell Growth
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Donnan-Equilibrium-Swelling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Donnan Equilibrium Swelling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Equilibrium-swelling">2.11 Equilibrium Swelling<a class="headerlink" href="#sec:Equilibrium-swelling" title="Permanent link">&para;</a></h1>
+<p>When the interstitial fluid of a porous medium contains one or more solutes, an osmotic pressure may be produced in the fluid if the osmolarity of the interstitial fluid is non-uniform, or if it is different from that of the external bathing solution surrounding the porous medium. In general, since the osmolarity of the interstitial fluid may vary over time in transient problems, the analysis of such swelling effects may be addressed using, for example, the biphasic-solute material model described in Section <a href="../2.8-biphasic-solute-material/#sec:Biphasic-Solute-Material">Biphasic-Solute Material</a>. However, if we are only interested in the steady-state response for such types of materials, when solvent and solute fluxes have subsided, the analysis may be simplified considerably.</p>
+<p>The Cauchy stress tensor for a mixture of a porous solid and interstitial fluid is given by</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=-p\mathbf{I}+\boldsymbol{\sigma}^{e}\,,\label{eq141} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(p\)</span> is he fluid pressure and <span class="arithmatex">\(\boldsymbol{\sigma}^{e}\)</span> is the stress in the solid matrix resulting from solid strain. When steady-state conditions are achieved, the fluid pressure <span class="arithmatex">\(p\)</span> results exclusively from osmotic effects and ambient conditions (i.e., it does not depend on the loading history). Thus, in analogy to eq.<a href="../2.8-biphasic-solute-material/#mjx-eqn:eq118">(2.8-11)</a>, <span class="arithmatex">\(p=\tilde{p}+R\theta\Phi c\)</span> where <span class="arithmatex">\(\tilde{p}\)</span> is the mechanical pressure resulting from ambient conditions and <span class="arithmatex">\(R\theta\Phi c\)</span> is the osmotic pressure resulting from the osmolarity <span class="arithmatex">\(c\)</span> of the solution.</p>
+<p>The osmotic pressure <span class="arithmatex">\(p\)</span> may produce swelling of the solid matrix, which is opposed by the solid matrix stress. This becomes more apparent when considering, for example, the case of a traction-free body. The traction is given by <span class="arithmatex">\(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\)</span>, where <span class="arithmatex">\(\mathbf{n}\)</span> is the unit outward normal to the boundary. When <span class="arithmatex">\(\mathbf{t}=\mathbf{0}\)</span>, the relation of eq.\eqref{eq141} produces <span class="arithmatex">\(p=\mathbf{n}\cdot\boldsymbol{\sigma}^{e}\cdot\mathbf{n}\)</span>, clearly showing that the osmotic pressure <span class="arithmatex">\(p\)</span> is balanced by the swelling solid matrix.</p>
+<p>The interstitial osmolarity (number of moles of solute per volume of interstitial fluid) may be related to the solute and solid content according to</p>
+<div class="arithmatex">\[ \begin{equation} c=\frac{c_{r}}{J-\varphi_{r}^{s}}\,,\label{eq142} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(c_{r}\)</span> is the number of moles of solute per volume of the mixture in the reference configuration, <span class="arithmatex">\(\varphi_{r}^{s}\)</span> is the volume fraction of the solid in the reference configuration, and <span class="arithmatex">\(J=\det\mathbf{F}\)</span> is the volume ratio of the porous solid matrix. Neither <span class="arithmatex">\(c_{r}\)</span> nor <span class="arithmatex">\(\varphi_{r}^{s}\)</span> depend on the solid matrix deformation, thus eq.\eqref{eq142} provides the explicit dependence of <span class="arithmatex">\(c\)</span> on <span class="arithmatex">\(J\)</span>. This relation shows that the osmolarity of the interstitial fluid is dependent on the relative change in volume of the solid matrix with deformation. Effectively, under equilibrium swelling conditions, the term <span class="arithmatex">\(-p\mathbf{I}\)</span> in eq.\eqref{eq141} represents an elastic stress and may be treated in this manner when analyzing equilibrium swelling conditions.</p>
+<p>Since <span class="arithmatex">\(p\)</span> also depends on the osmotic coefficient, if we assume that <span class="arithmatex">\(\Phi\)</span> depends on the solid strain at most via a dependence on <span class="arithmatex">\(J\)</span>, we may thus state generically that <span class="arithmatex">\(p=p\left(J\right)\)</span> under equilibrium swelling. It follows that the elasticity tensor for <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> is</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{C}}=-\left(p+J\frac{dp}{dJ}\right)\mathbf{I}\otimes\mathbf{I}+2p\mathbf{I}\,\overline{\underline{\otimes}}\,\mathbf{I}+\boldsymbol{\mathcal{C}}^{e}\,,\label{eq143} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\boldsymbol{\mathcal{C}}^{e}\)</span> is the elasticity tensor of <span class="arithmatex">\(\boldsymbol{\sigma}^{e}\)</span>.</p>
+<h2 id="subsec:Perfect-osmometer">Perfect Osmometer<a class="headerlink" href="#subsec:Perfect-osmometer" title="Permanent link">&para;</a></h2>
+<p>Consider a porous medium with an interstitial fluid that consists of a solvent and one or more solutes, whose boundary is permeable to the solvent but not to the solutes (e.g., a biological cell). Since solutes are trapped within such a medium, <span class="arithmatex">\(c_{r}\)</span> is a constant in this type of problem. Since the boundary is permeable to the solvent, <span class="arithmatex">\(\tilde{p}\)</span> must be continuous across the boundary. Assuming ideal physicochemical conditions, <span class="arithmatex">\(\Phi=1\)</span>, and zero ambient pressure, this continuity requirement implies that <span class="arithmatex">\(p=R\theta\left(c-c^{\ast}\right)\)</span>, where <span class="arithmatex">\(c^{\ast}\)</span> is the osmolarity of the external environment. Using eq.\eqref{eq142}, it follows that</p>
+<div class="arithmatex">\[ \begin{equation} p=R\theta\left(\frac{c_{r}}{J-\varphi_{r}^{s}}-c^{\ast}\right)\,.\label{eq144} \end{equation} \]</div>
+<p>The reference configuration (the stress-free configuration of the solid) is achieved when <span class="arithmatex">\(J=1\)</span> and <span class="arithmatex">\(p=0\)</span>, from which it follows that <span class="arithmatex">\(c_{r}=\left(1-\varphi_{r}^{s}\right)c_{0}^{\ast}\)</span>, where <span class="arithmatex">\(c_{0}^{\ast}\)</span> is the value of <span class="arithmatex">\(c^{\ast}\)</span> in the reference state. Therefore eq.\eqref{eq144} may also be written as</p>
+<div class="arithmatex">\[ \begin{equation} p=R\theta c^{\ast}\left(\frac{1-\varphi_{r}^{s}}{J-\varphi_{r}^{s}}\frac{c_{0}^{\ast}}{c^{\ast}}-1\right)\,,\label{eq145} \end{equation} \]</div>
+<p>and this expression may be substituted into eq.\eqref{eq143} to evaluate the corresponding elasticity tensor.</p>
+<p>A perfect osmometer is a porous material whose interstitial fluid behaves ideally and whose solid matrix exhibits negligible resistance to swelling (<span class="arithmatex">\(\boldsymbol{\sigma}^{e}\approx\mathbf{0})\)</span>. In that case <span class="arithmatex">\(p=0\)</span> and eq.\eqref{eq145} may be rearranged to yield</p>
+<div class="arithmatex">\[ \begin{equation} J=\left(1-\varphi_{r}^{s}\right)\frac{c_{0}^{\ast}}{c^{\ast}}+\varphi_{r}^{s}.\label{eq146} \end{equation} \]</div>
+<p>This equation is known as the Boyle-van't Hoff relation for a perfect osmometer. It predicts that variations in the relative volume of such as medium with changes in external osmolarity <span class="arithmatex">\(c^{\ast}\)</span> is an affine function of <span class="arithmatex">\(c_{0}^{\ast}/c^{\ast}\)</span>, with the intercept at the origin representing the solid volume fraction and the slope representing the fluid volume fraction, in the reference configuration.</p>
+<p>FEBio implements the relation of eq.\eqref{eq145} for the purpose of modeling equilibrium swelling even when solid matrix stresses are not negligible. The name “perfect osmometer” is adopted for this model because it reproduces the Boyle-van't Hoff response in the special case when <span class="arithmatex">\(\boldsymbol{\sigma}^{e}=\mathbf{0}\)</span>.</p>
+<h2 id="subsec:Cell-Growth">Cell Growth<a class="headerlink" href="#subsec:Cell-Growth" title="Permanent link">&para;</a></h2>
+<p>The growth of cells requires the active uptake of soluble mass to provide the building blocks for various intracellular structures, such as the cytoskeleton or chromosomes, and growth contributes to the osmolarity of the intracellular space. The resulting mechano-chemical gradient drives solvent into the cell as well, contributing to its volumetric growth.</p>
+<p>Cell growth may be modeled using the “perfect osmometer” framework by simply increasing the mass of the intracellular solid matrix and membrane-impermeant solute. This is achieved by using eq.\eqref{eq144} to model the osmotic pressure and allowing the parameters <span class="arithmatex">\(\varphi_{r}^{s}\)</span> and <span class="arithmatex">\(c_{r}\)</span> (normally constant) to increase over time as a result of growth. Since cell growth is often accompanied by cell division, and since daughter cells typically achieve the same solid and solute content as their parent, it may be convenient to assume that <span class="arithmatex">\(\varphi_{r}^{s}\)</span> and <span class="arithmatex">\(c_{r}\)</span> increase proportionally, though this is not an obligatory relationship. To ensure that the initial configuration is a stress-free reference configuration, let <span class="arithmatex">\(c_{r}=\left(1-\varphi_{r}^{s}\right)c^{\ast}\)</span> in the initial state prior to growth.</p>
+<h2 id="subsec:Donnan-Equilibrium-Swelling">Donnan Equilibrium Swelling<a class="headerlink" href="#subsec:Donnan-Equilibrium-Swelling" title="Permanent link">&para;</a></h2>
+<p>Consider a porous medium whose solid matrix holds a fixed electrical charge and whose interstitial fluid consists of a solvent and two monovalent counter-ions (such as Na<span class="arithmatex">\(^{\mathrm{+}}\)</span> and Cl<span class="arithmatex">\(^{\mathrm{-}})\)</span>. The boundaries of the medium are permeable to the solvent and ions. The fixed charge density is denoted by <span class="arithmatex">\(c^{F}\)</span>; it is a measure of the number of fixed charges per volume of the interstitial fluid in the current configuration. This charge density may be either negative or positive, thereby producing an imbalance in the concentration of anions and cations in the interstitial fluid. To determine the osmolarity of the interstitial fluid, it is necessary to equate the mechano-chemical potential of the solvent and the mechano-electrochemical potential of the ions between the porous medium and its surrounding bath. When assuming ideal physicochemical behavior, the interstitial osmolarity (resulting from the interstitial ions) is given by</p>
+<div class="arithmatex">\[ \begin{equation} c=\sqrt{\left(c^{F}\right)^{2}+\left(2c^{\ast}\right)^{2}}\,,\label{eq147} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(c^{\ast}\)</span> is the salt concentration in the bath. Alternatively, we note that the osmolarity of the bath is <span class="arithmatex">\(\bar{c}^{\ast}=2c^{\ast}\)</span>. Though this expression may be equated with eq.\eqref{eq142}, the resulting value of <span class="arithmatex">\(c_{r}\)</span> is not constant in this case, since ions may transport into or out of the pore space; therefore that relation is not useful here.</p>
+<p>However, since the number of charges fixed to the solid matrix is invariant, we may manipulate eq.\eqref{eq142} to produce a relation between the fixed charge density in the current configuration, <span class="arithmatex">\(c^{F}\)</span>, and the corresponding value in the reference configuration,<span class="arithmatex">\(c_{r}^{F}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}=\frac{1-\varphi_{r}^{s}}{J-\varphi_{r}^{s}}c_{r}^{F}\,.\label{eq148} \end{equation} \]</div>
+<p>Now the osmotic pressure resulting from the difference in osmolarity between the porous medium and its surrounding bath is given by</p>
+<div class="arithmatex">\[ \begin{equation} p=R\theta\left(\sqrt{\left(\frac{1-\varphi_{r}^{s}}{J-\varphi_{r}^{s}}c_{r}^{F}\right)^{2}+\left(\bar{c}^{\ast}\right)^{2}}-\bar{c}^{\ast}\right)\,.\label{eq149} \end{equation} \]</div>
+<p>This expression may be substituted into eq.\eqref{eq143} to evaluate the corresponding elasticity tensor.</p>
+<p>When the osmotic pressure results from an imbalance in osmolarity produced by a fixed charge density, it is called a Donnan osmotic pressure. The analysis associated with this relation is called Donnan equilibrium.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.10 Constrained Reactive Mixture of Solids">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.10 Constrained Reactive Mixture of Solids
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.12-chemical-reactions/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.12 Chemical Reactions">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.12 Chemical Reactions
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

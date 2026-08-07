@@ -1,0 +1,1021 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.13-fluid-mechanics/">
+      
+      
+        <link rel="next" href="../2.15-hybrid-biphasic-material/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.14 Fluid-Structure Interactions - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Fluid-Structure-Interactions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.14 Fluid-Structure Interactions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:FSI-Governing-Equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FSI Governing Equations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Fluid-Structure-Interactions">2.14 Fluid-Structure Interactions<a class="headerlink" href="#sec:Fluid-Structure-Interactions" title="Permanent link">&para;</a></h1>
+<p>We model the fluid domain in an FSI analysis as a mixture of an isothermal compressible viscous fluid and a hyperelastic compressible solid, where the solid has zero apparent density, and negligible (but non-zero) elasticity <sup id="fnref:2.14-1"><a class="footnote-ref" href="#fn:2.14-1">1</a></sup>. In a mixture framework, all mixture constituents coexist at every point in the continuum. For our FSI implementation, the finite element mesh is defined on the solid material, and the negligible (but non-zero) elasticity of the solid is intended to regularize the mesh deformation. The fluid flows through this mesh, unimpeded by the solid. In particular, in this FSI model there is no frictional interaction between the fluid and solid materials inside the mixture domain (i.e., no Darcy-Brinkman type of friction), but the no-slip boundary condition may be prescribed on boundaries of the mixture domain, where applicable.</p>
+<h2 id="subsec:FSI-Governing-Equations">FSI Governing Equations<a class="headerlink" href="#subsec:FSI-Governing-Equations" title="Permanent link">&para;</a></h2>
+<p>The momentum balance for the fluid is</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{f}\mathbf{a}^{f}=\divg\boldsymbol{\sigma}^{f}+\rho^{f}\mathbf{b}\,,\label{eq:fsi-fluid-momentum} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{b}\)</span> is the external body force acting on the FSI domain, <span class="arithmatex">\(\mathbf{a}^{f}\)</span> is the fluid acceleration,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{a}^{f}=\frac{\partial\mathbf{v}^{f}}{\partial t}+\mathbf{L}^{f}\cdot\mathbf{v}^{f}\,,\label{eq:fsi-fluid-acceleration} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\mathbf{L}^{f}=\grad\mathbf{v}^{f}\)</span> is the fluid velocity gradient. In principle, the same momentum equation may be used for the solid (substituting <span class="arithmatex">\(f\)</span> with <span class="arithmatex">\(s\)</span>); however, since we opted to let <span class="arithmatex">\(\rho^{s}=0\)</span> (no solid mass), the momentum balance for the solid simply reduces to</p>
+<div class="arithmatex">\[ \begin{equation} \divg\boldsymbol{\sigma}^{s}=\mathbf{0}\,.\label{eq:fsi-solid-momentum} \end{equation} \]</div>
+<p>We model the fluid as isothermal and compressible, consistent with our CFD implementation. Thus, the fluid stress may be separated into the elastic pressure <span class="arithmatex">\(p\left(J^{f}\right)\)</span>, which only depends on the fluid volume ratio <span class="arithmatex">\(J^{f}\)</span>, and the viscous stress <span class="arithmatex">\(\boldsymbol{\tau}\left(J^{f},\mathbf{L}^{f}\right)\)</span>, as</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}^{f}=-p\mathbf{I}+\boldsymbol{\tau}\,.\label{eq:fsi-fluid-stress-split} \end{equation} \]</div>
+<p>Recall that there is no dependence on temperature in an isothermal formulation. As done in our previous study, we integrate the mass balance for the fluid to produce</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{f}=\frac{\rho_{r}^{f}}{J^{f}}\,,\label{eq:fsi-integrated-fluid-mass} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho_{r}^{f}\)</span> is the fluid density in the reference state (e.g., under ambient pressure) and <span class="arithmatex">\(J^{f}=\det\mathbf{F}^{f}\)</span>, where <span class="arithmatex">\(\mathbf{F}^{f}\)</span> is the fluid deformation gradient. We also use the kinematic constraint</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial J^{f}}{\partial t}+\grad J^{f}\cdot\mathbf{v}^{f}=J^{f}\divg\mathbf{v}^{f}\,,\label{eq:fsi-fluid-kinematic constraint} \end{equation} \]</div>
+<p>to relate the fluid volume ratio <span class="arithmatex">\(J^{f}\)</span> to its velocity <span class="arithmatex">\(\mathbf{v}^{f}\)</span>, in the spatial frame.</p>
+<p>The mesh through which the fluid flows is defined on the solid component of the mixture. Therefore, we define the relative velocity between the fluid and solid as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{w}=\mathbf{v}^{f}-\mathbf{v}^{s}\,.\label{eq:fsi-fluid-relative-velocity} \end{equation} \]</div>
+<p>Since the solid has zero volume fraction, this expression is the same as the flux of fluid relative to the solid. We choose to define the nodal degrees of freedom in the mixture domain to be the relative fluid velocity <span class="arithmatex">\(\mathbf{w}\)</span>, the fluid dilatation <span class="arithmatex">\(e^{f}=J^{f}-1\)</span>, and the solid displacement <span class="arithmatex">\(\mathbf{u}^{s}\)</span>, which is related to the solid velocity via <span class="arithmatex">\(\mathbf{v}^{s}=\dot{\mathbf{u}}^{s}\)</span>, with the dot operator denoting the material time derivative following the solid. (For notational convenience, we will continue using <span class="arithmatex">\(J^{f}\)</span> in the equations below, instead of <span class="arithmatex">\(e^{f}\)</span>). Now,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{v}^{f}=\mathbf{w}+\mathbf{v}^{s}\,,\label{eq:fsi-fluid-velocity} \end{equation} \]</div>
+<p>from which it follows that the fluid velocity gradient is</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{L}^{f}=\mathbf{L}^{w}+\mathbf{L}^{s}\,,\label{eq:fsi-fluid-velocity-gradient} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{L}^{w}=\grad\mathbf{w}\)</span> and <span class="arithmatex">\(\mathbf{L}^{s}=\grad\mathbf{v}^{s}\)</span>. The fluid acceleration may now be rewritten in terms of the FEA degrees of freedom as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{a}^{f}=\dot{\mathbf{w}}+\dot{\mathbf{v}}^{s}+\left(\mathbf{L}^{w}+\mathbf{L}^{s}\right)\cdot\mathbf{w}\,,\label{eq:fsi-fluid-acceleration-redux} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\dot{\mathbf{v}}^{s} &amp; =\frac{\partial\mathbf{v}^{s}}{\partial t}+\mathbf{L}^{s}\cdot\mathbf{v}^{s}\\ \dot{\mathbf{w}} &amp; =\frac{\partial\mathbf{w}}{\partial t}+\mathbf{L}^{w}\cdot\mathbf{v}^{s} \end{aligned} \label{eq:fsi-vs-w-material-derivs} \end{equation} \]</div>
+<p>are the material time derivatives of the solid and relative fluid velocities, in the frame following the solid. We conveniently use this material time derivative (instead of the material time derivative following the fluid) since we define the mixture domain mesh on the solid.</p>
+<p>Similarly, the kinematic constraint relating <span class="arithmatex">\(J^{f}\)</span> and <span class="arithmatex">\(\mathbf{v}^{f}\)</span> may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \dot{J}^{f}+\grad J^{f}\cdot\mathbf{w}=J^{f}\divg\left(\mathbf{w}+\mathbf{v}^{s}\right)\,,\label{eq:fsi-fluid-kinematic-redux} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \dot{J}^{f}=\frac{\partial J^{f}}{\partial t}+\grad J^{f}\cdot\mathbf{v}^{s}\,.\label{eq:fsi-dilatation-material-deriv} \end{equation} \]</div>
+<p>Finally, as done routinely in our studies of biphasic and multiphasic materials, we find it convenient to substitute the kinematic identity</p>
+<div class="arithmatex">\[ \begin{equation} \divg\mathbf{v}^{s}=\frac{\dot{J}^{s}}{J^{s}}\,,\label{eq:fsi-solid-kinematic-constraint} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(J^{s}=\det\mathbf{F}^{s}\)</span> and <span class="arithmatex">\(\mathbf{F}^{s}=\mathbf{I}+\Grad\mathbf{u}^{s}\)</span> is the solid deformation gradient.</p>
+<p>In summary, the governing equations for the FSI mixture domain are</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned} &amp; \divg\boldsymbol{\sigma}^{s}=\mathbf{0}\\ &amp; \rho^{f}\mathbf{a}^{f}=\divg\boldsymbol{\sigma}^{f}+\rho^{f}\mathbf{b}\\ &amp; \frac{1}{J^{f}}\left(\dot{J}^{f}+\grad J^{f}\cdot\mathbf{w}\right)=\divg\mathbf{w}+\frac{\dot{J}^{s}}{J^{s}} \end{aligned} \label{eq:fsi-governing-equations} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{a}^{f}\)</span> is given in eq.\eqref{eq:fsi-fluid-acceleration-redux} above.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.14-1">
+<p>Shim, Jay J; Maas, Steve A; Weiss, Jeffrey A; Ateshian, Gerard A. "A Formulation for Fluid Structure-Interactions in FEBio Using Mixture Theory." <em>J Biomech Eng</em> (2019).&#160;<a class="footnote-backref" href="#fnref:2.14-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.13-fluid-mechanics/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.13 Fluid Mechanics">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.13 Fluid Mechanics
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.15-hybrid-biphasic-material/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.15 Hybrid Biphasic Material">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.15 Hybrid Biphasic Material
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

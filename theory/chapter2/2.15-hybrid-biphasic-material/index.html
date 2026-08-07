@@ -1,0 +1,1063 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.14-fluid-structure-interactions/">
+      
+      
+        <link rel="next" href="../2.16-fluid-solutes-analyses/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.15 Hybrid Biphasic Material - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Hybrid-Biphasic-Material" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.15 Hybrid Biphasic Material
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:BFSI-Governing-Equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BFSI Governing Equations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:BFSI-Continuous-Variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BFSI Continuous Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Hybrid-Biphasic-Material">2.15 Hybrid Biphasic Material<a class="headerlink" href="#sec:Hybrid-Biphasic-Material" title="Permanent link">&para;</a></h1>
+<p>In FEBio, the standard biphasic material consists of a mixture of intrinsically incompressible solid and fluid constituents, as described in Section <a href="../2.7-biphasic-material/#sec:Biphasic-Material">Biphasic Material</a>. In this standard material, the solid and fluid dynamics are neglected, as well as the fluid viscosity. When a user wishes to consider these dynamics effects, as well as fluid viscosity, they may use a hybrid biphasic material, as described in this section. The complete theoretical framework for such materials can be found in <sup id="fnref:2.15-1"><a class="footnote-ref" href="#fn:2.15-1">1</a></sup>. A hybrid biphasic domain is a mixture of an isothermal compressible viscous fluid and a hyperelastic compressible porous solid whose solid skeleton is intrinsically incompressible. Unlike the fluid-FSI material, here the solid has non-negligible mass density and elasticity, and frictional interactions may occur between the fluid and solid constituents, modeled using a hydraulic permeability (Section <a href="#sec-hydraulic-permeability">sec:Hydraulic-Permeability</a>). In FEBio, the hybrid biphasic material is called “biphasic-FSI”, since it allows dynamic fluid-structure interactions between this material and a fluid-FSI material, or a solid material. Here, we may abbreviate “biphasic-FSI” as BFSI. For BFSI domains, as with standard biphasic domains, the finite element mesh is defined on the porous solid material. The viscous fluid flows through this mesh, experiencing frictional drag caused by the porous solid. When two BFSI domains are interfaced, or when a BFSI domain is interfaced with a fluid-FSI domain, the pseudo-no slip condition <sup id="fnref:2.15-2"><a class="footnote-ref" href="#fn:2.15-2">2</a></sup> is enforced automatically on those interfaces. When a BFSI domain interfaces with a solid domain, the no-slip boundary condition has to be prescribed explicitly on those interfaces, where applicable.</p>
+<h2 id="subsec:BFSI-Governing-Equations">BFSI Governing Equations<a class="headerlink" href="#subsec:BFSI-Governing-Equations" title="Permanent link">&para;</a></h2>
+<p>We model the BFSI domain as an unconstrained mixture of an isothermal, compressible, and viscous fluid and an isothermal, deformable porous solid whose skeleton material is intrinsically incompressible. As usual in mixture theory, each constituent <span class="arithmatex">\(\alpha\)</span> (<span class="arithmatex">\(\alpha=s,f\)</span> for solid and fluid, respectively) has its own apparent density <span class="arithmatex">\(\rho^{\alpha}=dm^{\alpha}/dV\)</span>, which represents the ratio of the elemental mass <span class="arithmatex">\(dm^{\alpha}\)</span> of constituent <span class="arithmatex">\(\alpha\)</span> in the elemental mixture volume <span class="arithmatex">\(dV\)</span>. This apparent density is related to the true density <span class="arithmatex">\(\rho_{T}^{\alpha}=dm^{\alpha}/dV^{\alpha}\)</span> (mass of <span class="arithmatex">\(\alpha\)</span> per volume of <span class="arithmatex">\(\alpha\)</span>) via <span class="arithmatex">\(\rho^{\alpha}=\varphi^{\alpha}\rho_{T}^{\alpha}\)</span>, where <span class="arithmatex">\(\varphi^{\alpha}=dV^{\alpha}/dV\)</span> is the volume fraction of <span class="arithmatex">\(\alpha\)</span> in the mixture, satisfying <span class="arithmatex">\(\varphi^{s}+\varphi^{f}=1\)</span>. Since the solid skeleton is intrinsically incompressible, <span class="arithmatex">\(\rho_{T}^{s}\)</span> is constant. The boundaries of a biphasic domain are defined on the porous solid matrix. The deformation gradient of the solid is denoted by <span class="arithmatex">\(\mathbf{F}^{s}\)</span> and its determinant, <span class="arithmatex">\(J^{s}=\det\mathbf{F}^{s}=dV/dV_{r}\)</span>, represents the ratio of the mixture elemental volumes in the current (<span class="arithmatex">\(dV\)</span>) and reference (<span class="arithmatex">\(dV_{r}\)</span>) configurations. Thus, since the solid skeleton is intrinsically incompressible, <span class="arithmatex">\(J^{s}\)</span> purely represents the compressibility of the pore volume as fluid enters or leaves the pore space, or as the compressible fluid within the pores changes in volume. The axiom of mass balance for the solid may be integrated in closed form to produce <span class="arithmatex">\(\rho^{s}=\rho_{r}^{s}/J^{s}\)</span>, where <span class="arithmatex">\(\rho_{r}^{s}=dm^{s}/dV_{r}\)</span> is the solid apparent density in the mixture reference configuration. Therefore, we may define the referential solid volume fraction as <span class="arithmatex">\(\varphi_{r}^{s}=\rho_{r}^{s}/\rho_{T}^{s}\)</span>. In the finite element analysis, <span class="arithmatex">\(\varphi_{r}^{s}=dV^{s}/dV_{r}\)</span> and <span class="arithmatex">\(\rho_{T}^{s}\)</span> are both specified by the user, then <span class="arithmatex">\(\rho_{r}^{s}\)</span>, <span class="arithmatex">\(\rho^{s}\)</span>, <span class="arithmatex">\(\varphi^{s}\)</span> and <span class="arithmatex">\(\varphi^{f}\)</span> are evaluated from the above relations, given a solution for <span class="arithmatex">\(\mathbf{F}^{s}\)</span> (and thus, <span class="arithmatex">\(J^{s}\)</span>). The solution for <span class="arithmatex">\(\mathbf{F}^{s}=\mathbf{I}+\Grad\mathbf{u}\)</span> is obtained by solving for the nodal solid displacement vector <span class="arithmatex">\(\mathbf{u}\)</span>, where <span class="arithmatex">\(\Grad\left(\cdot\right)\)</span> represents the gradient operator in the material frame.</p>
+<p>For the compressible fluid phase of a hybrid biphasic material, the true density <span class="arithmatex">\(\rho_{T}^{f}\)</span> varies with the intrinsic fluid volumetric strain, or dilatation, <span class="arithmatex">\(e^{f}=J^{f}-1\)</span>, where <span class="arithmatex">\(J^{f}\)</span> is the volume ratio of the fluid in its current and reference configurations, <span class="arithmatex">\(dm^{f}\)</span> is the element mass of fluid and <span class="arithmatex">\(dV^{f}\)</span> is the elemental volume of that fluid in the pores of the mixture, in the current configuration. It follows from this definition that</p>
+<div class="arithmatex">\[ \begin{equation} J^{f}=\frac{dV^{f}}{dV_{r}^{f}}=\frac{dV^{f}}{dm^{f}}\frac{dm^{f}}{dV_{r}^{f}}=\frac{\rho_{Tr}^{f}}{\rho_{T}^{f}}\thinspace,\label{eq:bfsi-Jf} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(dV_{r}^{f}\)</span> is the elemental volume of this same fluid (having the same elemental mass <span class="arithmatex">\(dm^{f}\)</span>) in the fluid's reference configuration. Thus, <span class="arithmatex">\(\rho_{Tr}^{f}=dm^{f}/dV_{r}^{f}\)</span> is a constant representing the true fluid density in its reference configuration, which is specified by the user. Accordingly, <span class="arithmatex">\(J^{f}=1\)</span> in the limit when the fluid is idealized to be intrinsically incompressible. This definition of <span class="arithmatex">\(J^{f}\)</span> is consistent with that for a pure fluid, as shown in our earlier formulation of computational fluid dynamics <sup id="fnref:2.15-3"><a class="footnote-ref" href="#fn:2.15-3">3</a></sup>. As shown above, <span class="arithmatex">\(\rho^{f}\)</span> may be evaluated as <span class="arithmatex">\(\varphi^{f}\rho_{T}^{f}\)</span>, which now expands into an expression involving solid and fluid volume ratios,</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{f}=\left(1-\frac{\varphi_{r}^{s}}{J^{s}}\right)\frac{\rho_{Tr}^{f}}{J^{f}}\,.\label{eq:bfsi-rhof-Jf-Js} \end{equation} \]</div>
+<p>The limiting case when the fluid within the solid matrix pores has been completely squeezed out corresponds to <span class="arithmatex">\(\rho^{f}=0\)</span> (or <span class="arithmatex">\(dm^{f}=0\)</span>). Based on the above relation, this is equivalent to having the entire mixture volume <span class="arithmatex">\(dV\)</span> reduce to the solid volume <span class="arithmatex">\(dV^{s}\)</span> in the current configuration, or equivalently <span class="arithmatex">\(J^{s}=\varphi_{r}^{s}\)</span> <sup id="fnref:2.15-4"><a class="footnote-ref" href="#fn:2.15-4">4</a></sup>. In this limiting case, the mixture becomes an intrinsically incompressible solid and the finite element formulation presented in this study no longer applies.</p>
+<p>We assume that <span class="arithmatex">\(\mathbf{F}^{s}=\mathbf{I}\)</span> (or equivalently, <span class="arithmatex">\(\mathbf{u}=\mathbf{0}\)</span>) and <span class="arithmatex">\(e^{f}=0\)</span> at the start of a finite element analysis. The fluid dilatation <span class="arithmatex">\(e^{f}\)</span> is included as a nodal degree of freedom, implying that it is continuous across finite element boundaries. This assumption is verified below, when we review the jump conditions on axioms of mass, momentum and energy balance across interfaces.</p>
+<p>Since the axiom of mass balance for the solid has already been solved in closed form, we only need to be concerned with the axiom of mass balance for the fluid, or alternatively, that of the mixture, which takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D^{f}J^{f}}{Dt}=\frac{J^{f}}{\varphi^{f}}\divg\left(\mathbf{v}^{s}+\mathbf{w}\right)\thinspace,\label{eq:bfsi-mix-mass-balance-f} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{v}^{s}\)</span> is the solid velocity (the material time derivative of the solid displacement <span class="arithmatex">\(\mathbf{u}\)</span>), and</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{w}=\varphi^{f}\left(\mathbf{v}^{f}-\mathbf{v}^{s}\right)\thinspace\label{eq:bfsi-fluid-flux} \end{equation} \]</div>
+<p>is the volumetric flux of the fluid relative to the solid, with <span class="arithmatex">\(\mathbf{v}^{f}\)</span> representing the fluid velocity. Here, <span class="arithmatex">\(D^{f}\left(\cdot\right)/Dt\)</span> is the material time derivative operator in the spatial frame, following the fluid motion. Since the finite element mesh is defined on the porous solid matrix of a biphasic mixture, and since the fluid flows relative to the solid, material time derivatives need to follow the solid motion in the finite element implementation. A similar scheme was used in our implementations of solute transport within deformable porous domains (Sections <a href="../2.9-triphasic-and-multiphasic-materials/#sec:Triphasic-Multiphasic-Materials">Triphasic and Multiphasic Materials</a>), to account for the motion of solutes relative to the porous solid matrix, as well as in our FSI formulation (Section <a href="../2.14-fluid-structure-interactions/#sec:Fluid-Structure-Interactions">Fluid-Structure Interactions</a>) <sup id="fnref:2.15-5"><a class="footnote-ref" href="#fn:2.15-5">5</a></sup><sup id="fnref:2.15-6"><a class="footnote-ref" href="#fn:2.15-6">6</a></sup><sup id="fnref:2.15-7"><a class="footnote-ref" href="#fn:2.15-7">7</a></sup>. Thus, we substitute the following identity,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{D^{f}J^{f}}{Dt} &amp; =\frac{\partial J^{f}}{\partial t}+\grad J^{f}\cdot\mathbf{v}^{f}\\ &amp; =\frac{D^{s}J^{f}}{Dt}+\grad J^{f}\cdot\left(\mathbf{v}^{f}-\mathbf{v}^{s}\right) \end{aligned} \,,\label{eq:bfsi-DfJf-DsJf} \end{equation} \]</div>
+<p>into the axiom of mixture mass balance in \eqref{eq:bfsi-mix-mass-balance-f} to produce the final form</p>
+<div class="arithmatex">\[ \begin{equation} \dot{J}^{f}+\frac{1}{\varphi^{f}}\grad J^{f}\cdot\mathbf{w}=\frac{J^{f}}{\varphi^{f}}\divg\left(\mathbf{v}^{s}+\mathbf{w}\right)\,.\label{eq:bfsi-fluid-kin-constr} \end{equation} \]</div>
+<p>In this expression, the dot operator in <span class="arithmatex">\(\dot{J}^{f}\)</span> represents the material time derivative following the solid motion. In the solid material frame, this material time derivative reduces to the partial time derivative. Accordingly, we may now write <span class="arithmatex">\(\mathbf{v}^{s}=\dot{\mathbf{u}}\)</span>. In the BFSI implementation, the fluid volumetric flux <span class="arithmatex">\(\mathbf{w}\)</span> relative to the solid is added to the list of nodal DOFs, giving us the complete set <span class="arithmatex">\(\left(\mathbf{u},\mathbf{w},e^{f}\right)\)</span>. This choice implies that <span class="arithmatex">\(\mathbf{w}\)</span> is continuous across finite element boundaries, as justified further below when we review jump conditions across interfaces.</p>
+<p>Based on the constitutive assumptions of our hybrid biphasic formulation <sup id="fnref2:2.15-1"><a class="footnote-ref" href="#fn:2.15-1">1</a></sup>, the momentum balance equations for the fluid and solid constituents reduce to</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{f}\mathbf{a}^{f}=-\varphi^{f}\grad p+\divg\boldsymbol{\tau}^{f}+\rho^{f}\mathbf{b}^{f}-\varphi^{f}\mathbf{k}^{-1}\cdot\mathbf{w}\,,\label{eq:bfsi-fluid-momentum} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \rho^{s}\mathbf{a}^{s}=-\varphi^{s}\grad p+\divg\boldsymbol{\sigma}^{e}+\rho^{s}\mathbf{b}^{s}+\varphi^{f}\mathbf{k}^{-1}\cdot\mathbf{w}\,,\label{eq:bfsi-solid-momentum} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{a}^{\alpha}=D^{\alpha}\mathbf{v}^{\alpha}/Dt\)</span> is the acceleration, <span class="arithmatex">\(\mathbf{b}^{\alpha}\)</span> is the body force per mass acting on constituent <span class="arithmatex">\(\alpha\)</span>, <span class="arithmatex">\(p\)</span> is the fluid pressure, <span class="arithmatex">\(\boldsymbol{\tau}^{f}\)</span> is the apparent fluid viscous stress, and <span class="arithmatex">\(\boldsymbol{\sigma}^{e}\)</span> is the apparent solid elastic stress. These stress tensors are called apparent because their associated traction vectors represent a force acting on constituent <span class="arithmatex">\(\alpha\)</span> per elemental <em>mixture</em> area. Here, <span class="arithmatex">\(\mathbf{k}\)</span> is the hydraulic permeability tensor which regulates frictional drag between the fluid and solid constituents; setting <span class="arithmatex">\(\mathbf{k}^{-1}\)</span> to <span class="arithmatex">\(\mathbf{0}\)</span> implies that this frictional drag is non-existent. Since the fluid is compressible, its pressure must be given by a function of state. In the isothermal framework used here, this function only depends on <span class="arithmatex">\(e^{f}\)</span>, and the form adopted in FEBio is</p>
+<div class="arithmatex">\[ \begin{equation} p=-Ke^{f}\,,\label{eq:bfsi-pressure-state} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(K\)</span> is the fluid bulk modulus (a user-specified material property). In the limit when inertia and body forces are neglected (<span class="arithmatex">\(\mathbf{a}^{f}=\mathbf{b}^{f}=\mathbf{0}\)</span>), the fluid momentum balance \eqref{eq:bfsi-fluid-momentum} produces the classical Darcy-Brinkman relation <sup id="fnref:2.15-8"><a class="footnote-ref" href="#fn:2.15-8">8</a></sup>. If the fluid viscous stress is also neglected (<span class="arithmatex">\(\boldsymbol{\tau}^{f}=\mathbf{0}\)</span>), we recover Darcy's law, <span class="arithmatex">\(\mathbf{w}=-\mathbf{k}\cdot\grad p\)</span>.</p>
+<p>Since the finite element implementation requires all material time derivatives to follow the motion of the solid, we recognize that <span class="arithmatex">\(\mathbf{a}^{s}=\ddot{\mathbf{u}}\)</span> and we evaluate the fluid acceleration as <span class="arithmatex">\(\mathbf{a}^{f}=\dot{\mathbf{v}}^{f}+\grad\mathbf{v}^{f}\cdot\left(\mathbf{v}^{f}-\mathbf{v}^{s}\right)\)</span>. However, since <span class="arithmatex">\(\mathbf{v}^{f}\)</span> is not a nodal degree of freedom, we use eq.\eqref{eq:bfsi-fluid-flux} to substitute</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{v}^{f}=\frac{1}{\varphi^{f}}\mathbf{w}+\mathbf{v}^{s}\label{eq:bfsi-fluid-velocity} \end{equation} \]</div>
+<p>into this expression. It follows that the fluid velocity gradient <span class="arithmatex">\(\mathbf{L}^{f}=\grad\mathbf{v}^{f}\)</span> may be evaluated as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{L}^{f}=\mathbf{L}^{s}+\frac{1}{\varphi^{f}}\left(\mathbf{L}^{w}-\frac{1}{\varphi^{f}}\mathbf{w}\otimes\grad\varphi^{f}\right)\,,\label{eq:bfsi-Lf} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{L}^{w}=\grad\mathbf{w}\)</span> and <span class="arithmatex">\(\mathbf{L}^{s}=\grad\mathbf{v}^{s}\)</span>. Now, the fluid acceleration takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{a}^{f}=\frac{1}{\varphi^{f}}\left(\dot{\mathbf{w}}+\phi^{f}\ddot{\mathbf{u}}-\frac{\varphi^{s}}{\varphi^{f}}\frac{\dot{J}^{s}}{J^{s}}\mathbf{w}+\mathbf{L}^{f}\cdot\mathbf{w}\right)\,.\label{eq:bfsi-af} \end{equation} \]</div>
+<h2 id="subsec:BFSI-Continuous-Variables">BFSI Continuous Variables<a class="headerlink" href="#subsec:BFSI-Continuous-Variables" title="Permanent link">&para;</a></h2>
+<p>Jump conditions on the axioms of mass, momentum and energy balance are needed to determine which variables may be selected as nodal DOFs in the finite element implementation, and which tractions are naturally continuous across an interface. The full set of jump conditions for a hybrid biphasic material were derived in our recent study for the constitutive assumptions adopted in this formulation <sup id="fnref3:2.15-1"><a class="footnote-ref" href="#fn:2.15-1">1</a></sup>. Here, we summarize the salient results, which apply to an interface defined on the porous solid matrix of the hybrid biphasic domain, which includes the shared faces of adjoining biphasic elements. Thus, the velocity of the interface is given by the velocity <span class="arithmatex">\(\mathbf{v}^{s}\)</span> of the solid constituent of the hybrid biphasic material. We employ the notation <span class="arithmatex">\(\left[\left[f\right]\right]=f_{+}-f_{-}\)</span> to denote the jump in the function <span class="arithmatex">\(f\)</span> across the interface <span class="arithmatex">\(\Gamma\)</span>, with <span class="arithmatex">\(f_{+}\)</span> and <span class="arithmatex">\(f_{-}\)</span> denoting the values of <span class="arithmatex">\(f\)</span> on either side of <span class="arithmatex">\(\Gamma\)</span>. The unit normal on <span class="arithmatex">\(\Gamma\)</span> is <strong><span class="arithmatex">\(\mathbf{n}\)</span></strong>, which points away from the <span class="arithmatex">\(+\)</span> side. A variable <span class="arithmatex">\(f\)</span> which is continuous across <span class="arithmatex">\(\Gamma\)</span> satisfies <span class="arithmatex">\(\left[\left[f\right]\right]=0\)</span>.</p>
+<p>Based on the jump condition on the axiom of mass balance, the normal component of the mass flux of the fluid relative to the solid is continuous across <span class="arithmatex">\(\Gamma\)</span>, <span class="arithmatex">\(\left[\left[\rho_{T}^{f}\mathbf{w}\right]\right]\cdot\mathbf{n}=0\)</span>. Furthermore, a sufficient condition to satisfy the jump on the axiom of energy balance is to enforce continuity of the fluid specific free enthalpy (also known as the Gibbs function), <span class="arithmatex">\(\left[\left[\psi^{f}+p/\rho_{T}^{f}\right]\right]=0\)</span>, where <span class="arithmatex">\(\psi^{f}\)</span> is the fluid specific free energy. This jump condition applies only when there is fluid on both sides of the interface <span class="arithmatex">\(\Gamma\)</span>. In an isothermal framework the specific free enthalpy is a function of state that only depends on <span class="arithmatex">\(J^{f}\)</span>, therefore this energy jump condition implies that <span class="arithmatex">\(J^{f}\)</span> must be continuous across <span class="arithmatex">\(\Gamma\)</span>, thus</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[J^{f}\right]\right]=0\,,\label{eq:bfsi-Jf-jump} \end{equation} \]</div>
+<p>also implying that <span class="arithmatex">\(\left[\left[p\right]\right]=0\)</span>. Given eq.\eqref{eq:bfsi-Jf}, it follows that <span class="arithmatex">\(\left[\left[\rho_{T}^{f}\right]\right]=0\)</span> and the mass balance jump condition reduces to <span class="arithmatex">\(\left[\left[\mathbf{w}\right]\right]\cdot\mathbf{n}=0\)</span>, implying that the relative fluid flux component normal to <span class="arithmatex">\(\Gamma\)</span> must be continuous. For the tangential component of <span class="arithmatex">\(\mathbf{w}\)</span> on <span class="arithmatex">\(\Gamma\)</span> we appeal to the analysis of Hou et al. <sup id="fnref2:2.15-2"><a class="footnote-ref" href="#fn:2.15-2">2</a></sup>, who showed that a valid pseudo-noslip condition requires this tangential component to be continuous. Combining these two jump conditions produces</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\mathbf{w}\right]\right]=0\,.\label{eq:bfsi-fluid-flux-jump} \end{equation} \]</div>
+<p>The momentum jump condition requires that the mixture traction be continuous across <span class="arithmatex">\(\Gamma\)</span>, thus <span class="arithmatex">\(\left[\left[-p\mathbf{I}+\boldsymbol{\sigma}^{e}+\boldsymbol{\tau}^{f}\right]\right]\cdot\mathbf{n}=\mathbf{0}\)</span>. Since <span class="arithmatex">\(\left[\left[p\right]\right]=0\)</span> based on the energy jump, this mixture momentum jump condition reduces to</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\boldsymbol{\sigma}^{e}+\boldsymbol{\tau}^{f}\right]\right]\cdot\mathbf{n}=0\,.\label{eq:bfsi-mix-mtm-jump} \end{equation} \]</div>
+<p>Finally, another relation which is sufficient to satisfy the jump condition on the energy balance is the continuity of the true fluid traction (force acting on fluid per fluid area),</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[\frac{\boldsymbol{\tau}^{f}}{\varphi^{f}}\right]\right]\cdot\mathbf{n}=0\,.\label{eq:bfsi-fluid-mtm-jump} \end{equation} \]</div>
+<p>This jump condition eq.\eqref{eq:bfsi-fluid-mtm-jump}, which also applies only if fluid is present on both sides of <span class="arithmatex">\(\Gamma\)</span>, is interesting because it implies that the viscous stress (and thus, the viscosity) of a fluid flowing in a porous solid matrix scales with the porosity of that medium, such that <span class="arithmatex">\(\boldsymbol{\tau}^{f}=\phi^{f}\boldsymbol{\tau}\)</span> where <span class="arithmatex">\(\boldsymbol{\tau}\)</span> would be the true fluid viscous stress. Thus, we can use FEBio's various constitutive relations for the viscous stress <span class="arithmatex">\(\boldsymbol{\tau}\)</span> of Newtonian or non-Newtonian fluids and adapt those models to a biphasic mixture where <span class="arithmatex">\(\boldsymbol{\tau}^{f}\)</span> is evaluated as <span class="arithmatex">\(\varphi^{f}\boldsymbol{\tau}\)</span>. Accordingly, the contribution of <span class="arithmatex">\(\boldsymbol{\tau}^{f}\)</span> would properly reduce to zero in the limit as fluid content reduces to zero (<span class="arithmatex">\(\varphi^{f}\to0\)</span>), in which case the mixture momentum jump in eq.\eqref{eq:bfsi-mix-mtm-jump} would reduce to <span class="arithmatex">\(\left[\left[-p\mathbf{I}+\boldsymbol{\sigma}^{e}\right]\right]\cdot\mathbf{n}=\left[\left[\boldsymbol{\sigma}^{e}\right]\right]\cdot\mathbf{n}=0\)</span>, since <span class="arithmatex">\(\left[\left[p\right]\right]=0\)</span>.</p>
+<p>Letting <span class="arithmatex">\(\mathbf{w}\)</span> and <span class="arithmatex">\(J^{f}\)</span> be nodal DOFs automatically enforces the jump conditions eq.\eqref{eq:bfsi-Jf-jump} and eq.\eqref{eq:bfsi-fluid-flux-jump}, acting as essential boundary conditions, along with the solid displacement <span class="arithmatex">\(\mathbf{u}\)</span>. Finally, subtracting eq.\eqref{eq:bfsi-fluid-mtm-jump} from eq.\eqref{eq:bfsi-mix-mtm-jump}, we obtain the momentum jump condition for the solid constituent,</p>
+<div class="arithmatex">\[ \begin{equation} \left[\left[-\frac{\varphi^{s}}{\varphi^{f}}\boldsymbol{\tau}^{f}+\boldsymbol{\sigma}^{e}\right]\right]\cdot\mathbf{n}=0\,.\label{eq:bfsi-solid-mtm-jump} \end{equation} \]</div>
+<p>A BFSI domain may be reduced to a FSI domain by letting <span class="arithmatex">\(\varphi_{r}^{s}\to0\)</span> and <span class="arithmatex">\(\mathbf{k}^{-1}\to\mathbf{0}\)</span>; the solid matrix would still be ascribed a material response but its stiffness would need to be negligible. The number of nodal DOFs would remain the same. The CFD domain is a special case of the FSI domain where the mesh displacement is uniformly <span class="arithmatex">\(\mathbf{u}=\mathbf{0}\)</span>.</p>
+<p>However, when the biphasic domain interfaces with a non-porous solid domain across <span class="arithmatex">\(\Gamma^{bs}\)</span>, the jump conditions eq.\eqref{eq:bfsi-Jf-jump} on <span class="arithmatex">\(J^{f}\)</span> and eq.\eqref{eq:bfsi-solid-mtm-jump} on <span class="arithmatex">\(\boldsymbol{\tau}^{f}\)</span> don't apply. In that case, the jump condition eq.\eqref{eq:bfsi-fluid-flux-jump} on the relative fluid volumetric flux should reduce to <span class="arithmatex">\(\mathbf{w}=\mathbf{0}\)</span> for the BFSI domain on <span class="arithmatex">\(\Gamma^{bs}\)</span>, although the user would have to enforce this no-slip condition explicitly by prescribing it as an essential boundary condition. The mixture momentum jump <span class="arithmatex">\(\left[\left[-p\mathbf{I}+\boldsymbol{\sigma}^{e}+\boldsymbol{\tau}^{f}\right]\right]\cdot\mathbf{n}=\mathbf{0}\)</span> implies that the mixture traction on the BFSI side of an interface with a solid is equal to the solid traction on the solid side. This jump condition would also need to be enforced explicitly.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.15-1">
+<p>Shim, Jay J; Ateshian, Gerard A. "A Hybrid Biphasic Mixture Formulation for Modeling Dynamics in Porous Deformable Biological Tissues." <em>Arch Appl Mech</em>, vol. 92, pp. 491-511 (2022).&#160;<a class="footnote-backref" href="#fnref:2.15-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.15-1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:2.15-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-2">
+<p>Hou, J S; Holmes, M H; Lai, W M; Mow, V C. "Boundary conditions at the cartilage-synovial fluid interface for joint lubrication and theoretical verifications." <em>J Biomech Eng</em>, vol. 111, pp. 78-87 (1989).&#160;<a class="footnote-backref" href="#fnref:2.15-2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2.15-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-3">
+<p>Ateshian, Gerard A; Shim, Jay J; Maas, Steve A; Weiss, Jeffrey A. "Finite Element Framework for Computational Fluid Dynamics in FEBio." <em>J Biomech Eng</em>, vol. 140 (2018).&#160;<a class="footnote-backref" href="#fnref:2.15-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-4">
+<p>Ateshian, G. A.; Weiss, J. A.. "Anisotropic hydraulic permeability under finite deformation." <em>Journal of biomechanical engineering</em>, vol. 132, pp. 111004 (2010).&#160;<a class="footnote-backref" href="#fnref:2.15-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-5">
+<p>Ateshian, Gerard A; Maas, Steve; Weiss, Jeffrey A. "Solute transport across a contact interface in deformable porous media." <em>J Biomech</em>, vol. 45, pp. 1023-7 (2012).&#160;<a class="footnote-backref" href="#fnref:2.15-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-6">
+<p>Gerard A. Ateshian; Steve Maas; Jeffrey A. Weiss. "Multiphasic Finite Element Framework for Modeling Hydrated Mixtures With Multiple Neutral and Charged Solutes." <em>J. Biomech. Eng.</em>, vol. 135 (2013).&#160;<a class="footnote-backref" href="#fnref:2.15-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-7">
+<p>Shim, Jay J; Maas, Steve A; Weiss, Jeffrey A; Ateshian, Gerard A. "A Formulation for Fluid Structure-Interactions in FEBio Using Mixture Theory." <em>J Biomech Eng</em> (2019).&#160;<a class="footnote-backref" href="#fnref:2.15-7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.15-8">
+<p>Brinkman, Hendrik C. "A calculation of the viscous force exerted by a flowing fluid on a dense swarm of particles." <em>Flow, Turbulence and Combustion</em>, vol. 1, pp. 27--34 (1949).&#160;<a class="footnote-backref" href="#fnref:2.15-8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.14-fluid-structure-interactions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.14 Fluid-Structure Interactions">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.14 Fluid-Structure Interactions
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.16-fluid-solutes-analyses/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.16 Fluid-Solutes Analyses">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.16 Fluid-Solutes Analyses
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

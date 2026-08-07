@@ -1,0 +1,1046 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.3-cauchy-stress/">
+      
+      
+        <link rel="next" href="../2.5-kinematics-of-the-continuum/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.4 Axioms of Conservation - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Axioms-of-Conservation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.4 Axioms of Conservation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Axiom-Mass-Balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Axiom of Mass Balance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Axiom-Linear-Momentum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Axioms of Momentum Balance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Axiom-Energy-Balance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Axiom of Energy Balance
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Axiom-Entropy-Inequality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Axiom of Entropy Inequality
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Axioms-of-Conservation">2.4 Axioms of Conservation<a class="headerlink" href="#sec:Axioms-of-Conservation" title="Permanent link">&para;</a></h1>
+<p>The governing equations of continuum mechanics are given by the axioms of conservation of mass, linear and angular momentum, and energy. These axioms produce differential equations that need to be solved for the material response. However, on their own, these equations are insufficient to solve for all the unknowns in an analysis, therefore we must also provide equations of state that describe the behavior of specific classes of materials, such as elastic solids, viscoelastic solids, viscous fluids, etc. These equations of state are formulated as constitutive models, which may not be chosen arbitrarily: they must be constrained by the axiom of entropy inequality. In this section, we summarize all the axioms of conservation for a pure substance, as well as the axiom of entropy inequality.</p>
+<h2 id="subsec:Axiom-Mass-Balance">Axiom of Mass Balance<a class="headerlink" href="#subsec:Axiom-Mass-Balance" title="Permanent link">&para;</a></h2>
+<p>The axiom of mass balance simply states that mass is conserved, or equivalently, its time rate of change is zero. Normally, we formulate this axiom in a volumetric domain (such as a fixed control volume with permeable boundary, a material region with impermeable boundary, or a material region with permeable boundary), then convert it to its differential form. In a spatial (Eulerian) frame, the differential statement of the axiom of mass balance takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial\rho}{\partial t}+\divg\left(\rho\mathbf{v}\right)=0\,,\label{eq:axiom-mass-balance} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho\)</span> is the mass density of the matter and <span class="arithmatex">\(\mathbf{v}\)</span> is its velocity vector. Since <span class="arithmatex">\(\divg\left(\rho\mathbf{v}\right)=\grad\rho\cdot\mathbf{v}+\rho\divg\mathbf{v}\)</span>, we may also write this relation in the form</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D\rho}{Dt}+\rho\divg\mathbf{v}=0\,,\label{eq:mass-balance-redux} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D\rho}{Dt}=\frac{\partial\rho}{\partial t}+\grad\rho\cdot\mathbf{v}\label{eq:material-derivative-density} \end{equation} \]</div>
+<p>is the <em>material time derivative</em> of the mass density <em>in the spatial frame</em>.</p>
+<h2 id="subsec:Axiom-Linear-Momentum">Axioms of Momentum Balance<a class="headerlink" href="#subsec:Axiom-Linear-Momentum" title="Permanent link">&para;</a></h2>
+<p>The axioms of linear and angular momentum balance are also known as Newton's second law of motion. The axiom of linear momentum balance states that the time rate of change of linear momentum is equal to the sum of all surface and body forces. The differential statement of the axiom of mass balance in a spatial frame is given by</p>
+<div class="arithmatex">\[ \begin{equation} \rho\frac{D\mathbf{v}}{Dt}=\divg\boldsymbol{\sigma}+\rho\mathbf{b}\,,\label{eq:axiom-linear-momentum} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> is the Cauchy stress tensor in the material, and <span class="arithmatex">\(\mathbf{b}\)</span> is the specific body force vector (body force per mass), which is typically prescribed. Note that <span class="arithmatex">\(D\mathbf{v}/Dt\)</span> is the acceleration of the matter at every point in the continuum, as evaluated in the spatial frame.</p>
+<p>The axiom of angular momentum balance states that the time rate of change of angular momentum is equal to the sum of all surface and body moments. The angular momentum represents the moment of the linear momentum about a fixed point (such as the origin) in an inertial frame. In a <em>non-polar medium</em>, we assume that moments are only produced by surface and body forces. In that case, the axiom of angular momentum balance is satisfied by the linear momentum balance <em>and</em> by letting the Cauchy stress be symmetric,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}^{T}=\boldsymbol{\sigma}\,.\label{eq:axiom-angular-momentum} \end{equation} \]</div>
+<h2 id="subsec:Axiom-Energy-Balance">Axiom of Energy Balance<a class="headerlink" href="#subsec:Axiom-Energy-Balance" title="Permanent link">&para;</a></h2>
+<p>The axiom of energy balance is also known as the first law of thermodynamics. The time rate of change of internal and kinetic energy is balanced by the rate of work done by body and surface forces, the rate of heat flow into the medium, and rate of heat supply from external sources. Its differential statement takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \rho\frac{D\varepsilon}{Dt}=\boldsymbol{\sigma}:\mathbf{L}-\divg\mathbf{q}+\rho r\,,\label{eq:axiom-energy-balance} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\varepsilon\)</span> is the specific internal energy (internal energy per mass), <span class="arithmatex">\(\mathbf{L}=\grad\mathbf{v}\)</span> is the velocity gradient, <span class="arithmatex">\(\mathbf{q}\)</span> is the heat flux in the medium (units of power per area), and <span class="arithmatex">\(r\)</span> is the heat supply per unit mass from external sources that are not modeled explicitly (such as microwave heating in a framework that does not model microwave radiation explicitly, or Joule heating in electrical conductors, in a framework that does not model frictional interactions between electrons and atomic nuclei explicitly).</p>
+<p>For non-polar media, since the Cauchy stress is symmetric according to eq.\eqref{eq:axiom-angular-momentum}, it follows that <span class="arithmatex">\(\boldsymbol{\sigma}:\mathbf{L}=\boldsymbol{\sigma}:\mathbf{D}\)</span>, where <span class="arithmatex">\(\mathbf{D}=\frac{1}{2}\left(\mathbf{L}+\mathbf{L}^{T}\right)\)</span> is the symmetric part of the velocity gradient, also known as the <em>rate of deformation tensor</em>.</p>
+<h2 id="subsec:Axiom-Entropy-Inequality">Axiom of Entropy Inequality<a class="headerlink" href="#subsec:Axiom-Entropy-Inequality" title="Permanent link">&para;</a></h2>
+<p>The axioms of conservation presented above have introduced several functions of state that describe the behavior of specific materials, such as the Cauchy stress <span class="arithmatex">\(\boldsymbol{\sigma}\)</span>, the specific internal energy <span class="arithmatex">\(\varepsilon\)</span>, and the heat flux <span class="arithmatex">\(\mathbf{q}\)</span>. These axioms of conservation have a total of ten scalar unknowns (six compoments of <span class="arithmatex">\(\boldsymbol{\sigma}\)</span>, three components of <span class="arithmatex">\(\mathbf{q}\)</span>, and <span class="arithmatex">\(\varepsilon\)</span>), whereas the equations have five scalar components (three components of the vectorial linear momentum balance, and one component for each of the scalar mass and energy balance equations). Therefore, there are too few equations to solve for all the unknowns. Consequently, constitutive models must be provided for these functions of state, which depend on a user-specified set of state variables (such as strain for elastic solids, rate of deformation for viscous fluids, temperature for heat transfer, etc.).</p>
+<p>Constitutive relations must be formulated in a manner that does not violate the axiom of entropy inequality, also known as the second law of thermodynamics. The second law of thermodynamics stipulates that the time rate of change of entropy in a medium is greater than the rate of entropy supply into the medium by various sources of heat. In a spatial frame, the differential statement of the axiom of entropy inequality is given by</p>
+<div class="arithmatex">\[ \begin{equation} \rho\frac{D\eta}{Dt}+\divg\frac{\mathbf{q}}{\theta}-\rho\frac{r}{\theta}\geqslant0\,,\label{eq:axiom-entropy-inequality} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\eta\)</span> is the specific entropy (entropy per unit mass) of the matter. Entropy is a measure of disorder in a medium. It represents another function of state.</p>
+<p>Since Eq.\eqref{eq:axiom-entropy-inequality} does not include all of the functions of state, we may combine it with the energy balance to recover <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> and <span class="arithmatex">\(\varepsilon\)</span> in the entropy inequality. This may be achived by multiplying the entropy inequality in \eqref{eq:axiom-entropy-inequality} by the absolute temperature <span class="arithmatex">\(\theta\)</span> (recalling that <span class="arithmatex">\(\theta\)</span> is always positive) and adding it to the energy balance in \eqref{eq:axiom-energy-balance} to produce</p>
+<div class="arithmatex">\[ -\rho\left(\frac{D\varepsilon}{Dt}-\theta\frac{D\eta}{Dt}\right)+\boldsymbol{\sigma}:\mathbf{D}-\frac{1}{\theta}\mathbf{q}\cdot\grad\theta\geqslant0\,. \]</div>
+<p>The term in parentheses may be rearranged as</p>
+<div class="arithmatex">\[ \frac{D\varepsilon}{Dt}-\theta\frac{D\eta}{Dt}=\frac{D}{Dt}\left(\varepsilon-\theta\eta\right)+\eta\frac{D\theta}{Dt}\,. \]</div>
+<p>We now introduce the specific Helmholtz free energy, <span class="arithmatex">\(\psi\)</span>, which relates the specific internal energy and entropy according to</p>
+<div class="arithmatex">\[ \begin{equation} \psi=\varepsilon-\theta\eta\,.\label{eq:specific-free-energy} \end{equation} \]</div>
+<p>We may say that the free energy is the part of the internal energy which is available to produce useful work. Substituting this expression above produces the form of the Clausius-Duhem inequality that involves all the independent functions of state appearing in these axioms, (<span class="arithmatex">\(\psi\)</span>, <span class="arithmatex">\(\eta\)</span>, <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> and <span class="arithmatex">\(\mathbf{q}\)</span>),</p>
+<div class="arithmatex">\[ \begin{equation} -\rho\left(\dot{\psi}+\eta\dot{\theta}\right)+\boldsymbol{\sigma}:\mathbf{D}-\frac{1}{\theta}\mathbf{q}\cdot\grad\theta\geqslant0\,,\label{eq:Clausius-Duhem-inequality} \end{equation} \]</div>
+<p>where we have substituted <span class="arithmatex">\(D\left(\cdot\right)/Dt\)</span> with the <span class="arithmatex">\(\left(\dot{}\right)\)</span> operator, for notational simplicity.</p>
+<p>It is important to understant that all functions of state are non-observable properties of matter: No instruments exist to measure the complete state of stress inside a material, nor the heat flux, the internal energy, or the entropy. However, we can formulate constitutive models that relate these functions of state to observable state variables, then calculate their value for a specific state. Observable state variables are all based on measurements of space (length, area and volume) and time. For example, we can measure (observe) displacement, velocity and acceleration of matter at various spatial locations, from which we can calculate their spatial gradients and treat these as observable state variables. From measurements of length in calibrated materials, we can derive measurements of force (using a load cell) and temperature (using a thermometer).</p>
+<p>To better understand the choice of state variables relevant to mechanics, we proceed to describe the kinematics of a continuum in the next section.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.3-cauchy-stress/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.3 Cauchy Stress">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.3 Cauchy Stress
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.5-kinematics-of-the-continuum/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.5 Kinematics of the Continuum">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.5 Kinematics of the Continuum
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

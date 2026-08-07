@@ -1,0 +1,1016 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.8-biphasic-solute-material/">
+      
+      
+        <link rel="next" href="../2.10-constrained-reactive-mixture-of-solids/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.9 Triphasic and Multiphasic Materials - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Triphasic-Multiphasic-Materials" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.9 Triphasic and Multiphasic Materials
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-governing-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Governing Equations
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Triphasic-Multiphasic-Materials">2.9 Triphasic and Multiphasic Materials<a class="headerlink" href="#sec:Triphasic-Multiphasic-Materials" title="Permanent link">&para;</a></h1>
+<p>Multiphasic materials represent an extension of the biphasic-solute material, where the mixture may contain a multitude of solutes. These solutes may be either electrically charged (ionized) or neutral. Similarly, the solid matrix may either carry electrical charge (a fixed charge density) or be neutral. A triphasic material is a special case of a multiphasic material, having two solutes that carry opposite charges. Triphasic and multiphasic materials may be used to model porous deformable biological tissues whose solid matrix may be charged and whose interstitial fluid may contain any number of charged or neutral solutes. When mixture constituents are electrically charged, the response of the tissue to various loading conditions may encompass a range of mechano-electrochemical phenomena, including permeation, diffusion, osmosis, streaming potentials and streaming currents. To better understand multiphasic materials, the reader is encouraged to review the descriptions of biphasic (Section <a href="../2.7-biphasic-material/#sec:Biphasic-Material">Biphasic Material</a>) and biphasic-solute materials (Section <a href="../2.8-biphasic-solute-material/#sec:Biphasic-Solute-Material">Biphasic-Solute Material</a>).</p>
+<h2 id="subsec:MP-governing-equations">Governing Equations<a class="headerlink" href="#subsec:MP-governing-equations" title="Permanent link">&para;</a></h2>
+<p>In multiphasic materials the solvent is assumed to be neutral, whereas the solid and solutes may carry charge. The mixture is isothermal and all constituents are considered to be intrinsically incompressible. Since the viscosity of the fluid constituents (solvent and solutes) is considered negligible relative to the frictional interactions among constituents, the stress tensor <span class="arithmatex">\(\sigma\)</span> for the mixture includes only a contribution from the fluid pressure <span class="arithmatex">\(p\)</span> and the stress <span class="arithmatex">\(\boldsymbol{\sigma}^{e}\)</span> in the solid,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=-p\mathbf{I}+\boldsymbol{\sigma}^{e}\,.\label{eq121} \end{equation} \]</div>
+<p>The mechano-chemical potential of the solvent is given by</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\mu}^{w}=\mu_{0}^{w}\left(\theta\right)+\frac{1}{\rho_{T}^{w}}\left(p-p_{0}-R\theta\Phi\sum\limits_{\alpha}c^{\alpha}\right)\,,\label{eq122} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mu_{0}^{w}\left(\theta\right)\)</span> is the solvent chemical potential in the solvent standard state, <span class="arithmatex">\(\theta\)</span> is the absolute temperature, <span class="arithmatex">\(\rho_{T}^{w}\)</span> is the true density of the solvent (which is invariant since the solvent is assumed intrinsically incompressible), <span class="arithmatex">\(p\)</span> is the fluid pressure, <span class="arithmatex">\(p_{0}\)</span> is the corresponding pressure in the standard state, <span class="arithmatex">\(R\)</span> is the universal gas constant, <span class="arithmatex">\(\Phi\)</span> is the non-dimensional osmotic coefficient, and <span class="arithmatex">\(c^{\alpha}\)</span> is the solution volume-based concentration of solute <span class="arithmatex">\(\alpha\)</span>. The summation is taken over all solutes in the mixture. The mechano-electrochemical potential of each solute is similarly given by</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\mu}^{\alpha}=\mu_{0}^{\alpha}\left(\theta\right)+\frac{R\theta}{M^{\alpha}}\left(\frac{z^{\alpha}F_{c}}{R\theta}\left(\psi-\psi_{0}\right)+\ln\frac{\gamma^{\alpha}c^{\alpha}}{\kappa^{\alpha}c_{0}^{\alpha}}\right),\label{eq123} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(M^{\alpha}\)</span> is the molar mass of the solute, <span class="arithmatex">\(\gamma^{\alpha}\)</span> is its activity coefficient, <span class="arithmatex">\(\kappa^{\alpha}\)</span> is its solubility, <span class="arithmatex">\(z^{\alpha}\)</span> is its charge number, and <span class="arithmatex">\(c_{0}^{\alpha}\)</span> is its concentration in the solute standard state; <span class="arithmatex">\(F_{c}\)</span> is Faraday's constant, <span class="arithmatex">\(\psi\)</span> is the electrical potential of the mixture, and <span class="arithmatex">\(\psi_{0}\)</span> is the corresponding potential in the standard state.</p>
+<p>In these relations, <span class="arithmatex">\(\Phi\)</span> and <span class="arithmatex">\(\gamma^{\alpha}\)</span> are functions of state that describe the deviation of the mixture from ideal physico-chemical behavior; <span class="arithmatex">\(\kappa^{\alpha}\)</span> represents the fraction of the pore volume which may be occupied by solute <span class="arithmatex">\(\alpha\)</span>. The standard state represents an arbitrary set of reference conditions for the physico-chemical state of each constituent. Therefore, the values of <span class="arithmatex">\(\mu_{0}^{w}\left(\theta\right)\)</span>, <span class="arithmatex">\(p_{0}\)</span>, <span class="arithmatex">\(\psi_{0}\)</span>, <span class="arithmatex">\(\mu_{0}^{\alpha}\left(\theta\right)\)</span>, and <span class="arithmatex">\(c_{0}^{\alpha}\)</span>, remain invariant over the entire domain of definition of an analysis. Since <span class="arithmatex">\(\kappa^{\alpha}\)</span> and <span class="arithmatex">\(\gamma^{\alpha}\)</span> appear together as a ratio, they may be combined into a single material function, <span class="arithmatex">\(\hat{\kappa}^{\alpha}=\kappa^{\alpha}/\gamma^{\alpha}\)</span>, called the effective solubility.</p>
+<p>In multiphasic mixtures, it is also assumed that electroneutrality is satisfied at every point in the continuum. Therefore, the net electrical charge summed over all constituents must reduce to zero, and no net charge accumulation may occur at any time. Denoting the fixed charge density of the solid by <span class="arithmatex">\(c^{F}\)</span> (moles of equivalent charge per solution volume), and recognizing that the solvent is always considered neutral, the electroneutrality condition may be written as</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}+\sum\limits_{\alpha}z^{\alpha}c^{\alpha}=0\,.\label{eq124} \end{equation} \]</div>
+<p>This condition represents a constraint on a mixture of charged constituents. If none of the constituents are charged (<span class="arithmatex">\(c^{F}=0\)</span> and <span class="arithmatex">\(z^{\alpha}=0\)</span> for all <span class="arithmatex">\(\alpha)\)</span>, the constraint disappears.</p>
+<p>Each constituent of the mixture must satisfy the axiom of mass balance. In the absence of chemical reactions involving constituent <span class="arithmatex">\(\alpha\)</span>, its mass balance equation is</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial\rho^{\alpha}}{\partial t}+\divg\left(\rho^{\alpha}\mathbf{v}^{\alpha}\right)=0\,,\label{eq125} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho^{\alpha}\)</span> is the apparent density and <span class="arithmatex">\(\mathbf{v}^{\alpha}\)</span> is the velocity of that constituent. For solutes, the apparent density is related to the concentration according to <span class="arithmatex">\(\rho^{\alpha}=\left(1-\varphi^{s}\right)M^{\alpha}c^{\alpha}\)</span>, where <span class="arithmatex">\(\varphi^{s}\)</span> is the volume fraction of the solid. When the solute volume fractions are negligible, it follows that <span class="arithmatex">\(1-\varphi^{s}\approx\varphi^{w}\)</span>, where <span class="arithmatex">\(\varphi^{w}\)</span> is the solvent volume fraction. The molar flux of the solute relative to the solid is given by <span class="arithmatex">\(\mathbf{j}^{\alpha}=\varphi^{w}c^{\alpha}\left(\mathbf{v}^{\alpha}-\mathbf{v}^{s}\right)\)</span>, where <span class="arithmatex">\(\mathbf{v}^{\alpha}\)</span> is the solute velocity. Using these relations, the mass balance relation for the solute may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \frac{1}{J}\frac{D^{s}}{Dt}\left(J\varphi^{w}c^{\alpha}\right)+\divg\mathbf{j}^{\alpha}=0\,,\label{eq126} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(D^{s}\left(\cdot\right)/Dt\)</span> represents the material time derivative in the spatial frame, following the solid; <span class="arithmatex">\(J=\det\mathbf{F}\)</span>, where <span class="arithmatex">\(\mathbf{F}\)</span> is the deformation gradient of the solid. This form of the mass balance for the solute is convenient for a finite element formulation where the mesh is defined on the solid matrix.</p>
+<p>The volume flux of solvent relative to the solid is given by <span class="arithmatex">\(\mathbf{w}=\varphi^{w}\left(\mathbf{v}^{w}-\mathbf{v}^{s}\right)\)</span>, where <span class="arithmatex">\(\mathbf{v}^{w}\)</span> is the solvent velocity. When solute volume fractions are negligible, the mass balance equation for the mixture reduces to</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\mathbf{v}^{s}+\mathbf{w}\right)=0\,.\label{eq126b} \end{equation} \]</div>
+<p>Finally, the mass balance for the solid may be reduced to the form <span class="arithmatex">\(D^{s}\left(J\varphi^{s}\right)/Dt=0\)</span>, which may be integrated to produce the algebraic relation <span class="arithmatex">\(\varphi^{s}=\varphi_{r}^{s}/J\)</span>, where <span class="arithmatex">\(\varphi_{r}^{s}\)</span> is the solid volume fraction in the stress-free reference state of the solid.</p>
+<p>Differentiating the electroneutrality condition in \eqref{eq124} using the material time derivative following the solid, and substituting the mass balance relations into the resulting expressions, produces a constraint on the solute fluxes:</p>
+<div class="arithmatex">\[ \begin{equation} \divg\sum\limits_{\alpha\ne s,w}z^{\alpha}\mathbf{j}^{\alpha}=0\,.\label{eq127} \end{equation} \]</div>
+<p>Recognizing that <span class="arithmatex">\(\mathbf{I}_{e}=F_{c}\sum\nolimits_{\alpha\ne s,w}z^{\alpha}\mathbf{j}^{\alpha}\)</span> is the current density in the mixture, with <span class="arithmatex">\(F_{c}\)</span> representing Faraday's constant, the relation of \eqref{eq127} reduces to one of the Maxwell's equation, <span class="arithmatex">\(\divg\mathbf{I}_{e}=0\)</span>, in the special case when there can be no charge accumulation (electroneutrality).</p>
+<p>As described in Section <a href="#subsec:BS-continuous-variables">Continuous Variables</a>, the fluid pressure <span class="arithmatex">\(p\)</span> and solute concentrations <span class="arithmatex">\(c^{\alpha}\)</span> are not continuous across boundaries of a mixture, whereas <span class="arithmatex">\(\tilde{\mu}^{w}\)</span> and <span class="arithmatex">\(\tilde{\mu}^{\alpha}\)</span>'s for the solutes do satisfy continuity. Therefore, in a finite element implementation, the following continuous variables are used as nodal degrees of freedom:</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{p}=p-R\theta\Phi\sum\limits_{\alpha\ne s,w}c^{\alpha}\,,\label{eq128} \end{equation} \]</div>
+<p>which represents the effective fluid pressure, and</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{c}^{\alpha}=c^{\alpha}/\tilde{\kappa}^{\alpha}\,,\label{eq129} \end{equation} \]</div>
+<p>which represents the effective solute concentration. In the last expression, <span class="arithmatex">\(\tilde{\kappa}^{\alpha}\)</span> is the partition coefficient of the solute, which is related to the effective solubility and electric potential according to</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\kappa}^{\alpha}=\hat{\kappa}^{\alpha}\exp\left(-\frac{z^{\alpha}F_{c}\psi}{R\theta}\right)\,.\label{eq130} \end{equation} \]</div>
+<p>Physically, since <span class="arithmatex">\(R\theta\,\Phi\sum\nolimits_{\alpha\ne s,w}c^{\alpha}\)</span> is the osmotic (chemical) contribution to the fluid pressure, <span class="arithmatex">\(\tilde{p}\)</span> may be interpreted as that part of the total (mechano-chemical) fluid pressure which does not result from osmotic effects; thus, it is the mechanical contribution to <span class="arithmatex">\(p\)</span>. Similarly, the effective solute concentration <span class="arithmatex">\(\tilde{c}^{\alpha}\)</span> represents the true contribution of the molar solute content to its electrochemical potential.</p>
+<p>When using these variables instead of mechano-electrochemical potentials, the momentum equations for the solvent and solutes may be inverted to produce the following flux relations:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{w}=-\tilde{\mathbf{k}}\cdot\left(\mbox{grad}\tilde{p}+R\theta\sum\limits_{\beta\ne s,w}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}^{\beta}\cdot\mbox{grad}\tilde{c}^{\beta}\right)\,,\label{eq131} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{j}^{\alpha}=\tilde{\kappa}^{\alpha}\mathbf{d}^{\alpha}\cdot\left(-\varphi^{w}\mbox{grad}\tilde{c}^{\alpha}+\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}\right)\,,\label{eq132} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\mathbf{k}}=\left[\mathbf{k}^{-1}+\frac{R\theta}{\varphi^{w}}\sum\limits_{\alpha\ne s,w}\frac{c^{\alpha}}{d_{0}^{\alpha}}\left(\mathbf{I}-\frac{\mathbf{d}^{\alpha}}{d_{0}^{\alpha}}\right)\right]^{-1}\label{eq133} \end{equation} \]</div>
+<p>is the effective hydraulic permeability of the solution (solvent <span class="arithmatex">\(+\)</span> solutes) in the mixture. The momentum equation for the mixture is</p>
+<div class="arithmatex">\[ \begin{equation} \divg\boldsymbol{\sigma}=\mathbf{0}\,.\label{eq134} \end{equation} \]</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.8-biphasic-solute-material/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.8 Biphasic-Solute Material">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.8 Biphasic-Solute Material
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.10 Constrained Reactive Mixture of Solids">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.10 Constrained Reactive Mixture of Solids
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

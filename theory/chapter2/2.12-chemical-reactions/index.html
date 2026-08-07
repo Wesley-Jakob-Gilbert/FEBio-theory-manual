@@ -1,0 +1,1106 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.11-equilibrium-swelling/">
+      
+      
+        <link rel="next" href="../2.13-fluid-mechanics/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.12 Chemical Reactions - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Chemical-Reactions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.12 Chemical Reactions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Solid-Matrix-SBM" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solid Matrix and Solid-Bound Molecular Constituents
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Solutes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solutes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Negligible-Solute-Fraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mixture with Negligible Solute Volume Fraction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Chemical-Kinetics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chemical Kinetics
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Chemical-Reactions">2.12 Chemical Reactions<a class="headerlink" href="#sec:Chemical-Reactions" title="Permanent link">&para;</a></h1>
+<p>Chemical reactions may be incorportated into a multiphasic mixture by adding a mass supply term to the equation of mass balance,</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial\rho^{\alpha}}{\partial t}+\divg\left(\rho^{\alpha}\mathbf{v}^{\alpha}\right)=\hat{\rho}^{\alpha}\,,\label{eq150} \end{equation} \]</div>
+<p>Where <span class="arithmatex">\(\hat{\rho}^{\alpha}\)</span> is the volume density of mass supply to <span class="arithmatex">\(\alpha\)</span> resulting from chemical reactions with all other mixture constitutents. Since mass must be conserved over all constituents, mass supply terms are constrained by</p>
+<div class="arithmatex">\[ \begin{equation} \sum\limits_{\alpha}\hat{\rho}^{\alpha}=0\,.\label{eq151} \end{equation} \]</div>
+<p>In a mixture containing a solid constituent (denoted by <span class="arithmatex">\(\alpha=s\)</span> ), it is conveniemt to define the mixture domain (and thus the finite element mesh) on the solid and evaluate mass fluxes of constituents relative to the solid,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{m}^{\alpha}=\rho^{\alpha}\left(\mathbf{v}^{\alpha}-\mathbf{v}^{s}\right)\,.\label{eq152} \end{equation} \]</div>
+<p>Substituting eq.\eqref{eq152} into eq.\eqref{eq150}, the differential form of the mass balance may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D^{s}\rho_{r}^{\alpha}}{Dt}+J\divg\mathbf{m}^{\alpha}=\hat{\rho}_{r}^{\alpha}\,,\label{eq153} \end{equation} \]</div>
+<p>Where <span class="arithmatex">\(D^{s}\left(\cdot\right)/Dt\)</span> represents the material time derivative in the spatial frame, following the solid, <span class="arithmatex">\(J=\det\mathbf{F}\)</span>, where <span class="arithmatex">\(\mathbf{F}\)</span> is the deformation gradient of the solid matrix; <span class="arithmatex">\(\rho_{r}^{\alpha}\)</span> is the apparent density and <span class="arithmatex">\(\hat{\rho}_{r}^{\alpha}\)</span> is the volume density of mass supply to <span class="arithmatex">\(\alpha\)</span> normalized to the mixture volume in the reference configuration,</p>
+<div class="arithmatex">\[ \begin{equation} \rho_{r}^{\alpha}=J\rho^{\alpha},\quad\hat{\rho}_{r}^{\alpha}=J\hat{\rho}^{\alpha}.\label{eq154} \end{equation} \]</div>
+<p>Since <span class="arithmatex">\(\rho_{r}^{\alpha}\)</span> is the mass of <span class="arithmatex">\(\alpha\)</span> in the current configuration per volume of the mixture in the reference configuration (an invariant quantity), this parameter represents a direct measure of the mass content of <span class="arithmatex">\(\alpha\)</span> in the mixture, which may thus be used as a state variable in a framework that accounts for chemical reactions. A distinction is now made between solid and solute species in the mixture, since they are often treated differential in an analysis.</p>
+<h2 id="subsec:Solid-Matrix-SBM">Solid Matrix and Solid-Bound Molecular Constituents<a class="headerlink" href="#subsec:Solid-Matrix-SBM" title="Permanent link">&para;</a></h2>
+<p>For constituents constrained to move with the solid (denoted generically by <span class="arithmatex">\(\alpha=\sigma\)</span> and satisfying <span class="arithmatex">\(\mathbf{v}^{s}=\mathbf{v}^{\sigma}\)</span>, <span class="arithmatex">\(\forall\sigma)\)</span>, the statement of mass balance in eq.\eqref{eq153} reduces to the special form</p>
+<div class="arithmatex">\[ \begin{equation} D^{s}\rho_{r}^{\sigma}/Dt=\hat{\rho}_{r}^{\sigma}\,.\label{eq155} \end{equation} \]</div>
+<p>This representation makes it easy to see that alterations in <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> can occur only as a result of chemical reactions (such as synthesis, degradation, or binding). In contrast, as seen in eq.\eqref{eq153}, alterations in <span class="arithmatex">\(\rho_{r}^{\alpha}\)</span> for solutes or solvent (<span class="arithmatex">\(\alpha\ne\sigma)\)</span> may also occur as a result of mass transport into or out of the pore space of the solid matrix. Therefore, <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> is the natural choice of state variable for describing the content of solid constituents in a reactive mixture.</p>
+<p>When multiple solid species are present, the net solid mass content may be given by <span class="arithmatex">\(\rho_{r}^{s}=\sum\limits_{\sigma}\rho_{r}^{\sigma}\)</span> whereas the net mass supply of solid is <span class="arithmatex">\(\hat{\rho}_{r}^{s}=\sum\limits_{\sigma}\hat{\rho}_{r}^{\sigma}\)</span> such that <span class="arithmatex">\(D^{s}\rho_{r}^{s}/Dt=\hat{\rho}_{r}^{s}\)</span>. The referential solid volume fraction, <span class="arithmatex">\(\varphi_{r}^{s}\)</span>, may be evaluated from</p>
+<div class="arithmatex">\[ \begin{equation} \varphi_{r}^{s}=\varphi_{0}^{s}+\sum\limits_{\sigma}\rho_{r}^{\sigma}/\rho_{T}^{\sigma},\label{eq:referential-solid-volume-fraction} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho_{T}^{\sigma}\)</span> is the true density of solid constituent <span class="arithmatex">\(\sigma\)</span> (mass of <span class="arithmatex">\(\sigma\)</span> per volume of <span class="arithmatex">\(\sigma\)</span>) and <span class="arithmatex">\(\varphi_{0}^{s}\)</span> is the referential solid volume fraction of solid constituents not explicitly modeled by solid-bound molecules (a user-defined parameter). According to eq.\eqref{eq154}, it follows that the solid volume fraction in the current configuration is given by <span class="arithmatex">\(\varphi^{s}=\varphi_{r}^{s}/J\)</span>. Note that <span class="arithmatex">\(0\leqslant\varphi^{s}\leqslant1\)</span> under all circumstances, while <span class="arithmatex">\(0\leqslant\varphi_{r}^{s}\leqslant J\)</span>, implying that <span class="arithmatex">\(\varphi_{r}^{s}\)</span> may exceed unity when solid growth occurs. In this study, it is assumed that all mixture constituents are intrinsically incompressible, implying that their true density is invariant.</p>
+<p>At the start of an analysis, the formula of eq.\eqref{eq:referential-solid-volume-fraction} takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \varphi_{r}^{s}\left(0\right)=\varphi_{0}^{s}+\sum\limits_{\sigma}\rho_{r}^{\sigma}\left(0\right)/\rho_{T}^{\sigma}\label{eq:initial-referential-solid-fraction} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\rho_{r}^{\sigma}\left(0\right)\)</span> represents the initial apparent mass densities of solid constituents. This initial value of <span class="arithmatex">\(\varphi_{r}^{s}\)</span> must satisfy <span class="arithmatex">\(0\le\varphi_{r}^{s}\left(0\right)\le1\)</span>, since <span class="arithmatex">\(J=1\)</span> at the start of an analysis.</p>
+<p>The various constituents of the porous solid matrix of a multiphasic mixture may be electrically charged. The charge density in the current configuration, normalized by the mixture volume in the current configuration, is given by</p>
+<div class="arithmatex">\[ \begin{equation} \check{c}^{F}=\frac{z^{F}dn^{F}+\sum_{\sigma}z^{\sigma}dn^{\sigma}}{dV}\,,\label{eq:FCD-mixture-volume} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(z^{F}\)</span> is the charge number (equivalent charge per mole) and <span class="arithmatex">\(dn^{F}\)</span> is the elemental number of moles associated with fixed charges present in the initial volume fraction <span class="arithmatex">\(\varphi_{0}^{s}\)</span> of the solid matrix. Similarly, <span class="arithmatex">\(z^{\sigma}\)</span> is the charge number of evolving solid constituent <span class="arithmatex">\(\sigma\)</span>. By convention however, the fixed charge density <span class="arithmatex">\(c^{F}\)</span> of a multiphasic material is normalized by the fluid volume of the mixture, thus it can be shown that</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}=\frac{\check{c}^{F}}{1-\varphi^{s}}=\frac{1}{J-\varphi_{r}^{s}}\left(\frac{z^{F}dn^{F}}{dV_{r}}+\sum_{\sigma}\frac{z^{\sigma}\rho_{r}^{\sigma}}{M^{\sigma}}\right)\,.\label{eq:FCD-fluid-volume} \end{equation} \]</div>
+<p>In particular, in the reference configuration this formula produces</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}\left(0\right)=\frac{1}{1-\varphi_{r}^{s}\left(0\right)}\left(\frac{z^{F}dn^{F}\left(0\right)}{dV_{r}}+\sum_{\sigma}\frac{z^{\sigma}\rho_{r}^{\sigma}\left(0\right)}{M^{\sigma}}\right)\,.\label{eq:FCD-initial-time} \end{equation} \]</div>
+<p>We define the first term on the right-hand-side of this equation as the initial value of the user-specified fixed charge density <span class="arithmatex">\(c_{0}^{F}\)</span> (which is not associated with solid species <span class="arithmatex">\(\sigma\)</span>),</p>
+<div class="arithmatex">\[ \begin{equation} c_{0}^{F}\equiv\frac{1}{1-\varphi_{r}^{s}\left(0\right)}\frac{z^{F}dn^{F}\left(0\right)}{dV_{r}}\,.\label{eq:user-specified-cF0} \end{equation} \]</div>
+<p>Therefore, in the current configuration, we may rewrite</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}=\frac{1-\varphi_{r}^{s}\left(0\right)}{J-\varphi_{r}^{s}}c_{0}^{F}+\frac{1}{J-\varphi_{r}^{s}}\sum_{\sigma}\frac{z^{\sigma}\rho_{r}^{\sigma}}{M^{\sigma}}\,.\label{eq158} \end{equation} \]</div>
+<p>where the user-specified <span class="arithmatex">\(c_{0}^{F}\)</span> may optionally be associated with a load curve representing the scale factor <span class="arithmatex">\(dn^{F}/dn^{F}\left(0\right)\)</span>, in case the user would like to allow <span class="arithmatex">\(c_{0}^{F}\)</span> to evolve. By analogy, we may now define the referential fixed-charge density <span class="arithmatex">\(c_{r}^{F}\)</span> of the mixture as</p>
+<div class="arithmatex">\[ \begin{equation} c_{r}^{F}\equiv\frac{J-\varphi_{r}^{s}}{1-\varphi_{r}^{s}\left(0\right)}c^{F}=c_{0}^{F}+\frac{1}{1-\varphi_{r}^{s}\left(0\right)}\sum_{\sigma}\frac{z^{\sigma}\rho_{r}^{\sigma}}{M^{\sigma}}\label{eq157} \end{equation} \]</div>
+<p>Here, <span class="arithmatex">\(c_{r}^{F}\)</span> may evolve with time, but it represents the number of fixed equivalent charges in the current configuration, per fluid volume in the reference configuration. Hence we may also write</p>
+<div class="arithmatex">\[ c^{F}=\frac{1-\varphi_{r}^{s}\left(0\right)}{J-\varphi_{r}^{s}}c_{r}^{F}\,. \]</div>
+<p>The molar concentration of a solid-bound molecular constituent, which may be needed in a reactive process involving solutes, is given by</p>
+<div class="arithmatex">\[ \begin{equation} c^{\sigma}=\frac{1}{J-\varphi_{r}^{s}}\frac{\rho_{r}^{\sigma}}{M^{\sigma}}\,.\label{eq:sbm-molar-concentration} \end{equation} \]</div>
+<p>An alternative to using solid-bound molecules is to define solutes <span class="arithmatex">\(\sigma\)</span> whose diffusivity <span class="arithmatex">\(\mathbf{d}^{\sigma}\)</span> in the mixture is set to <span class="arithmatex">\(\mathbf{0}\)</span> (however, the free diffusivity <span class="arithmatex">\(d_{0}^{\sigma}\)</span> should not be set to zero, to prevent a division by zero; its exact value is not important, thus let <span class="arithmatex">\(d_{0}^{\sigma}=1\)</span>). Then, FEBio treats these solutes as equivalent to solid-bound molecules: (1) Their concentration does not contribute to the osmolarity of the interstitial fluid; (2) their concentration contributes to the fixed charge density <span class="arithmatex">\(c^{F}\)</span> in the current configuration; (3) these solutes do not contribute to the effective hydraulic permeability <span class="arithmatex">\(\tilde{\mathbf{k}}\)</span> of the porous multiphasic mixture; (4) these solutes can be involved in chemical reactions; (5) while their initial effective concentration may be prescribed, it must not contribute to the prescribed initial effective fluid pressure, and the user should not prescribe any boundary conditions on the effective concentration of these solutes. Using these 'solid-bound' solutes increases the number of degrees of freedom in an FEBio analysis; however, unlike solid-bound molecules, the solution for the effective concentration of these solutes remains as accurate as all other degrees of freedom in an analysis.</p>
+<p>To evaluate the contribution of these solutes to the referential solid volume fraction <span class="arithmatex">\(\varphi_{r}^{s}\)</span> and to chemical reactions, we use eq.\eqref{eq:sbm-molar-concentration} above and substitute it into eq.\eqref{eq:referential-solid-volume-fraction} to produce</p>
+<div class="arithmatex">\[ \varphi_{r}^{s}=\varphi_{0}^{s}+\left(J-\varphi_{r}^{s}\right)\sum\limits_{\sigma}\frac{M^{\sigma}c^{\sigma}}{\rho_{T}^{\sigma}} \]</div>
+<p>which can be solved for <span class="arithmatex">\(\varphi_{r}^{s}\)</span> using the concentrations <span class="arithmatex">\(c^{\sigma}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \varphi_{r}^{s}=\frac{\varphi_{0}^{s}+J\sum\limits_{\sigma}\frac{M^{\sigma}c^{\sigma}}{\rho_{T}^{\sigma}}}{1+\sum\limits_{\sigma}\frac{M^{\sigma}c^{\sigma}}{\rho_{T}^{\sigma}}}\,.\label{eq:phirs-solutes-as-SBMs} \end{equation} \]</div>
+<h2 id="subsec:Solutes">Solutes<a class="headerlink" href="#subsec:Solutes" title="Permanent link">&para;</a></h2>
+<p>Solutes are denoted generically by <span class="arithmatex">\(\alpha=\iota\)</span>. In chemistry solute content is often represented in units of molar concentration (moles per fluid volume). It follows that solute molar concentration <span class="arithmatex">\(c^{\iota}\)</span> and molar supply <span class="arithmatex">\(\hat{c}^{\iota}\)</span> are related to <span class="arithmatex">\(\rho^{\iota}\)</span> and <span class="arithmatex">\(\hat{\rho}^{\iota}\)</span> via</p>
+<div class="arithmatex">\[ \begin{equation} c^{\iota}=\frac{\rho^{\iota}}{\left(1-\varphi^{s}\right)M^{\iota}},\quad\hat{c}^{\iota}=\frac{\hat{\rho}^{\iota}}{\left(1-\varphi^{s}\right)M^{\iota}}\,.\label{eq159} \end{equation} \]</div>
+<p>The molar flux of constituent <span class="arithmatex">\(\iota\)</span> relative to the solid is given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{j}^{\iota}=\left(1-\varphi^{s}\right)c^{\iota}\left(\mathbf{v}^{\iota}-\mathbf{v}^{s}\right)\,,\label{eq160} \end{equation} \]</div>
+<p>where it may be noted that <span class="arithmatex">\(\mathbf{m}^{\iota}=M^{\iota}\mathbf{j}^{\iota}\)</span>. Combining these relations with Eqs.\eqref{eq153}-\eqref{eq154} produces the desired form of the mass balance for the solutes,</p>
+<div class="arithmatex">\[ \begin{equation} \frac{1}{J}\frac{D^{s}\left[J\left(1-\varphi^{s}\right)c^{\iota}\right]}{Dt}+\mbox{div}\mathbf{j}^{\iota}=\left(1-\varphi^{s}\right)\hat{c}^{\iota}\,.\label{eq161} \end{equation} \]</div>
+<p>This form is suitable for implementation in a finite element analysis where the mesh is defined on the solid matrix.</p>
+<h2 id="subsec:Negligible-Solute-Fraction">Mixture with Negligible Solute Volume Fraction<a class="headerlink" href="#subsec:Negligible-Solute-Fraction" title="Permanent link">&para;</a></h2>
+<p>The volume fraction of each constituent is given by <span class="arithmatex">\(\varphi^{\alpha}=\rho^{\alpha}/\rho_{T}^{\alpha}\)</span>. In a saturated mixture these volume fractions satisfy <span class="arithmatex">\(\sum\limits_{\alpha}\varphi^{\alpha}=1\)</span>. Substituting <span class="arithmatex">\(\rho^{\alpha}=\varphi^{\alpha}\rho_{T}^{\alpha}\)</span> into eq.\eqref{eq150}, dividing across by <span class="arithmatex">\(\rho_{T}^{\alpha}\)</span> (invariant for intrinsically incompressible constituents), and taking the sum of the resulting expression over all constituents produces</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\sum\limits_{\alpha}\varphi^{\alpha}\mathbf{v}^{\alpha}\right)=\sum\limits_{\alpha}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,.\label{eq162} \end{equation} \]</div>
+<p>This mass balance relation for the mixture expresses the fact that the mixture volume will change as a result of chemical reactions where the true density of products is different from that of reactants. Indeed, assuming that <span class="arithmatex">\(\rho_{T}^{\alpha}\)</span> is the same for all <span class="arithmatex">\(\alpha\)</span> would nullify the right-hand-side of eq.\eqref{eq162} based on eq.\eqref{eq151}. We now adopt the assumption that solutes occupy a negligible volume fraction of the mixture (<span class="arithmatex">\(\varphi^{\iota}\ll1)\)</span>, from which it follows that <span class="arithmatex">\(\varphi^{s}+\varphi^{w}\approx1\)</span> and <span class="arithmatex">\(\sum\limits_{\alpha}\varphi^{\alpha}\mathbf{v}^{\alpha}\approx\mathbf{v}^{s}+\mathbf{w}\)</span>, where <span class="arithmatex">\(\mathbf{w}=\varphi^{w}\left(\mathbf{v}^{w}-\mathbf{v}^{s}\right)\)</span> is the volumetrix flux of solvent relative to the solid. Thus, the mixture mass balance may be reduced to</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\mathbf{v}^{s}+\mathbf{w}\right)=\sum\limits_{\alpha}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,.\label{eq163} \end{equation} \]</div>
+<p>In the special case of the solvent (<span class="arithmatex">\(\alpha=w\)</span>), FEBio uses a solvent supply, <span class="arithmatex">\(\hat{\varphi}^{w}=\hat{\rho}^{w}/\hat{\rho}_{T}^{w}\)</span>, which may be incorporated in eq.\eqref{eq163} as</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\mathbf{v}^{s}+\mathbf{w}\right)=\hat{\varphi}^{w}+\sum\limits_{\alpha\ne w}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,.\label{eq163b} \end{equation} \]</div>
+<p>From the mass balance equation for the solvent we have</p>
+<div class="arithmatex">\[ \begin{aligned}\hat{\varphi}^{w} &amp; =\frac{D^{s}\varphi^{w}}{Dt}+\grad\varphi^{w}\cdot\left(\mathbf{v}^{w}-\mathbf{v}^{s}\right)+\varphi^{w}\divg\mathbf{v}^{w}\end{aligned} \]</div>
+<p>so that the mixture mass balance takes the form</p>
+<div class="arithmatex">\[ \begin{aligned}\divg\left(\mathbf{v}^{s}+\mathbf{w}\right) &amp; =\frac{D^{s}\varphi^{w}}{Dt}+\grad\varphi^{w}\cdot\left(\mathbf{v}^{w}-\mathbf{v}^{s}\right)+\varphi^{w}\divg\mathbf{v}^{w}+\sum\limits_{\alpha\ne w}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,\end{aligned} \]</div>
+<p>Using <span class="arithmatex">\(\varphi^{w}+\varphi^{s}=1\)</span> this relation further simplifies to</p>
+<div class="arithmatex">\[ \varphi^{s}\divg\mathbf{v}^{s}+\frac{D^{s}\varphi^{s}}{Dt}=\sum\limits_{\alpha\ne w}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,. \]</div>
+<p>Now we use the kinematic relation <span class="arithmatex">\(\divg\mathbf{v}^{s}=\frac{1}{J}\frac{D^{s}J}{Dt}\)</span> to reduce this equation further to</p>
+<div class="arithmatex">\[ \frac{D^{s}\left(J\varphi^{s}\right)}{Dt}=J\sum\limits_{\alpha\ne w}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}}\,. \]</div>
+<p>But recall that</p>
+<div class="arithmatex">\[ J\varphi^{s}=\varphi_{r}^{s} \]</div>
+<p>thus the mixture mass balance now simplifies to</p>
+<div class="arithmatex">\[ \frac{1}{J}\frac{D^{s}\varphi_{r}^{s}}{Dt}=\sum\limits_{\alpha\ne w}\frac{\hat{\rho}^{\alpha}}{\rho_{T}^{\alpha}} \]</div>
+<p>Since</p>
+<div class="arithmatex">\[ \hat{\rho}^{\alpha}=\left(1-\varphi^{s}\right)M^{\alpha}\hat{c}^{\alpha} \]</div>
+<p>it follows that</p>
+<div class="arithmatex">\[ \frac{D^{s}\varphi_{r}^{s}}{Dt}=J\left(1-\varphi^{s}\right)\sum\limits_{\alpha\ne w}\frac{M^{\alpha}\hat{c}^{\alpha}}{\rho_{T}^{\alpha}} \]</div>
+<p>Another way of presenting these results is to restate the mixture mass balance as</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\mathbf{v}^{s}+\mathbf{w}\right)=\hat{\varphi}_{0}^{w}+\frac{1}{J}\frac{D^{s}\varphi_{r}^{s}}{Dt}\label{eq:mixture-mass-reactive} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\hat{\varphi}_{0}^{w}\)</span> is the solvent supply from user-specified sources (not from the chemical reactions).</p>
+<h2 id="subsec:Chemical-Kinetics">Chemical Kinetics<a class="headerlink" href="#subsec:Chemical-Kinetics" title="Permanent link">&para;</a></h2>
+<p>Productions rates are described by constitutive relations which are functions of the state variables. In a biological mixture under isothermal conditions, the minimum set of state variables needed to describe reactive mixtures that include a solid matrix are: the (uniform) temperature <span class="arithmatex">\(\theta\)</span>, the solid matrix deformation gradient <span class="arithmatex">\(\mathbf{F}\)</span> (or related strain measures), and the molar content <span class="arithmatex">\(c^{\alpha}\)</span> of the various constituents. This set differs from the classical treatment of chemical kinetics in fluid mixtures by the inclusion of <span class="arithmatex">\(\mathbf{F}\)</span> and the subset of constituents bound to the solid matrix. To maintain a consistent notation in this section, solid-bound molecular species are described by their molar concentrations and molar supplies which may be related to their referential mass density and referential mass supply according to</p>
+<div class="arithmatex">\[ \begin{equation} c^{\sigma}=\frac{\rho_{r}^{\sigma}}{\left(J-\varphi_{r}^{s}\right)M^{\sigma}},\quad\hat{c}^{\sigma}=\frac{\hat{\rho}_{r}^{\sigma}}{\left(J-\varphi_{r}^{s}\right)M^{\sigma}}\,.\label{eq164} \end{equation} \]</div>
+<p>Consider a general chemical reaction,</p>
+<div class="arithmatex">\[ \begin{equation} \sum\limits_{\alpha}\nu_{R}^{\alpha}\mathcal{E}^{\alpha}\to\sum\limits_{\alpha}\nu_{P}^{\alpha}\mathcal{E}^{\alpha}\,,\label{eq165} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathcal{E}^{\alpha}\)</span> is the chemical species representing constituent <span class="arithmatex">\(\alpha\)</span>; <span class="arithmatex">\(\nu_{R}^{\alpha}\)</span> and <span class="arithmatex">\(\nu_{P}^{\alpha}\)</span> represent stoichiometric coefficients of the reactants and products, respectively. Since the molar supply of reactants and products is constrained by stoichiometry, it follows that all molar supplies <span class="arithmatex">\(\hat{c}^{\alpha}\)</span> in a specific chemical reaction may be related to a production rate <span class="arithmatex">\(\hat{\zeta}\)</span> according to</p>
+<div class="arithmatex">\[ \begin{equation} \hat{c}^{\alpha}=\nu^{\alpha}\hat{\zeta}\,,\label{eq166} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\nu^{\alpha}\)</span> represents the net stoichiometric coefficient for <span class="arithmatex">\(\mathcal{E}^{\alpha}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \nu^{\alpha}=\nu_{P}^{\alpha}-\nu_{R}^{\alpha}\,.\label{eq167} \end{equation} \]</div>
+<p>Thus, formulating constitutive relations for <span class="arithmatex">\(\hat{c}^{\alpha}\)</span> is equivalent to providing a single relation for <span class="arithmatex">\(\hat{\zeta}\left(\theta,\mathbf{F},c^{\alpha}\right)\)</span>. When the chemical reaction is reversible,</p>
+<div class="arithmatex">\[ \begin{equation} \sum\limits_{\alpha}\nu_{R}^{\alpha}\mathcal{E}^{\alpha}\rightleftharpoons\sum\limits_{\alpha}\nu_{P}^{\alpha}\mathcal{E}^{\alpha}\,,\label{eq168} \end{equation} \]</div>
+<p>the relations of Eqs.\eqref{eq166}-\eqref{eq167} still apply but the form of <span class="arithmatex">\(\hat{\zeta}\)</span> would be different.</p>
+<p>Using the relations of Eqs.\eqref{eq159}, \eqref{eq164} and \eqref{eq166}, it follows in general that <span class="arithmatex">\(\hat{\rho}^{\alpha}=\left(1-\varphi^{s}\right)M^{\alpha}\nu^{\alpha}\hat{\zeta}\)</span>, so that the constraint of eq.\eqref{eq151} is equivalent to enforcing stoichiometry, namely,</p>
+<div class="arithmatex">\[ \begin{equation} \sum\limits_{\alpha}\nu^{\alpha}M^{\alpha}=0\,.\label{eq169} \end{equation} \]</div>
+<p>Thus, properly balancing a chemical reaction satisfies this constraint.</p>
+<p>The mixture mass balance in eq.\eqref{eq163b} may now be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \divg\left(\mathbf{v}^{s}+\mathbf{w}^{w}\right)=\hat{\varphi}_{0}^{w}+\left(1-\varphi^{s}\right)\hat{\zeta}\overline{\mathcal{V}}\,,\label{eq170} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\overline{\mathcal{V}}=\sum\limits_{\alpha\ne w}\nu^{\alpha}\mathcal{V}^{\alpha}\)</span> and <span class="arithmatex">\(\mathcal{V}^{\alpha}=M^{\alpha}/\rho_{T}^{\alpha}\)</span> is the molar volume of <span class="arithmatex">\(\alpha\)</span>. (Currently in FEBio, <span class="arithmatex">\(\hat{\varphi}_{0}^{w}\)</span> is specified independently of <span class="arithmatex">\(\hat{\zeta}\)</span>, because users may choose to neglect the contribution from <span class="arithmatex">\(\overline{\mathcal{V}}\)</span> in eq.\eqref{eq170}; therefore, if one desires to model chemical reactions, eq.\eqref{eq165} or eq.\eqref{eq168}, that involve the solvent, it is necessary to explicitly provide a solvent supply function compatible with the above relations, namely <span class="arithmatex">\(\hat{\varphi}_{0}^{w}=\left(1-\varphi^{s}\right)\hat{\zeta}\nu^{w}\mathcal{V}^{w}\)</span>.) Similarly, the solute mass balance in eq.\eqref{eq161} becomes</p>
+<div class="arithmatex">\[ \begin{equation} \frac{1}{J}\frac{D^{s}\left[J\left(1-\varphi^{s}\right)c^{\iota}\right]}{Dt}+\divg\mathbf{j}^{\iota}=\left(1-\varphi^{s}\right)\nu^{\iota}\hat{\zeta}\,.\label{eq:solute-mass-balance} \end{equation} \]</div>
+<p>These mass balance equations reduce to those of non-reactive mixtures when <span class="arithmatex">\(\hat{\zeta}=0\)</span>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.11-equilibrium-swelling/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.11 Equilibrium Swelling">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.11 Equilibrium Swelling
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.13-fluid-mechanics/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.13 Fluid Mechanics">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.13 Fluid Mechanics
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

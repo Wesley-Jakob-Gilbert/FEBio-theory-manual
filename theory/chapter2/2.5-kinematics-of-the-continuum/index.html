@@ -1,0 +1,1183 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.4-axioms-of-conservation/">
+      
+      
+        <link rel="next" href="../2.6-hyperelasticity/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.5 Kinematics of the Continuum - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Kinematics-of-Continuum" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.5 Kinematics of the Continuum
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../2.1-vectors-and-tensors/" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#motion-and-path-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Motion and Path Lines
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deformation-gradient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deformation Gradient
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec:Rate-of-Deformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rate of Deformation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sec:Volume-Deformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Volume Deformation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Area-Deformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Area Deformation
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Kinematics-of-Continuum">2.5 Kinematics of the Continuum<a class="headerlink" href="#sec:Kinematics-of-Continuum" title="Permanent link">&para;</a></h1>
+<h2 id="motion-and-path-lines">Motion and Path Lines<a class="headerlink" href="#motion-and-path-lines" title="Permanent link">&para;</a></h2>
+<p>At any instant of time <span class="arithmatex">\(t\)</span>, the <em>motion</em> of a material particle <span class="arithmatex">\(P\)</span> in the continuum is given by the function</p>
+<p><a id="fig15"></a></p>
+<figure id="__figure-caption_1">
+<p><img alt="FigKinematicsContinuum" src="../figs/FigKinematicsContinuum.png" style="width:50%" /></p>
+<figcaption>
+<p><span class="caption-prefix">Figure 1.</span> Kinematics of the continuum.</p>
+</figcaption>
+</figure>
+<div class="arithmatex">\[ \begin{equation} \mathbf{x}=\boldsymbol{\chi}\left(\mathbf{X},t\right)\label{eq:motion-chi} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{X}\)</span> is the reference position, at some reference time <span class="arithmatex">\(t_{0}\)</span>, of the material particle <span class="arithmatex">\(P\)</span> currently located at the spatial location <span class="arithmatex">\(\mathbf{x}\)</span>. This motion describes the <em>path line</em> of the particle that starts at <span class="arithmatex">\(\mathbf{X}\)</span> at <span class="arithmatex">\(t=t_{0}\)</span> and passes through <span class="arithmatex">\(\mathbf{x}\)</span> at time <span class="arithmatex">\(t\)</span>. At a subsequent time <span class="arithmatex">\(t^{\prime}\)</span>, the material particle passing through <span class="arithmatex">\(\mathbf{x}\)</span> would have originated at a different location <span class="arithmatex">\(\mathbf{X}^{\prime}\)</span> at <span class="arithmatex">\(t_{0}\)</span>, so that <span class="arithmatex">\(\mathbf{x}=\boldsymbol{\chi}\left(\mathbf{X}^{\prime},t^{\prime}\right)=\boldsymbol{\chi}\left(\mathbf{X},t\right)\)</span>. The material particle <span class="arithmatex">\(P\)</span> is uniquely identified by its position <span class="arithmatex">\(\mathbf{X}\)</span> in the reference configuration. Therefore, any function <span class="arithmatex">\(f\)</span> associated with each material point <span class="arithmatex">\(\mathbf{X}\)</span>, such as density, temperature, velocity, etc., may be expressed as <span class="arithmatex">\(f=\hat{f}\left(\mathbf{X},t\right)\)</span> in the <em>material</em> (or <em>Lagrangian</em>) frame. Alternatively, the same function may be expressed in terms of the spatial position <span class="arithmatex">\(\mathbf{x}\)</span> through which the material particle originating at <span class="arithmatex">\(\mathbf{X}\)</span> passes at time <span class="arithmatex">\(t\)</span>. In that case, <span class="arithmatex">\(f=\tilde{f}\left(\mathbf{x},t\right)\)</span> expresses this function in the <em>spatial</em> (or <em>Eulerian</em>) frame. Importantly, since the function <span class="arithmatex">\(f\)</span> is associated with the material, its time rate of change as the material moves is called the <em>material time derivative</em> of <span class="arithmatex">\(f\)</span>. The material time derivative of <span class="arithmatex">\(f\)</span> in the material frame is given by</p>
+<div class="arithmatex">\[ \begin{equation} \dot{f}=\frac{\partial\hat{f}\left(\mathbf{X},t\right)}{\partial t}\,.\label{eq:material-deriv-material} \end{equation} \]</div>
+<p>Therefore, the velocity <span class="arithmatex">\(\mathbf{v}\left(\mathbf{X},t\right)\)</span> of the particle <span class="arithmatex">\(P\)</span> is defined in the material frame as the material time derivative <span class="arithmatex">\(\dot{\boldsymbol{\chi}}\left(\mathbf{X},t\right)\)</span> of the motion,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{v}\left(\mathbf{X},t\right)=\frac{\partial\boldsymbol{\chi}\left(\mathbf{X},t\right)}{\partial t}\,.\label{eq75} \end{equation} \]</div>
+<p>The material time derivative of <span class="arithmatex">\(f\)</span> in the spatial frame may be evaluated by using the chain rule on <span class="arithmatex">\(f=\tilde{f}\left(\mathbf{x},t\right)\equiv f\left(\boldsymbol{\chi}\left(\mathbf{X},t\right),t\right)\)</span>, thus</p>
+<div class="arithmatex">\[ \dot{f}=\frac{\partial\tilde{f}\left(\boldsymbol{\chi},t\right)}{\partial t}+\frac{\partial\tilde{f}\left(\boldsymbol{\chi},t\right)}{\partial\boldsymbol{\chi}}\cdot\frac{\partial\boldsymbol{\chi}}{\partial t}\,. \]</div>
+<p>Using Eq.\eqref{eq75} and recognizing that <span class="arithmatex">\(\partial\tilde{f}/\partial\boldsymbol{\chi}\equiv\partial\tilde{f}/\partial\mathbf{x}=\grad\tilde{f}\)</span>, this expression may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \dot{f}=\frac{\partial\tilde{f}}{\partial t}+\grad\tilde{f}\cdot\mathbf{v}\equiv\frac{D\tilde{f}\left(\mathbf{x},t\right)}{Dt}\,.\label{eq77} \end{equation} \]</div>
+<p>We used the operator <span class="arithmatex">\(D\left(\cdot\right)/Dt\)</span> to emphasize that this expression represents the material time derivative of <span class="arithmatex">\(f\)</span> in the spatial frame.</p>
+<p>For a given particle <span class="arithmatex">\(P\)</span>, the actual value of the function <span class="arithmatex">\(f\)</span> must be the same in the material and spatial frames, thus <span class="arithmatex">\(f=\hat{f}\left(\mathbf{X},t\right)=\tilde{f}\left(\mathbf{x},t\right)\)</span>. Similarly, its material time derivative must have the same value in either frame, <span class="arithmatex">\(\dot{f}=\frac{\partial\hat{f}}{\partial t}=\frac{D\tilde{f}}{Dt}\)</span>. For notational convenience, we drop the caret and tilde symbols and assume from the context that <span class="arithmatex">\(f\left(\mathbf{X},t\right)\equiv\hat{f}\left(\mathbf{X},t\right)\)</span> and <span class="arithmatex">\(f\left(\mathbf{x},t\right)\equiv\tilde{f}\left(\mathbf{x},t\right)\)</span>.</p>
+<h2 id="deformation-gradient">Deformation Gradient<a class="headerlink" href="#deformation-gradient" title="Permanent link">&para;</a></h2>
+<p>For a continuum, the increment in motion between the neigboring points <span class="arithmatex">\(\mathbf{X}\)</span> and <span class="arithmatex">\(\mathbf{X}+d\mathbf{X}\)</span> at a given time <span class="arithmatex">\(t\)</span> is given by</p>
+<div class="arithmatex">\[ \begin{equation} d\mathbf{x}=\boldsymbol{\chi}\left(\mathbf{X}+d\mathbf{X},t\right)-\boldsymbol{\chi}\left(\mathbf{X},t\right)=\left(\Grad\boldsymbol{\chi}\right)\cdot d\mathbf{X}\,.\label{eq:motion-gradient} \end{equation} \]</div>
+<p>Since the differentiation of <span class="arithmatex">\(\boldsymbol{\chi}\left(\mathbf{X},t\right)\)</span> is performed with respect to <span class="arithmatex">\(\mathbf{X}\)</span>, we denote this gradient as <span class="arithmatex">\(\Grad\equiv\partial\left(\cdot\right)/\partial\mathbf{X}\)</span>. In particular,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}\equiv\frac{\partial\boldsymbol{\chi}}{\partial\mathbf{X}}=\Grad\boldsymbol{\chi}\label{eq:deformation-gradient} \end{equation} \]</div>
+<p>is known as the <em>deformation gradient</em>. It follows from this relationship that a material element <span class="arithmatex">\(d\mathbf{X}\)</span> of solid constituent deforms into the material element <span class="arithmatex">\(d\mathbf{x}\)</span> at the current time <span class="arithmatex">\(t\)</span> such that <span class="arithmatex">\(d\mathbf{x}=\mathbf{F}\cdot d\mathbf{X}\)</span>.</p>
+<p>The length of the element, <span class="arithmatex">\(ds\)</span>, is given by</p>
+<div class="arithmatex">\[ \begin{equation} ds^{2}=d\mathbf{x}\cdot d\mathbf{x}=\left(\mathbf{F}\cdot d\mathbf{X}\right)\cdot\left(\mathbf{F}\cdot d\mathbf{X}\right)=d\mathbf{X}\cdot\left(\mathbf{F}^{T}\cdot\mathbf{F}\right)\cdot d\mathbf{X}\equiv d\mathbf{X}\cdot\mathbf{C}\cdot d\mathbf{X}\label{eq82} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{C}=\mathbf{F}^{T}\cdot\mathbf{F}\label{eq83} \end{equation} \]</div>
+<p>is the <em>right Cauchy-Green deformation tensor</em>. Note that <span class="arithmatex">\(\mathbf{C}^{T}=\left(\mathbf{F}^{T}\cdot\mathbf{F}\right)^{T}=\mathbf{F}^{T}\cdot\mathbf{F}=\mathbf{C}\)</span>, thus <span class="arithmatex">\(\mathbf{C}\)</span> is symmetric.</p>
+<p>Let the material element <span class="arithmatex">\(d\mathbf{X}\)</span> be of length <span class="arithmatex">\(dS\)</span> and directed along the unit normal <span class="arithmatex">\(\mathbf{n}_{r}\)</span>, <span class="arithmatex">\(d\mathbf{X}=dS\mathbf{n}_{r}\)</span>. Upon deformation, we have <span class="arithmatex">\(d\mathbf{x}=\mathbf{F}\cdot d\mathbf{X}=dS\mathbf{F}\cdot\mathbf{n}_{r}\)</span> and the length of the element in this deformed configuration is given by <span class="arithmatex">\(ds\)</span> where</p>
+<div class="arithmatex">\[ \begin{equation} ds^{2}=d\mathbf{x}\cdot d\mathbf{x}=\left(dS\mathbf{F}\cdot\mathbf{n}_{r}\right)\cdot\left(dS\mathbf{F}\cdot\mathbf{n}_{r}\right)=dS^{2}\mathbf{n}_{r}\cdot\left(\mathbf{F}^{T}\cdot\mathbf{F}\right)\cdot\mathbf{n}_{r}=dS^{2}\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{n}_{r}\label{eq84} \end{equation} \]</div>
+<p>The length of the element in the current configuration relative to its length in the reference configuration is given by</p>
+<div class="arithmatex">\[ \begin{equation} \frac{ds}{dS}=\sqrt{\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{n}_{r}}\equiv\lambda_{n}\label{eq85} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\lambda_{n}\)</span> is the relative change in length of the material element <span class="arithmatex">\(d\mathbf{X}\)</span> which is oriented along <span class="arithmatex">\(\mathbf{n}\)</span>. <span class="arithmatex">\(\lambda_{n}\)</span> is known as the <em>stretch ratio</em> along <span class="arithmatex">\(\mathbf{n}\)</span>. Note that <span class="arithmatex">\(\lambda_{n}^{2}=\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{n}_{r}\)</span> is the normal component of <span class="arithmatex">\(\mathbf{C}\)</span> along <span class="arithmatex">\(\mathbf{n}_{r}\)</span>. If we let <span class="arithmatex">\(d\mathbf{x}=ds\,\mathbf{n}\)</span>, it follows from <span class="arithmatex">\(d\mathbf{x}=\mathbf{F}\cdot d\mathbf{X}\)</span> that</p>
+<div class="arithmatex">\[ \begin{equation} \lambda_{n}\mathbf{n}=\mathbf{F}\cdot\mathbf{n}_{r}\label{eq85a} \end{equation} \]</div>
+<p>Now consider two material elements <span class="arithmatex">\(d\mathbf{X}_{m}=dS_{m}\mathbf{m}_{r}\)</span> and <span class="arithmatex">\(d\mathbf{X}_{n}=dS_{n}\mathbf{n}_{r}\)</span>. They each transform according to <span class="arithmatex">\(d\mathbf{x}_{m}=\mathbf{F}\cdot d\mathbf{X}_{m}\)</span> and <span class="arithmatex">\(d\mathbf{x}_{n}=\mathbf{F}\cdot d\mathbf{X}_{n}\)</span> and their dot product produces</p>
+<div class="arithmatex">\[ \begin{equation} d\mathbf{x}_{m}\cdot d\mathbf{x}_{n}=\left(\mathbf{F}\cdot d\mathbf{X}_{m}\right)\cdot\left(\mathbf{F}\cdot d\mathbf{X}_{n}\right)=d\mathbf{X}_{n}\cdot\mathbf{C}\cdot d\mathbf{X}_{m}\label{eq85b} \end{equation} \]</div>
+<p>or equivalently,</p>
+<div class="arithmatex">\[ \begin{equation} \lambda_{m}\lambda_{n}\mathbf{m}\cdot\mathbf{n}=\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{m}_{r}\,,\quad\lambda_{m}=\frac{ds_{m}}{dS_{m}},\,\lambda_{n}=\frac{ds_{n}}{dS_{n}}\label{eq85c} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(d\mathbf{x}_{m}=ds_{m}\mathbf{m}\)</span> and <span class="arithmatex">\(d\mathbf{x}_{n}=ds_{n}\mathbf{n}\)</span>. Note that we may write <span class="arithmatex">\(\mathbf{m}\cdot\mathbf{n}=\cos\theta=\sin\gamma\)</span>, where <span class="arithmatex">\(\theta\)</span> is the angle between <span class="arithmatex">\(d\mathbf{x}_{m}\)</span> and <span class="arithmatex">\(d\mathbf{x}_{n}\)</span> and <span class="arithmatex">\(\gamma=\frac{\pi}{2}-\theta\)</span> is its complementary angle (Figure <a href="#fig17">Figure (2.5)</a>), so that</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{m}_{r}=\lambda_{m}\lambda_{n}\sin\gamma\,.\label{eq85d} \end{equation} \]</div>
+<p>Now consider the case where <span class="arithmatex">\(\mathbf{m}_{r}\cdot\mathbf{n}_{r}=0\)</span>, i.e., the material elements <span class="arithmatex">\(d\mathbf{X}_{m}\)</span> and <span class="arithmatex">\(d\mathbf{X}_{n}\)</span> are orthogonal, so that <span class="arithmatex">\(\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{m}_{r}=C_{mn}\)</span> where <span class="arithmatex">\(C_{mn}\)</span> is a shear component of <span class="arithmatex">\(\mathbf{C}\)</span>. It follows from this result that <span class="arithmatex">\(C_{mn}\)</span> represents a combined measure of the change in angle between <span class="arithmatex">\(\mathbf{m}_{r}\)</span> and <span class="arithmatex">\(\mathbf{n}_{r}\)</span>, as well as the stretching of elements <span class="arithmatex">\(d\mathbf{X}_{m}\)</span> and <span class="arithmatex">\(d\mathbf{X}_{n}\)</span>. The angle <span class="arithmatex">\(\gamma\)</span>, which represents the change in angle between initially orthogonal line elements along <span class="arithmatex">\(\mathbf{m}_{r}\)</span> and <span class="arithmatex">\(\mathbf{n}_{r}\)</span>, is called the <em>engineering shear strain</em>. In particular, in the range of small strains and rotations, <span class="arithmatex">\(\lambda_{m}\approx1\)</span>, <span class="arithmatex">\(\lambda_{n}\approx1\)</span> and <span class="arithmatex">\(\sin\gamma\approx\gamma\)</span>, so that <span class="arithmatex">\(C_{mn}\approx\gamma\)</span>.</p>
+<p><a id="fig17"></a></p>
+<figure id="__figure-caption_2">
+<p><img alt="FigShearStrain" src="../figs/FigShearStrain.png" style="width:50%" /></p>
+<figcaption>
+<p><span class="caption-prefix">Figure 2.</span> Change of angle between filaments.</p>
+</figcaption>
+</figure>
+<p>According to the <em>polar decomposition theorem</em>, the deformation gradient may be decomposed uniquely into</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}=\mathbf{R}\cdot\mathbf{U}=\mathbf{V}\cdot\mathbf{R}\label{eq:polar-decomposition-RU} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{R}\)</span> is a proper orthogonal transformation (a rotation, with <span class="arithmatex">\(\det\mathbf{R}=+1\)</span>), <span class="arithmatex">\(\mathbf{U}\)</span> is a symmetric tensor called the <em>right</em> (or <em>material</em>) <em>stretch tensor</em>, and <span class="arithmatex">\(\mathbf{V}\)</span> is a symmetric tensor called the <em>left stretch tensor</em>. It follows from this decomposition that <span class="arithmatex">\(d\mathbf{x}=\mathbf{F}\cdot d\mathbf{X}=\mathbf{R}\cdot\left(\mathbf{U}\cdot d\mathbf{X}\right)\)</span> may be viewed as a stretching of <span class="arithmatex">\(d\mathbf{X}\)</span> by <span class="arithmatex">\(\mathbf{U}\)</span> followed by a rotation by <span class="arithmatex">\(\mathbf{R}\)</span>, whereas <span class="arithmatex">\(d\mathbf{x}=\mathbf{V}\cdot\left(\mathbf{R}\cdot d\mathbf{X}\right)\)</span> is the rotation of <span class="arithmatex">\(d\mathbf{X}\)</span>, followed by stretching by <span class="arithmatex">\(\mathbf{V}\)</span>. Since <span class="arithmatex">\(\mathbf{C}=\mathbf{F}^{T}\cdot\mathbf{F}=\mathbf{U}^{2}\)</span>, it follows that the eigenvalues of <span class="arithmatex">\(\mathbf{C}\)</span> are the square of the eigenvalues of <span class="arithmatex">\(\mathbf{U}\)</span>. Thus, these eigenvalues provide a measure of the stretch, not a measure of the rotation. <span class="arithmatex">\(\mathbf{C}\)</span> and <span class="arithmatex">\(\mathbf{U}\)</span> also share the same eigenvectors. Thus, if <span class="arithmatex">\(\mathbf{C}\)</span> is given by its spectral representation,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{C}=\lambda_{1}^{2}\mathbf{u}_{1}\otimes\mathbf{u}_{1}+\lambda_{2}^{2}\mathbf{u}_{2}\otimes\mathbf{u}_{2}+\lambda_{3}^{2}\mathbf{u}_{3}\otimes\mathbf{u}_{3}\label{eq:85-2} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{u}_{i}\)</span>'s are its eigenvectors, then <span class="arithmatex">\(\mathbf{U}\)</span> may be evaluated from</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{U}=\lambda_{1}\mathbf{u}_{1}\otimes\mathbf{u}_{1}+\lambda_{2}\mathbf{u}_{2}\otimes\mathbf{u}_{2}+\lambda_{3}\mathbf{u}_{3}\otimes\mathbf{u}_{3}\label{eq:85-3} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\mathbf{R}=\mathbf{F}\cdot\mathbf{U}^{-1}\)</span>, where <span class="arithmatex">\(\mathbf{U}^{-1}=\lambda_{1}^{-1}\mathbf{u}_{1}\otimes\mathbf{u}_{1}+\lambda_{2}^{-1}\mathbf{u}_{2}\otimes\mathbf{u}_{2}+\lambda_{3}^{-1}\mathbf{u}_{3}\otimes\mathbf{u}_{3}\)</span>.</p>
+<p>The motion can also be conveniently represented in terms of a <em>displacement</em> function <span class="arithmatex">\(\mathbf{u}\)</span> in a material frame of reference such that</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{x}=\mathbf{X}+\mathbf{u}\left(\mathbf{X},t\right)\label{eq78} \end{equation} \]</div>
+<p>Then the deformation gradient for this motion is given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}=\frac{\partial\mathbf{x}}{\partial\mathbf{X}}=\Grad\mathbf{x}=\mathbf{I}+\Grad\mathbf{u}\label{eq81} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \begin{array}{cl} \mathbf{C} &amp; =\mathbf{F}^{T}\cdot\mathbf{F}=\left(\mathbf{I}+\Grad\mathbf{u}\right)^{T}\cdot\left(\mathbf{I}+\Grad\mathbf{u}\right)\\ &amp; =\mathbf{I}+\Grad\mathbf{u}+\Grad^{T}\mathbf{u}+\left(\Grad^{T}\mathbf{u}\right)\cdot\left(\Grad\mathbf{u}\right) \end{array}\label{eq83-1} \end{equation} \]</div>
+<p>Finally, we can also define the <em>Lagrangian strain tensor</em> <span class="arithmatex">\(\mathbf{E}\)</span> (also known as the <em>Green-Lagrange</em> strain) from the above relation such that <span class="arithmatex">\(\mathbf{C}=\mathbf{I}+2\mathbf{E}\)</span>, or</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{E}=\frac{1}{2}\left(\mathbf{C}-\mathbf{I}\right)=\frac{1}{2}\left[\Grad\mathbf{u}+\Grad^{T}\mathbf{u}+\left(\Grad^{T}\mathbf{u}\right)\cdot\left(\Grad\mathbf{u}\right)\right]\label{eq:E-C-relation} \end{equation} \]</div>
+<p>In the case of rigid body motion (translation and/or rotation, <span class="arithmatex">\(\mathbf{C}=\mathbf{I}\)</span>), the Lagrangian strain tensor is equal to the null tensor. Just as in the case of the stress tensor, the strain tensors <span class="arithmatex">\(\mathbf{C}\)</span> and <span class="arithmatex">\(\mathbf{E}\)</span> also have strain invariants, principal normal strains and principal directions of normal strain, maximum shear strains and directions of maximum shear strain. If <span class="arithmatex">\(\lambda^{2}\)</span> is an eigenvalue of <span class="arithmatex">\(\mathbf{C}\)</span>, and <span class="arithmatex">\(\mathbf{v}\)</span> is its associated eigenvector, then <span class="arithmatex">\(\mathbf{v}\)</span> is also an eigenvector of <span class="arithmatex">\(\mathbf{E}\)</span> since</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{E}\cdot\mathbf{v}=\frac{1}{2}\left(\mathbf{C}-\mathbf{I}\right)\cdot\mathbf{v}=\frac{1}{2}\left(\mathbf{C}\cdot\mathbf{v}-\mathbf{v}\right)=\frac{1}{2}\left(\lambda^{2}-1\right)\mathbf{v}\label{eq84-1} \end{equation} \]</div>
+<p>Therefore the corresponding eigenvalue of <span class="arithmatex">\(\mathbf{E}\)</span> is <span class="arithmatex">\(\left(\lambda^{2}-1\right)/2\)</span>, which also established the relation between the normal components of <span class="arithmatex">\(\mathbf{E}\)</span> and <span class="arithmatex">\(\mathbf{C}\)</span>. The shear components of <span class="arithmatex">\(\mathbf{E}\)</span> may be related to those of <span class="arithmatex">\(\mathbf{C}\)</span> according to</p>
+<div class="arithmatex">\[ E_{mn}=\mathbf{m}\cdot\mathbf{E}\cdot\mathbf{n}=\frac{1}{2}\mathbf{m}\cdot\mathbf{C}\cdot\mathbf{n}=\frac{1}{2}C_{mn} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{m}\)</span> and <span class="arithmatex">\(\mathbf{n}\)</span> are orthogonal unit vectors. Therefore, the interpretation of <span class="arithmatex">\(E_{mn}\)</span> is similar to that of <span class="arithmatex">\(C_{mn}\)</span>, with a factor of <span class="arithmatex">\(1/2\)</span>.</p>
+<p>In the limit of small displacement gradients (small strains and rotations, <span class="arithmatex">\(\left\Vert \Grad\mathbf{u}\right\Vert \ll1\)</span>), the expression for the Lagrangian strain tensor in eq.\eqref{eq:E-C-relation} reduces to the <em>infinitesimal strain tensor</em>,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\varepsilon}=\frac{1}{2}\left(\grad\mathbf{u}+\grad^{T}\mathbf{u}\right)\,.\label{eq46} \end{equation} \]</div>
+<p>Note that this strain tensor is also the linearization of the Lagrangian strain tensor,</p>
+<div class="arithmatex">\[ \begin{equation} D\mathbf{E}\left[\mathbf{u}\right]=\mathbf{F}^{T}\cdot\boldsymbol{\varepsilon}\cdot\mathbf{F}\,.\label{eq47} \end{equation} \]</div>
+<h2 id="sec:Rate-of-Deformation">Rate of Deformation<a class="headerlink" href="#sec:Rate-of-Deformation" title="Permanent link">&para;</a></h2>
+<p>The material time derivative of the deformation gradient may be denoted by <span class="arithmatex">\(\dot{\mathbf{F}}\)</span>. Since <span class="arithmatex">\(\mathbf{F}=\Grad\boldsymbol{\chi}\)</span>, it follows that <span class="arithmatex">\(\dot{\mathbf{F}}=\Grad\dot{\boldsymbol{\chi}}=\Grad\mathbf{v}\)</span>. Using the chain rule,</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\mathbf{F}}=\frac{\partial\mathbf{v}}{\partial\mathbf{X}}=\frac{\partial\mathbf{v}}{\partial\mathbf{x}}\cdot\frac{\partial\mathbf{x}}{\partial\mathbf{X}}=\grad\mathbf{v}\cdot\mathbf{F}\label{eq85e} \end{equation} \]</div>
+<p>or simply</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\mathbf{F}}=\mathbf{L}\cdot\mathbf{F}\label{eq85f} \end{equation} \]</div>
+<p>Differentiating <span class="arithmatex">\(\mathbf{C}=\mathbf{F}^{T}\cdot\mathbf{F}\)</span> with respect to time, and making use of eq.\eqref{eq85e} produces</p>
+<div class="arithmatex">\[ \begin{equation} \mbox{\dot{\mathbf{C}}}=\dot{\mathbf{F}}^{T}\cdot\mathbf{F}+\mathbf{F}^{T}\cdot\dot{\mathbf{F}}=\mathbf{F}^{T}\cdot\left(\mathbf{L}^{T}+\mathbf{L}\right)\cdot\mathbf{F}\label{eq85g} \end{equation} \]</div>
+<p>or equivalently,</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\mathbf{C}}=2\mathbf{F}^{T}\cdot\mathbf{D}\cdot\mathbf{F}\label{eq85h} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{D}\)</span> is the rate of deformation tensor. This result may now be used in the time differentiation of eq.\eqref{eq85d},</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{n}_{r}\cdot\dot{\mathbf{C}}\cdot\mathbf{m}_{r}=\left(\dot{\lambda}_{m}\lambda_{n}+\lambda_{m}\dot{\lambda}_{n}\right)\sin\gamma+\lambda_{m}\lambda_{n}\dot{\gamma}\cos\gamma\label{eq85i} \end{equation} \]</div>
+<p>where the left-hand-side reduces to <span class="arithmatex">\(\mathbf{n}_{r}\cdot\dot{\mathbf{C}}\cdot\mathbf{m}_{r}=2\left(\mathbf{F}\cdot\mathbf{m}_{r}\right)\cdot\mathbf{D}\cdot\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)=2\lambda_{m}\lambda_{n}\mathbf{m}\cdot\mathbf{D}\cdot\mathbf{n}\)</span>. Substituting this result above produces</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{m}\cdot\mathbf{D}\cdot\mathbf{n}=\frac{1}{2}\left(\frac{\dot{\lambda}_{m}}{\lambda_{m}}+\frac{\dot{\lambda}_{n}}{\lambda_{n}}\right)\sin\gamma+\frac{\dot{\gamma}}{2}\cos\gamma\label{eq85j} \end{equation} \]</div>
+<p>We now consider two cases: When <span class="arithmatex">\(\mathbf{m}=\mathbf{n}\)</span>, it follows that <span class="arithmatex">\(\gamma=\pi/2\)</span>, so that \eqref{eq85j} reduces to</p>
+<div class="arithmatex">\[ \begin{equation} D_{nn}\equiv\mathbf{n}\cdot\mathbf{D}\cdot\mathbf{n}=\frac{\dot{\lambda}_{n}}{\lambda_{n}}\,.\label{eq:D-normal} \end{equation} \]</div>
+<p>In other words, the normal component of the rate of deformation tensor along <span class="arithmatex">\(\mathbf{n}\)</span> is the rate of stretch per stretch of a differential line element along <span class="arithmatex">\(\mathbf{n}\)</span>.</p>
+<p>When <span class="arithmatex">\(\mathbf{m}\cdot\mathbf{n}=0\)</span>, it follows that <span class="arithmatex">\(\gamma=0\)</span>, so that \eqref{eq85j} reduces to</p>
+<div class="arithmatex">\[ \begin{equation} D_{mn}\equiv\mathbf{m}\cdot\mathbf{D}\cdot\mathbf{n}=\frac{\dot{\gamma}}{2}\,.\label{eq:D-shear} \end{equation} \]</div>
+<p>Thus, the shear component of <span class="arithmatex">\(\mathbf{D}\)</span> in the plane containing <span class="arithmatex">\(\mathbf{m}\)</span> and <span class="arithmatex">\(\mathbf{n}\)</span> is equal to half the rate at which the angle between those line elements changes with the deformation. The quantity <span class="arithmatex">\(\dot{\gamma}\)</span> is called the <em>engineering shear rate</em>, or simply the <em>shear rate</em>.</p>
+<p>Finally, we note from eqs.\eqref{eq:E-C-relation} and \eqref{eq85h} that the material time derivative of the Lagrangian strain is related to the rate of deformation via</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\mathbf{E}}=\mathbf{F}^{T}\cdot\mathbf{D}\cdot\mathbf{F}\,.\label{eq:Edot-D-relation} \end{equation} \]</div>
+<h2 id="sec:Volume-Deformation">Volume Deformation<a class="headerlink" href="#sec:Volume-Deformation" title="Permanent link">&para;</a></h2>
+<p>Let us show that the deformation of a volume of material <span class="arithmatex">\(dV_{r}\)</span> is given by</p>
+<div class="arithmatex">\[ \begin{equation} dV=J\,dV_{r},\quad J=\det\mathbf{F}=\left(\det\mathbf{C}\right)^{1/2}\label{eq87} \end{equation} \]</div>
+<p><a id="fig:Elemental-volume"></a></p>
+<figure id="__figure-caption_3">
+<p><img alt="FigReferentialVolume" src="../figs/FigReferentialVolume.png" style="width:50%" /></p>
+<figcaption>
+<p><span class="caption-prefix">Figure 3.</span> Elemental volume.</p>
+</figcaption>
+</figure>
+<p>Note that <span class="arithmatex">\(\det\mathbf{C}=\det\left(\mathbf{F}^{T}\cdot\mathbf{F}\right)=\det\mathbf{F}^{T}\det\mathbf{F}=\left(\det\mathbf{F}\right)^{2}\)</span>, thus <span class="arithmatex">\(\det\mathbf{F}=\left(\det\mathbf{C}\right)^{1/2}\)</span>, which proves the second equation above. To prove the first equation, let us define three non-collinear material elements in the undeformed reference state, <span class="arithmatex">\(d\mathbf{X}_{1}\)</span>, <span class="arithmatex">\(d\mathbf{X}_{2}\)</span>, and <span class="arithmatex">\(d\mathbf{X}_{3}\)</span>. The elemental volume defined by these three elements has the magnitude</p>
+<div class="arithmatex">\[ dV_{r}=\left(d\mathbf{X}_{1}\times d\mathbf{X}_{2}\right)\cdot d\mathbf{X}_{3}\tag{a} \]</div>
+<p>in the reference state, and the magnitude</p>
+<div class="arithmatex">\[ dV=\left(d\mathbf{x}_{1}\times d\mathbf{x}_{2}\right)\cdot d\mathbf{x}_{3}=\left(\mathbf{F}\cdot d\mathbf{X}_{1}\times\mathbf{F}\cdot d\mathbf{X}_{2}\right)\cdot\mathbf{F}\cdot d\mathbf{X}_{3}\tag{b} \]</div>
+<p>in the deformed state. Let the elements <span class="arithmatex">\(d\mathbf{X}_{1}\)</span>, <span class="arithmatex">\(d\mathbf{X}_{2}\)</span>, and <span class="arithmatex">\(d\mathbf{X}_{3}\)</span> be aligned with the orthogonal coordinate axes such that</p>
+<div class="arithmatex">\[ d\mathbf{X}_{1}=dS_{1}\mathbf{e}_{1}\quad d\mathbf{X}_{2}=dS_{2}\mathbf{e}_{2}\quad d\mathbf{X}_{3}=dS_{3}\mathbf{e}_{3}\tag{c} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{e}_{i}\cdot\mathbf{e}_{j}=\delta_{ij}\)</span>, then we find from (a) that <span class="arithmatex">\(dV_{r}=dS_{1}dS_{2}dS_{3}\)</span>. From (b) we get that</p>
+<div class="arithmatex">\[ dV=\left(\mathbf{F}\cdot\mathbf{e}_{1}\times\mathbf{F}\cdot\mathbf{e}_{2}\right)\cdot\mathbf{F}\cdot\mathbf{e}_{3}\,dS_{1}dS_{2}dS_{3}=\det\mathbf{F}\,dV_{r}\tag{d} \]</div>
+<p>according to the definition of the determinant given in Section <a href="#subsubsec-determinant">subsubsec:determinant</a>.</p>
+<p>In a compressible material, the density will change with changes in volume. If an elemental volume of mass <span class="arithmatex">\(dm\)</span> occupies a volume <span class="arithmatex">\(dV_{r}\)</span> in some <em>reference configuration</em>, then the density in the current configuration is given by</p>
+<div class="arithmatex">\[ \begin{equation} \rho=\frac{dm}{dV}=\frac{dm}{dV_{r}}\frac{dV_{r}}{dV}=\frac{\rho_{r}}{J}\label{eq88} \end{equation} \]</div>
+<p>Here, <span class="arithmatex">\(\rho_{r}\)</span> represents the density of the material in the reference configuration, which is a constant. The result of eq.\eqref{eq88} is the solution to the axiom of mass balance. To prove that point, we use the kinematic identity</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial J}{\partial\mathbf{F}}=J\mathbf{F}^{-T}\label{eq89-1} \end{equation} \]</div>
+<p>to express the material time derivative of <span class="arithmatex">\(J\)</span> as</p>
+<div class="arithmatex">\[ \begin{equation} \dot{J}=\frac{\partial J}{\partial\mathbf{F}}:\dot{\mathbf{F}}\label{eq90-1} \end{equation} \]</div>
+<p>Recalling that <span class="arithmatex">\(\dot{\mathbf{F}}=\mathbf{L}\cdot\mathbf{F}\)</span>, it follows that</p>
+<div class="arithmatex">\[ \begin{equation} \dot{J}=J\mathbf{F}^{-T}:\mathbf{L}\cdot\mathbf{F}=J\mathbf{I}:\mathbf{L}=J\tr\mathbf{L}=J\divg\mathbf{v}\label{eq91-1} \end{equation} \]</div>
+<p>or</p>
+<div class="arithmatex">\[ \begin{equation} \divg\mathbf{v}=\frac{\dot{J}}{J}\label{eq92-1} \end{equation} \]</div>
+<p>Now, the axiom of mass balance in eq.<a href="../2.4-axioms-of-conservation/#mjx-eqn:eq:mass-balance-redux">(2.4-2)</a> may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D\rho}{Dt}+\rho\divg\mathbf{v}=\dot{\rho}+\frac{\rho}{J}\dot{J}=0\label{eq93} \end{equation} \]</div>
+<p>Multiplying this equation across by <span class="arithmatex">\(J\)</span>, we find that the resulting expression is equivalent to</p>
+<div class="arithmatex">\[ \begin{equation} \frac{D\left(\rho J\right)}{Dt}=0\label{eq93b} \end{equation} \]</div>
+<p>Integrating this expression produces <span class="arithmatex">\(\rho J=\rho_{r}\)</span>, where <span class="arithmatex">\(\rho_{r}\)</span> is the value of <span class="arithmatex">\(\rho\)</span> when <span class="arithmatex">\(J=1\)</span>. This result reproduces \eqref{eq88}.</p>
+<p>Finally, since we know that <span class="arithmatex">\(\mathbf{F}=\mathbf{R}\cdot\mathbf{U}\)</span> according to \eqref{eq:polar-decomposition-RU}, it follows that</p>
+<div class="arithmatex">\[ J=\det\mathbf{F}=\left(\det\mathbf{R}\right)\left(\det\mathbf{U}\right)=\det\mathbf{U}=\lambda_{1}\lambda_{2}\lambda_{3}\,, \]</div>
+<p>where <span class="arithmatex">\(\lambda_{i}\)</span> are the principal stretches of <span class="arithmatex">\(\mathbf{U}\)</span>.</p>
+<h2 id="subsec:Area-Deformation">Area Deformation<a class="headerlink" href="#subsec:Area-Deformation" title="Permanent link">&para;</a></h2>
+<p>In general, we can express the position of a material point <span class="arithmatex">\(\mathbf{X}\)</span> as a function of parametric coordinates <span class="arithmatex">\(\eta^{i}\)</span> (i=1,2,3), thus <span class="arithmatex">\(\mathbf{X}=\mathbf{X}\left(\eta^{i}\right)\)</span>. Then, a line element in the reference configuration is given by</p>
+<div class="arithmatex">\[ \begin{equation} d\mathbf{X}=\frac{\partial\mathbf{X}}{\partial\eta^{i}}d\eta^{i}\equiv\mathbf{G}_{i}d\eta^{i}\,,\label{eq:covariant-basis-material} \end{equation} \]</div>
+<p>where we use the implicit (Einstein) summation convention of indicial notation. Here, the vectors <span class="arithmatex">\(\mathbf{G}_{i}\)</span> are called the covariant basis vectors of <span class="arithmatex">\(\mathbf{X}\left(\eta^{i}\right)\)</span>, in the material frame. We may also express the motion in eq.\eqref{eq:motion-chi} as a function of the same parametric coordinates, such that the corresponding line element in the spatial frame is</p>
+<div class="arithmatex">\[ \begin{equation} d\mathbf{x}=\frac{\partial\boldsymbol{\chi}}{\partial\eta^{i}}d\eta^{i}\equiv\mathbf{g}_{i}d\eta^{i}\,,\label{eq:covariant-basis-spatial} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{g}_{i}\)</span>'s represent the covariant basis vector at <span class="arithmatex">\(\mathbf{x}=\boldsymbol{\chi}\left(\mathbf{X},t\right)\)</span> in the spatial frame. Since <span class="arithmatex">\(d\mathbf{x}\)</span> is related to <span class="arithmatex">\(d\mathbf{X}\)</span> by the deformation gradient as per eq.\eqref{eq:motion-gradient}, or <span class="arithmatex">\(d\mathbf{x}=\mathbf{F}\cdot d\mathbf{X}\)</span>, it can be shown that the deformation gradient is given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}=\mathbf{g}_{i}\otimes\mathbf{G}^{i}\,,\label{eq:defgrad-cov-cont} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{G}^{i}\)</span>'s represent the contravariant basis vector of <span class="arithmatex">\(\mathbf{X}\left(\eta^{i}\right)\)</span>, in the material frame. Covariant and contravariant basis vectors satisfy <span class="arithmatex">\(\mathbf{G}_{i}\cdot\mathbf{G}^{j}=\mathbf{G}^{i}\cdot\mathbf{G}_{j}=\delta_{j}^{i}\)</span>, where <span class="arithmatex">\(\delta_{j}^{i}\)</span> is the Kronecker delta. The same is true in the spatial frame. The expression for <span class="arithmatex">\(\mathbf{F}\)</span> in eq.\eqref{eq:defgrad-cov-cont} emphasizes that <span class="arithmatex">\(\mathbf{F}\)</span> is a <em>two-point tensor</em>: It has one leg in the material frame (<span class="arithmatex">\(\mathbf{G}^{i}\)</span>) and the other in the spatial frame (<span class="arithmatex">\(\mathbf{g}_{i}\)</span>). It follows from eq.\eqref{eq:defgrad-cov-cont} that covariant basis vectors in the material and spatial frames are related by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}\cdot\mathbf{G}_{j}=\mathbf{g}_{j}\,.\label{eq:cov-basis-xformation} \end{equation} \]</div>
+<p>Now consider that an elemental volume <span class="arithmatex">\(dV_{r}\)</span> in the reference configuration can be evaluated from</p>
+<div class="arithmatex">\[ dV_{r}=\left(\mathbf{G}_{1}d\eta^{1}\times\mathbf{G}_{2}d\eta^{2}\right)\cdot\mathbf{G}_{3}d\eta^{3}\equiv d\mathbf{A}\cdot\mathbf{G}_{3}d\eta^{3}\,, \]</div>
+<p>where <span class="arithmatex">\(d\mathbf{A}\)</span> is the vectorial representation of the elemental directed area <span class="arithmatex">\(\mathbf{G}_{1}d\eta^{1}\times\mathbf{G}_{2}d\eta^{2}\)</span>. Similarly, the elemental volume <span class="arithmatex">\(dV\)</span> in the current configuration is given by</p>
+<div class="arithmatex">\[ dV=\left(\mathbf{g}_{1}d\eta^{1}\times\mathbf{g}_{2}d\eta^{2}\right)\cdot\mathbf{g}_{3}d\eta^{3}\equiv d\mathbf{a}\cdot\mathbf{g}_{3}d\eta^{3}\,. \]</div>
+<p>Using eqs.\eqref{eq87} and \eqref{eq:cov-basis-xformation}, we may rewrite this expression as</p>
+<div class="arithmatex">\[ dV=d\mathbf{a}\cdot\mathbf{F}\cdot\mathbf{G}_{3}d\eta^{3}=JdV_{r}=Jd\mathbf{A}\cdot\mathbf{G}_{3}d\eta^{3}\,. \]</div>
+<p>From this general expression, we can find the relation between <span class="arithmatex">\(d\mathbf{a}\)</span> and <span class="arithmatex">\(d\mathbf{A}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} d\mathbf{a}=J\mathbf{F}^{-T}\cdot d\mathbf{A}\,,\label{eq:Nanson-formula} \end{equation} \]</div>
+<p>which is known as Nanson's formula <sup id="fnref:2.5-1"><a class="footnote-ref" href="#fn:2.5-1">1</a></sup>. It relates the change in surface area, and the reorientation of the surface normal, between the referential area <span class="arithmatex">\(d\mathbf{A}\)</span> and its corresponding area <span class="arithmatex">\(d\mathbf{a}\)</span> in the current configuration.</p>
+<p>Using the general expression for the deformation gradient in eq.\eqref{eq:defgrad-cov-cont}, it follows that the right Cauchy-Green tensor is given by</p>
+<div class="arithmatex">\[ \mathbf{C}=\mathbf{F}^{T}\cdot\mathbf{F}=g_{ij}\mathbf{G}^{i}\otimes\mathbf{G}^{j} \]</div>
+<p>where <span class="arithmatex">\(g_{ij}=\mathbf{g}_{i}\cdot\mathbf{g}_{j}\)</span> is called the covariant metric tensor in the spatial frame.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.5-1">
+<p>Bonet, Javier; Wood, Richard D.. "Nonlinear continuum mechanics for finite element analysis." <em>Cambridge University Press</em> (1997).&#160;<a class="footnote-backref" href="#fnref:2.5-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.4-axioms-of-conservation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.4 Axioms of Conservation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.4 Axioms of Conservation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.6-hyperelasticity/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.6 Hyperelasticity">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.6 Hyperelasticity
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

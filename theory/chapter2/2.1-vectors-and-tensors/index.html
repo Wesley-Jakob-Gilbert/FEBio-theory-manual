@@ -1,0 +1,991 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="This manual provides the theoretical background for FEBio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../../..">
+      
+      
+        <link rel="next" href="../2.2-the-directional-derivative/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.1 Vectors and Tensors - FEBio 4.12 - Theory Manual</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:vectors-and-tensors" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-header__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio 4.12 - Theory Manual
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.1 Vectors and Tensors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Chapter 2 - Continuum Mechanics
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio 4.12 - Theory Manual" class="md-nav__button md-logo" aria-label="FEBio 4.12 - Theory Manual" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    FEBio 4.12 - Theory Manual
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:vectors-and-tensors">2.1 Vectors and Tensors<a class="headerlink" href="#sec:vectors-and-tensors" title="Permanent link">&para;</a></h1>
+<p>It is assumed that the reader is familiar with the concepts of vectors and tensors. This section summarizes the notation and some useful relations that will be used throughout the manual.</p>
+<p>Vectors are denoted by small, bold letters, e.g. <strong>v</strong>. Their components will be denoted by <span class="arithmatex">\(v_{i}\)</span>, where, unless otherwise stated, Latin under scripts such as <span class="arithmatex">\(i\)</span> or <span class="arithmatex">\(I\)</span> will range from 1 to 3. In matrix form a vector will be represented as a column vector and its transpose as a row vector:</p>
+<div class="arithmatex">\[ \begin{equation} \begin{array}{cc} \mathbf{v}=\left(\begin{array}{c} v_{1}\\ v_{2}\\ v_{3} \end{array}\right),\quad &amp; \mathbf{v}^{T}=\left(\begin{array}{ccc} v_{1}, &amp; v_{2}, &amp; v_{3}\end{array}\right)\end{array}.\label{eq1} \end{equation} \]</div>
+<p>The following products are defined between vectors. Assume <strong>u</strong>, <strong>v</strong> are vectors. Also note that the Einstein summation convention is used throughout this manual <sup id="fnref:2.1-1"><a class="footnote-ref" href="#fn:2.1-1">1</a></sup>.</p>
+<p>The <em>dot</em> or <em>scalar product</em>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{u}\cdot\mathbf{v}=u_{i}v_{i}\,.\label{eq2} \end{equation} \]</div>
+<p>The <em>cross product</em>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{u}\times\mathbf{v}=\left[\begin{array}{c} u_{2}v_{3}-u_{3}v_{2}\\ u_{3}v_{1}-u_{1}v_{3}\\ u_{1}v_{2}-u_{2}v_{1} \end{array}\right]\,.\label{eq3} \end{equation} \]</div>
+<p>The <em>vector</em> <em>outer product</em>:</p>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{u}\otimes\mathbf{v}\right)_{ij}=u_{i}v_{j}\,.\label{eq4} \end{equation} \]</div>
+<p>Note that vectors are also known as first order tensors. Scalars are known as zero order tensors. The outer product, defined by equation \eqref{eq4}, is a second order tensor.</p>
+<p>Second order tensors are denoted by bold, capital letters, e.g. <strong><span class="arithmatex">\(\mathbf{A}\)</span></strong>. Some exceptions will be made to remain consistent with the literature. For instance, the Cauchy stress tensor is denoted by <span class="arithmatex">\(\mathbf{\boldsymbol{\sigma}}\)</span>. However, the nature of the objects will always be clear from the context. The following operations on tensors are defined. Assume <strong><span class="arithmatex">\(\mathbf{A}\)</span></strong> and <strong><span class="arithmatex">\(\mathbf{B}\)</span></strong> are second-order tensors.</p>
+<p>The <em>double contraction</em> or <em>tensor inner product</em> is defined as:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{A}:\mathbf{B}=A_{ij}B_{ij}\,.\label{eq5} \end{equation} \]</div>
+<p>The <em>trace</em> is defined as:</p>
+<div class="arithmatex">\[ \begin{equation} \tr\mathbf{A}=\mathbf{I}:\mathbf{A}=A_{ii}\,.\label{eq6} \end{equation} \]</div>
+<p>Here <span class="arithmatex">\(\mathbf{I}\)</span> is the second order identity tensor with components <span class="arithmatex">\(\delta_{ij}\)</span>.</p>
+<p>In general the components of tensors will change under a change of coordinate system. Nevertheless, certain intrinsic quantities associated with them will remain invariant under such a transformation. The scalar product between two vectors is such an example. The double contraction between two second-order tensors is another example. The following set of invariants for second-order tensors is commonly used:</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}I_{1} &amp; =\tr\mathbf{A},\\ I_{2} &amp; =\frac{1}{2}\left(\left(\tr\mathbf{A}\right)^{2}-\tr\mathbf{A}^{2}\right)\\ I_{3} &amp; =\det\mathbf{A}. \end{aligned} \,.\label{eq7} \end{equation} \]</div>
+<p>A tensor <strong><span class="arithmatex">\(\mathbf{S}\)</span></strong> is called symmetric if it is equal to its transpose:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=\mathbf{S}^{T}\,.\label{eq8} \end{equation} \]</div>
+<p>A tensor <strong><span class="arithmatex">\(\mathbf{W}\)</span></strong> is called anti-symmetric if it is equal to the negative of its transpose:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{W}=-\mathbf{W}^{T}\,.\label{eq9} \end{equation} \]</div>
+<p>Any second order tensor <strong><span class="arithmatex">\(\mathbf{A}\)</span></strong> can be written as the sum of a symmetric tensor <span class="arithmatex">\(\mathbf{S}\)</span> and an anti-symmetric tensor <strong><span class="arithmatex">\(\mathbf{W}\)</span></strong>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{A}=\mathbf{S}+\mathbf{W},\label{eq10} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=\frac{1}{2}\left(\mathbf{A}+\mathbf{A}^{T}\right),\mbox{\thinspace and\thinspace}\mathbf{W}=\frac{1}{2}\left(\mathbf{A}-\mathbf{A}^{T}\right).\label{eq11} \end{equation} \]</div>
+<p>Also note that for any tensor <strong><span class="arithmatex">\(\mathbf{B}\)</span></strong> the following holds:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{B}:\mathbf{A}=\mathbf{B}:\mathbf{S}\,,\quad\mathbf{B}:\mathbf{W}=\mathbf{0}\,.\label{eq12} \end{equation} \]</div>
+<p>With any anti-symmetric tensor a dual vector <strong><span class="arithmatex">\(\mathbf{w}\)</span></strong> can be associated such that,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{\hat{w}}\cdot\mathbf{u}=\mathbf{w}\times\mathbf{u}\,,\label{eq13} \end{equation} \]</div>
+<p>where the second order tensor <span class="arithmatex">\(\mathbf{\hat{w}}\)</span> is defined as,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{\hat{w}}=\left[\begin{array}{ccc} 0 &amp; -w_{3} &amp; w_{2}\\ w_{3} &amp; 0 &amp; -w_{1}\\ -w_{2} &amp; w_{1} &amp; 0 \end{array}\right]\,.\label{eq14} \end{equation} \]</div>
+<p>A second order <strong><span class="arithmatex">\(\mathbf{Q}\)</span></strong> tensor is called <em>orthogonal</em> if <span class="arithmatex">\(\mathbf{Q}^{-1}=\mathbf{Q}^{T}\)</span>.</p>
+<p>In the implementation of the FE method it is often convenient to write symmetric second-order tensors using <em>Voigt notation</em>. In this notation the components of a 2<span class="arithmatex">\(^{\mathrm{nd}}\)</span> order symmetric tensor <strong><span class="arithmatex">\(\mathbf{A}\)</span></strong> are arranged as a column vector:</p>
+<div class="arithmatex">\[ \begin{equation} \left[\mathbf{A}\right]=\left[\begin{array}{c} A_{11}\\ A_{22}\\ A_{33}\\ A_{12}\\ A_{23}\\ A_{13} \end{array}\right]\,.\label{eq15} \end{equation} \]</div>
+<p>Higher order tensors will be denoted by bold, capital, script symbols, e.g. <span class="arithmatex">\(\boldsymbol{\mathcal{A}}\)</span>. An example of a third-order tensor is the <em>permutation tensor</em> <span class="arithmatex">\(\mathcal{E}_{ijk}\)</span>, whose components are 1 for an even permutation of <span class="arithmatex">\(\left(1,2,3\right)\)</span>, -1 for an odd permutation of <span class="arithmatex">\(\left(1,2,3\right)\)</span> and zero otherwise. The permutation symbol is useful for expressing the cross-product of two vectors in index notation:</p>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{u}\times\mathbf{v}\right)_{i}=\mathcal{E}_{ijk}u_{j}v_{k}\,.\label{eq16} \end{equation} \]</div>
+<p>An example of a fourth-order tensor is the elasticity tensor <span class="arithmatex">\(\boldsymbol{\mathcal{C}}\)</span> which, in linear elasticity theory, relates the small strain tensor <span class="arithmatex">\(\mathbf{\boldsymbol{\varepsilon}}\)</span> and the Cauchy stress tensor <span class="arithmatex">\(\boldsymbol{\sigma}=\boldsymbol{\mathcal{C}}:\boldsymbol{\varepsilon}\)</span>.</p>
+<p>Higher order tensors can be constructed from second order tensors in a similar way as second order tensors can be constructed from vectors. If <span class="arithmatex">\(\mathbf{A}\)</span> and <span class="arithmatex">\(\mathbf{B}\)</span> are second order tensors, then the following fourth order tensors can be defind by requiring that the following must hold for any second order tensor <span class="arithmatex">\(\mathbf{X}\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\otimes\mathbf{B}\right):\mathbf{X}=\left(\mathbf{B}:\mathbf{X}\right)\mathbf{A}\,,\label{eq17} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\oslash\mathbf{B}\right):\mathbf{X}=\mathbf{A}\cdot\mathbf{X}\cdot\mathbf{B}^{T}\,,\label{eq18} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\obslash\mathbf{B}\right):\mathbf{X}=\mathbf{A}\cdot\mathbf{X}^{T}\cdot\mathbf{B}^{T}\,,\label{eq19} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\odot\mathbf{B}\right):\mathbf{X}=\frac{1}{2}\left(\mathbf{A}\cdot\mathbf{X}\cdot\mathbf{B}^{T}+\mathbf{A}\cdot\mathbf{X}^{T}\cdot\mathbf{B}^{T}\right)\,.\label{eq20} \end{equation} \]</div>
+<p>The Cartesian component forms of the operators <span class="arithmatex">\(\otimes\)</span>, <span class="arithmatex">\(\oslash\)</span>, <span class="arithmatex">\(\obslash\)</span> and <span class="arithmatex">\(\odot\)</span> are defined as follows:</p>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\otimes\mathbf{B}\right)_{ijkl}=\mathbf{A}_{ij}\mathbf{B}_{kl}\,,\label{eq21} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\oslash\mathbf{B}\right)_{ijkl}=\mathbf{A}_{ik}\mathbf{B}_{jl}\,,\label{eq22} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\obslash\mathbf{B}\right)_{ijkl}=A_{il}B_{jk}\,,\label{eq23} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{A}\odot\mathbf{B}\right)_{ijkl}=\frac{1}{2}\left(A_{ik}B_{jl}+A_{il}B_{jk}\right)\,.\label{eq24} \end{equation} \]</div>
+<p>The fourth order identity tensors are defined as:</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{A} &amp; =\underline{\mathcal{I}}:\mathbf{A}\,,\\ \mathbf{A}^{T} &amp; =\overline{\mathcal{I}}:\mathbf{A}\,, \end{aligned} \label{eq25} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\underline{\mathcal{I}}=\mathbf{I}\oslash\mathbf{I}\)</span> and <span class="arithmatex">\(\overline{\boldsymbol{\mathcal{I}}}=\mathbf{I}\obslash\mathbf{I}\)</span>. The components are given by:</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathcal{\underline{I}}_{ijkl} &amp; =\delta_{ik}\delta_{jl}\,,\\ \overline{\mathcal{I}}_{ijkl} &amp; =\delta_{il}\delta_{jk}\,. \end{aligned} \label{eq26} \end{equation} \]</div>
+<p>We may also define <span class="arithmatex">\(\boldsymbol{\mathcal{I}}=\frac{1}{2}\left(\underline{\boldsymbol{\mathcal{I}}}+\overline{\boldsymbol{\mathcal{I}}}\right)\)</span>, such that <span class="arithmatex">\(\boldsymbol{\mathcal{I}}:\mathbf{A}=\frac{1}{2}\left(\mathbf{A}+\mathbf{A}^{T}\right)\)</span> returns the symmetric part of <span class="arithmatex">\(\mathbf{A}\)</span>. In the special case when <span class="arithmatex">\(\mathbf{A}\)</span> is symmetric it follows that <span class="arithmatex">\(\underline{\mathcal{I}}:\mathbf{A}=\boldsymbol{\mathcal{I}}:\mathbf{A}=\mathbf{A}\)</span>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.1-1">
+<p>Lai, W. Michael; Rubin, David; Krempl, Erhard. "Introduction to continuum mechanics." <em>Butterworth-Heinemann/Elsevier</em> (2010).&#160;<a class="footnote-backref" href="#fnref:2.1-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.2-the-directional-derivative/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.2 The Directional Derivative">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.2 The Directional Derivative
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
