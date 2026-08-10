@@ -22,11 +22,7 @@
       "citations": 0,
       "figures": 0,
       "unhandled": 0,
-      "needs_review": [
-        "Unresolved \\ref target: 'chap:Element-Library'",
-        "Unresolved \\ref target: 'chap:Constitutive-Models'",
-        "Unresolved \\ref target: 'chap:Contact-and-Coupling'"
-      ]
+      "needs_review": []
     },
     {
       "section": "2.1",
@@ -103,9 +99,7 @@
       "citations": 11,
       "figures": 0,
       "unhandled": 0,
-      "needs_review": [
-        "Unresolved \\ref target: 'chap:Constitutive-Models'"
-      ]
+      "needs_review": []
     },
     {
       "section": "2.7",

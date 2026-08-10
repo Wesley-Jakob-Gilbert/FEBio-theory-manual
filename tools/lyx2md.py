@@ -903,21 +903,24 @@ def mathjax_eqn_id(label):
     return f"mjx-eqn:{label.replace(' ', '_')}"
 
 
-def build_relative_link(target_dir, target_file, ctx, anchor):
+def build_relative_link(target_dir, target_file, ctx, anchor=None):
     """Build a relative href from the current page (ctx.chapter_dir /
     ctx.section_file) to another page's #anchor, handling same-page,
     same-chapter-different-page, and cross-chapter cases. Every chapter
     lives in a sibling directory under docs/theory/ (chapter1/, chapter2/,
     ...), so a cross-chapter link is always exactly
     "../<target_dir>/<file>#anchor" -- no general-purpose path
-    relativization is needed.
+    relativization is needed. `anchor=None` (e.g. linking to a chapter's
+    first section, where there's no actual anchor id for the chapter's
+    own label on that page) links to the bare page instead.
     """
+    frag = f"#{anchor}" if anchor else ""
     same_page = target_file == ctx.section_file and target_dir == ctx.chapter_dir
     if same_page:
-        return f"#{anchor}"
+        return frag or "#"
     if target_dir == ctx.chapter_dir:
-        return f"{target_file}#{anchor}"
-    return f"../{target_dir}/{target_file}#{anchor}"
+        return f"{target_file}{frag}"
+    return f"../{target_dir}/{target_file}{frag}"
 
 
 def render_command_inset(spec, sub_items, ctx):
@@ -961,6 +964,20 @@ def render_command_inset(spec, sub_items, ctx):
                 return f"[{label_text}]({link})"
             return f"\\eqref{{{reference}}}"
         else:
+            # A \ref{} to a Chapter's own label (e.g. "chap:dynamics") --
+            # the published manual's own convention is "Chapter 3" with
+            # just the number hyperlinked, not the chapter's title
+            # repeated after the word "Chapter" already in the prose.
+            # Checked ahead of LABEL_REGISTRY since it's a distinct
+            # registry with different rendering rules (a chapter that
+            # exists in the source but isn't converted yet still has a
+            # correct *number* to show, just not a page to link to).
+            chap_entry = CHAPTER_LABEL_REGISTRY.get(reference)
+            if chap_entry:
+                if chap_entry["file"]:
+                    link = build_relative_link(chap_entry["dir"], chap_entry["file"], ctx)
+                    return f"[{chap_entry['number']}]({link})"
+                return str(chap_entry["number"])
             entry = LABEL_REGISTRY.get(reference)
             if entry and entry["file"]:
                 label_text = entry["title"] if entry["title"] != "Figure" else f"Figure ({entry['section']})"
@@ -1225,6 +1242,17 @@ LABEL_ANCHOR_RE = re.compile(r'<a id="([^"]+)"></a>')
 # link and flagged in needs_review.
 LABEL_REGISTRY = {}
 
+# Global registry mapping a Chapter's own \label{} (e.g.
+# "chap:continuum-mechanics") -> {"number": N, "file": ..., "dir": ...}.
+# Populated for *every* chapter in the source (not just converted ones) so
+# a \ref{} to a chapter can always show the correct chapter number, even
+# if that chapter isn't converted yet -- matching the published manual's
+# own convention of "Chapter 3" (just the number, hyperlinked) rather than
+# repeating the chapter's title after the word "Chapter". "file"/"dir" stay
+# None for a chapter that hasn't been converted, which render_command_inset
+# uses to decide whether the number should be a link or plain text.
+CHAPTER_LABEL_REGISTRY = {}
+
 # Global registry mapping an equation \label{} name -> {"section": sec_num,
 # "file": fname, "number": N}, where N is that equation's 1-indexed
 # position among AMS-numbered (\begin{equation}-wrapped) display equations
@@ -1356,6 +1384,22 @@ def main():
         chap_title, chap_label = extract_heading_label(raw_chap_title)
         chap_end_idx = chapter_boundaries[c_idx + 1][0] if c_idx + 1 < len(chapter_boundaries) else n
         sec_boundaries = [b for b in boundaries if b[1] == "Section" and c_bidx < b[0] < chap_end_idx]
+        # Chapter 1 instead carries its label in a separate Standard
+        # paragraph right after the heading rather than embedded in it --
+        # scan the chapter's intro (before its first Section) for that
+        # pattern too, so both are covered.
+        if not chap_label:
+            intro_end = sec_boundaries[0][0] if sec_boundaries else chap_end_idx
+            for item in top_items[c_bidx + 1: intro_end]:
+                if item[0] == "inset" and item[1] == "CommandInset label":
+                    for it in item[2]:
+                        if it[0] == "text":
+                            m = re.match(r'name\s+"([^"]+)"', it[1].strip())
+                            if m:
+                                chap_label = m.group(1)
+                                break
+        if chap_label:
+            CHAPTER_LABEL_REGISTRY[chap_label] = {"number": chap_num, "file": None, "dir": None}
         chapters_meta.append({
             "chap_num": chap_num,
             "title": chap_title,
@@ -1409,25 +1453,13 @@ def main():
             if label_name:
                 register_label(label_name, sec_num, title, fname, chap_dir)
 
-        # A Chapter's own \label{} (e.g. "chap:dynamics") is referenced
-        # from elsewhere in the manual via plain \ref{}. There's no
-        # dedicated chapter-landing page in this site's structure, so point
-        # it at the chapter's first section as the most reasonable target.
-        # Usually embedded in the heading itself (captured above as
-        # chap["label"]), but Chapter 1 instead carries it in a separate
-        # Standard paragraph right after the heading -- scan for that
-        # pattern too so both are covered.
-        if chap_sections:
-            if chap["label"]:
-                register_label(chap["label"], chap_sections[0]["sec_num"], chap["title"], chap_sections[0]["file"], chap_dir)
-            intro_items = top_items[chap["start_idx"] + 1: sec_boundaries[0][0] if sec_boundaries else chap["end_idx"]]
-            for item in intro_items:
-                if item[0] == "inset" and item[1] == "CommandInset label":
-                    for it in item[2]:
-                        if it[0] == "text":
-                            m = re.match(r'name\s+"([^"]+)"', it[1].strip())
-                            if m:
-                                register_label(m.group(1), chap_sections[0]["sec_num"], chap["title"], chap_sections[0]["file"], chap_dir)
+        # A Chapter's own \label{} (already found in Pass 1 and registered
+        # into CHAPTER_LABEL_REGISTRY with file/dir still None) now has a
+        # real target: there's no dedicated chapter-landing page in this
+        # site's structure, so point it at the chapter's first section.
+        if chap_sections and chap["label"]:
+            CHAPTER_LABEL_REGISTRY[chap["label"]]["file"] = chap_sections[0]["file"]
+            CHAPTER_LABEL_REGISTRY[chap["label"]]["dir"] = chap_dir
 
         chapters_output.append({
             "chap_num": chap_num,
