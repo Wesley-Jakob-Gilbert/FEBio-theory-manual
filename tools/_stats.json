@@ -1,9 +1,38 @@
 {
   "sections": [
     {
+      "section": "1.1",
+      "title": "Overview of FEBio",
+      "file": "1.1-overview-of-febio.md",
+      "chapter": 1,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "1.2",
+      "title": "About this document",
+      "file": "1.2-about-this-document.md",
+      "chapter": 1,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'chap:Element-Library'",
+        "Unresolved \\ref target: 'chap:Constitutive-Models'",
+        "Unresolved \\ref target: 'chap:Contact-and-Coupling'"
+      ]
+    },
+    {
       "section": "2.1",
       "title": "Vectors and Tensors",
       "file": "2.1-vectors-and-tensors.md",
+      "chapter": 2,
       "inline_formulas": 42,
       "display_formulas": 26,
       "citations": 1,
@@ -15,6 +44,7 @@
       "section": "2.2",
       "title": "The Directional Derivative",
       "file": "2.2-the-directional-derivative.md",
+      "chapter": 2,
       "inline_formulas": 10,
       "display_formulas": 6,
       "citations": 1,
@@ -26,6 +56,7 @@
       "section": "2.3",
       "title": "Cauchy Stress",
       "file": "2.3-cauchy-stress.md",
+      "chapter": 2,
       "inline_formulas": 21,
       "display_formulas": 1,
       "citations": 0,
@@ -37,6 +68,7 @@
       "section": "2.4",
       "title": "Axioms of Conservation",
       "file": "2.4-axioms-of-conservation.md",
+      "chapter": 2,
       "inline_formulas": 30,
       "display_formulas": 11,
       "citations": 0,
@@ -48,6 +80,7 @@
       "section": "2.5",
       "title": "Kinematics of the Continuum",
       "file": "2.5-kinematics-of-the-continuum.md",
+      "chapter": 2,
       "inline_formulas": 210,
       "display_formulas": 57,
       "citations": 1,
@@ -64,20 +97,21 @@
       "section": "2.6",
       "title": "Hyperelasticity",
       "file": "2.6-hyperelasticity.md",
+      "chapter": 2,
       "inline_formulas": 144,
       "display_formulas": 79,
       "citations": 11,
       "figures": 0,
       "unhandled": 0,
       "needs_review": [
-        "Unresolved \\ref target: 'chap:Constitutive-Models'",
-        "Unresolved \\ref target: 'eq87'"
+        "Unresolved \\ref target: 'chap:Constitutive-Models'"
       ]
     },
     {
       "section": "2.7",
       "title": "Biphasic Material",
       "file": "2.7-biphasic-material.md",
+      "chapter": 2,
       "inline_formulas": 26,
       "display_formulas": 6,
       "citations": 3,
@@ -89,6 +123,7 @@
       "section": "2.8",
       "title": "Biphasic-Solute Material",
       "file": "2.8-biphasic-solute-material.md",
+      "chapter": 2,
       "inline_formulas": 109,
       "display_formulas": 13,
       "citations": 14,
@@ -100,6 +135,7 @@
       "section": "2.9",
       "title": "Triphasic and Multiphasic Materials",
       "file": "2.9-triphasic-and-multiphasic-materials.md",
+      "chapter": 2,
       "inline_formulas": 66,
       "display_formulas": 15,
       "citations": 0,
@@ -111,6 +147,7 @@
       "section": "2.10",
       "title": "Constrained Reactive Mixture of Solids",
       "file": "2.10-constrained-reactive-mixture-of-solids.md",
+      "chapter": 2,
       "inline_formulas": 201,
       "display_formulas": 29,
       "citations": 6,
@@ -122,6 +159,7 @@
       "section": "2.11",
       "title": "Equilibrium Swelling",
       "file": "2.11-equilibrium-swelling.md",
+      "chapter": 2,
       "inline_formulas": 56,
       "display_formulas": 9,
       "citations": 0,
@@ -133,6 +171,7 @@
       "section": "2.12",
       "title": "Chemical Reactions",
       "file": "2.12-chemical-reactions.md",
+      "chapter": 2,
       "inline_formulas": 105,
       "display_formulas": 41,
       "citations": 0,
@@ -144,6 +183,7 @@
       "section": "2.13",
       "title": "Fluid Mechanics",
       "file": "2.13-fluid-mechanics.md",
+      "chapter": 2,
       "inline_formulas": 127,
       "display_formulas": 24,
       "citations": 0,
@@ -157,6 +197,7 @@
       "section": "2.14",
       "title": "Fluid-Structure Interactions",
       "file": "2.14-fluid-structure-interactions.md",
+      "chapter": 2,
       "inline_formulas": 27,
       "display_formulas": 15,
       "citations": 1,
@@ -168,6 +209,7 @@
       "section": "2.15",
       "title": "Hybrid Biphasic Material",
       "file": "2.15-hybrid-biphasic-material.md",
+      "chapter": 2,
       "inline_formulas": 137,
       "display_formulas": 17,
       "citations": 8,
@@ -181,89 +223,280 @@
       "section": "2.16",
       "title": "Fluid-Solutes Analyses",
       "file": "2.16-fluid-solutes-analyses.md",
+      "chapter": 2,
       "inline_formulas": 144,
       "display_formulas": 19,
       "citations": 12,
       "figures": 0,
       "unhandled": 0,
       "needs_review": []
+    },
+    {
+      "section": "3.1",
+      "title": "Weak formulation for Solid Materials",
+      "file": "3.1-weak-formulation-for-solid-materials.md",
+      "chapter": 3,
+      "inline_formulas": 27,
+      "display_formulas": 22,
+      "citations": 1,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigCentrifugalBodyForce.png' referenced (source path 'Figures/FigCentrifugalBodyForce.png') -- placeholder written to figs/FigCentrifugalBodyForce.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.2",
+      "title": "Weak formulation for biphasic materials",
+      "file": "3.2-weak-formulation-for-biphasic-materials.md",
+      "chapter": 3,
+      "inline_formulas": 115,
+      "display_formulas": 35,
+      "citations": 5,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.3",
+      "title": "Weak Formulation for Biphasic-Solute Materials",
+      "file": "3.3-weak-formulation-for-biphasic-solute-materials.md",
+      "chapter": 3,
+      "inline_formulas": 156,
+      "display_formulas": 62,
+      "citations": 3,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.4",
+      "title": "Weak Formulation for Multiphasic Materials",
+      "file": "3.4-weak-formulation-for-multiphasic-materials.md",
+      "chapter": 3,
+      "inline_formulas": 150,
+      "display_formulas": 87,
+      "citations": 2,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.5",
+      "title": "Computational Fluid Dynamics",
+      "file": "3.5-computational-fluid-dynamics.md",
+      "chapter": 3,
+      "inline_formulas": 184,
+      "display_formulas": 38,
+      "citations": 7,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.6",
+      "title": "Weak Formulation for FSI",
+      "file": "3.6-weak-formulation-for-fsi.md",
+      "chapter": 3,
+      "inline_formulas": 81,
+      "display_formulas": 131,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.7",
+      "title": "Weak Formulation for BFSI",
+      "file": "3.7-weak-formulation-for-bfsi.md",
+      "chapter": 3,
+      "inline_formulas": 154,
+      "display_formulas": 49,
+      "citations": 3,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.8",
+      "title": "Weak Formulation for Fluid-Solutes Analyses",
+      "file": "3.8-weak-formulation-for-fluid-solutes-analyses.md",
+      "chapter": 3,
+      "inline_formulas": 57,
+      "display_formulas": 39,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.9",
+      "title": "Newton-Raphson Method",
+      "file": "3.9-newton-raphson-method.md",
+      "chapter": 3,
+      "inline_formulas": 37,
+      "display_formulas": 30,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.10",
+      "title": "Generalized $\\alpha-$Method",
+      "file": "3.10-generalized-alpha-method.md",
+      "chapter": 3,
+      "inline_formulas": 26,
+      "display_formulas": 7,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
     }
   ],
   "totals": {
-    "inline_formulas": 1455,
-    "display_formulas": 368,
-    "citations": 58,
+    "inline_formulas": 2442,
+    "display_formulas": 868,
+    "citations": 83,
     "labels": 0,
     "refs": 0,
-    "figures": 3,
+    "figures": 4,
     "unhandled": 0
   },
   "needs_review": [],
-  "chapter_title": "Continuum Mechanics",
-  "nav": [
-    [
-      "2.1 Vectors and Tensors",
-      "theory/chapter2/2.1-vectors-and-tensors.md"
-    ],
-    [
-      "2.2 The Directional Derivative",
-      "theory/chapter2/2.2-the-directional-derivative.md"
-    ],
-    [
-      "2.3 Cauchy Stress",
-      "theory/chapter2/2.3-cauchy-stress.md"
-    ],
-    [
-      "2.4 Axioms of Conservation",
-      "theory/chapter2/2.4-axioms-of-conservation.md"
-    ],
-    [
-      "2.5 Kinematics of the Continuum",
-      "theory/chapter2/2.5-kinematics-of-the-continuum.md"
-    ],
-    [
-      "2.6 Hyperelasticity",
-      "theory/chapter2/2.6-hyperelasticity.md"
-    ],
-    [
-      "2.7 Biphasic Material",
-      "theory/chapter2/2.7-biphasic-material.md"
-    ],
-    [
-      "2.8 Biphasic-Solute Material",
-      "theory/chapter2/2.8-biphasic-solute-material.md"
-    ],
-    [
-      "2.9 Triphasic and Multiphasic Materials",
-      "theory/chapter2/2.9-triphasic-and-multiphasic-materials.md"
-    ],
-    [
-      "2.10 Constrained Reactive Mixture of Solids",
-      "theory/chapter2/2.10-constrained-reactive-mixture-of-solids.md"
-    ],
-    [
-      "2.11 Equilibrium Swelling",
-      "theory/chapter2/2.11-equilibrium-swelling.md"
-    ],
-    [
-      "2.12 Chemical Reactions",
-      "theory/chapter2/2.12-chemical-reactions.md"
-    ],
-    [
-      "2.13 Fluid Mechanics",
-      "theory/chapter2/2.13-fluid-mechanics.md"
-    ],
-    [
-      "2.14 Fluid-Structure Interactions",
-      "theory/chapter2/2.14-fluid-structure-interactions.md"
-    ],
-    [
-      "2.15 Hybrid Biphasic Material",
-      "theory/chapter2/2.15-hybrid-biphasic-material.md"
-    ],
-    [
-      "2.16 Fluid-Solutes Analyses",
-      "theory/chapter2/2.16-fluid-solutes-analyses.md"
-    ]
+  "chapters": [
+    {
+      "chap_num": 1,
+      "title": "Introduction",
+      "dir": "chapter1",
+      "nav": [
+        [
+          "1.1 Overview of FEBio",
+          "theory/chapter1/1.1-overview-of-febio.md"
+        ],
+        [
+          "1.2 About this document",
+          "theory/chapter1/1.2-about-this-document.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 2,
+      "title": "Continuum Mechanics",
+      "dir": "chapter2",
+      "nav": [
+        [
+          "2.1 Vectors and Tensors",
+          "theory/chapter2/2.1-vectors-and-tensors.md"
+        ],
+        [
+          "2.2 The Directional Derivative",
+          "theory/chapter2/2.2-the-directional-derivative.md"
+        ],
+        [
+          "2.3 Cauchy Stress",
+          "theory/chapter2/2.3-cauchy-stress.md"
+        ],
+        [
+          "2.4 Axioms of Conservation",
+          "theory/chapter2/2.4-axioms-of-conservation.md"
+        ],
+        [
+          "2.5 Kinematics of the Continuum",
+          "theory/chapter2/2.5-kinematics-of-the-continuum.md"
+        ],
+        [
+          "2.6 Hyperelasticity",
+          "theory/chapter2/2.6-hyperelasticity.md"
+        ],
+        [
+          "2.7 Biphasic Material",
+          "theory/chapter2/2.7-biphasic-material.md"
+        ],
+        [
+          "2.8 Biphasic-Solute Material",
+          "theory/chapter2/2.8-biphasic-solute-material.md"
+        ],
+        [
+          "2.9 Triphasic and Multiphasic Materials",
+          "theory/chapter2/2.9-triphasic-and-multiphasic-materials.md"
+        ],
+        [
+          "2.10 Constrained Reactive Mixture of Solids",
+          "theory/chapter2/2.10-constrained-reactive-mixture-of-solids.md"
+        ],
+        [
+          "2.11 Equilibrium Swelling",
+          "theory/chapter2/2.11-equilibrium-swelling.md"
+        ],
+        [
+          "2.12 Chemical Reactions",
+          "theory/chapter2/2.12-chemical-reactions.md"
+        ],
+        [
+          "2.13 Fluid Mechanics",
+          "theory/chapter2/2.13-fluid-mechanics.md"
+        ],
+        [
+          "2.14 Fluid-Structure Interactions",
+          "theory/chapter2/2.14-fluid-structure-interactions.md"
+        ],
+        [
+          "2.15 Hybrid Biphasic Material",
+          "theory/chapter2/2.15-hybrid-biphasic-material.md"
+        ],
+        [
+          "2.16 Fluid-Solutes Analyses",
+          "theory/chapter2/2.16-fluid-solutes-analyses.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 3,
+      "title": "The Nonlinear FE Method",
+      "dir": "chapter3",
+      "nav": [
+        [
+          "3.1 Weak formulation for Solid Materials",
+          "theory/chapter3/3.1-weak-formulation-for-solid-materials.md"
+        ],
+        [
+          "3.2 Weak formulation for biphasic materials",
+          "theory/chapter3/3.2-weak-formulation-for-biphasic-materials.md"
+        ],
+        [
+          "3.3 Weak Formulation for Biphasic-Solute Materials",
+          "theory/chapter3/3.3-weak-formulation-for-biphasic-solute-materials.md"
+        ],
+        [
+          "3.4 Weak Formulation for Multiphasic Materials",
+          "theory/chapter3/3.4-weak-formulation-for-multiphasic-materials.md"
+        ],
+        [
+          "3.5 Computational Fluid Dynamics",
+          "theory/chapter3/3.5-computational-fluid-dynamics.md"
+        ],
+        [
+          "3.6 Weak Formulation for FSI",
+          "theory/chapter3/3.6-weak-formulation-for-fsi.md"
+        ],
+        [
+          "3.7 Weak Formulation for BFSI",
+          "theory/chapter3/3.7-weak-formulation-for-bfsi.md"
+        ],
+        [
+          "3.8 Weak Formulation for Fluid-Solutes Analyses",
+          "theory/chapter3/3.8-weak-formulation-for-fluid-solutes-analyses.md"
+        ],
+        [
+          "3.9 Newton-Raphson Method",
+          "theory/chapter3/3.9-newton-raphson-method.md"
+        ],
+        [
+          "3.10 Generalized $\\alpha-$Method",
+          "theory/chapter3/3.10-generalized-alpha-method.md"
+        ]
+      ]
+    }
   ]
 }

@@ -10,7 +10,6 @@ theme:
     text: 'Roboto'
     code: 'Roboto Mono'
   features:
-    - navigation.tabs
     - navigation.top
     - navigation.footer
     - search.highlight
@@ -33,7 +32,10 @@ extra_javascript:
   - js/mathjax_config.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 nav:
-  - Home: index.md
+  - Preface: index.md
+  - Chapter 1 - Introduction:
+    - 1.1 Overview of FEBio: theory/chapter1/1.1-overview-of-febio.md
+    - 1.2 About this document: theory/chapter1/1.2-about-this-document.md
   - Chapter 2 - Continuum Mechanics:
     - 2.1 Vectors and Tensors: theory/chapter2/2.1-vectors-and-tensors.md
     - 2.2 The Directional Derivative: theory/chapter2/2.2-the-directional-derivative.md
@@ -51,3 +53,14 @@ nav:
     - 2.14 Fluid-Structure Interactions: theory/chapter2/2.14-fluid-structure-interactions.md
     - 2.15 Hybrid Biphasic Material: theory/chapter2/2.15-hybrid-biphasic-material.md
     - 2.16 Fluid-Solutes Analyses: theory/chapter2/2.16-fluid-solutes-analyses.md
+  - Chapter 3 - The Nonlinear FE Method:
+    - 3.1 Weak formulation for Solid Materials: theory/chapter3/3.1-weak-formulation-for-solid-materials.md
+    - 3.2 Weak formulation for biphasic materials: theory/chapter3/3.2-weak-formulation-for-biphasic-materials.md
+    - 3.3 Weak Formulation for Biphasic-Solute Materials: theory/chapter3/3.3-weak-formulation-for-biphasic-solute-materials.md
+    - 3.4 Weak Formulation for Multiphasic Materials: theory/chapter3/3.4-weak-formulation-for-multiphasic-materials.md
+    - 3.5 Computational Fluid Dynamics: theory/chapter3/3.5-computational-fluid-dynamics.md
+    - 3.6 Weak Formulation for FSI: theory/chapter3/3.6-weak-formulation-for-fsi.md
+    - 3.7 Weak Formulation for BFSI: theory/chapter3/3.7-weak-formulation-for-bfsi.md
+    - 3.8 Weak Formulation for Fluid-Solutes Analyses: theory/chapter3/3.8-weak-formulation-for-fluid-solutes-analyses.md
+    - 3.9 Newton-Raphson Method: theory/chapter3/3.9-newton-raphson-method.md
+    - 3.10 Generalized $\alpha-$Method: theory/chapter3/3.10-generalized-alpha-method.md

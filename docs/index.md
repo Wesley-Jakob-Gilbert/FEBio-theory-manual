@@ -1,30 +1,28 @@
-# FEBio 4.12 — Theory Manual
+# Preface
 
-This is a pilot MkDocs conversion of the [FEBio Theory Manual](https://help.febio.org/), covering **Chapter 2: Continuum Mechanics**.
+This is a pilot MkDocs conversion of the [FEBio Theory Manual](https://help.febio.org/), currently covering **Chapter 1
+(Introduction), Chapter 2 (Continuum Mechanics), and Chapter 3 (The Nonlinear FE Method)**, with more chapters to follow.
 
 The manual was originally authored in [LyX](https://www.lyx.org/) (`FEBio_Theory_Manual.lyx`) and has been converted to Markdown using a
 custom, deterministic converter (`tools/lyx2md.py`) so that it can be published as a searchable, versioned static site with
 [MkDocs](https://www.mkdocs.org/) and the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme, following the
-same conventions established by the [FEBio Feature Manual](https://github.com/febiosoftware) build.
+same conventions established by the [FEBio Feature Manual](https://github.com/febiosoftware/febio-feature-manual) build.
 
-## Chapter 2 — Continuum Mechanics
-
-This chapter contains an overview of some of the important concepts from continuum mechanics and establishes some of the notation and
-terminology used in the rest of the FEBio documentation: deformation, stress and strain, hyperelasticity, and virtual work — later used
-to derive the nonlinear finite element equations.
-
-Use the navigation menu (or the tabs above) to browse sections 2.1 through 2.16.
+Use the navigation menu on the left to browse by chapter and section.
 
 ## About this pilot
 
-* **Source:** `source/ch2.lyx`, a vendored copy of `ch2.lyx` (extracted from `FEBio_Theory_Manual.lyx`, lines 808–16401), checked into
-  this repository so it builds standalone from a bare clone.
+* **Source:** `source/FEBio_Theory_Manual.lyx`, a vendored copy of the complete manual, checked into this repository so it builds
+  standalone from a bare clone. Which chapters actually get converted into pages is controlled by `CHAPTERS_TO_CONVERT` in
+  `tools/lyx2md.py`.
 * **Converter:** `tools/lyx2md.py` — a dependency-free, deterministic LyX → Markdown parser (see `README.md` for details).
 * **Bibliography:** citations are resolved against `source/FEBio3.bib` and rendered as page-level Markdown footnotes.
 * **Equations:** rendered with [MathJax](https://www.mathjax.org/) via `pymdownx.arithmatex` (`generic` mode), using the same
-  `\( ... \)` / `\[ ... \]` delimiters and `ams` ▸ `\eqref` numbering convention as the Feature Manual.
-* **Figures:** the three images in section 2.5 aren't part of the pilot's LyX/BibTeX inputs, so `build.py` fetches them from the
-  upstream [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio) repository at build time.
+  `\( ... \)` / `\[ ... \]` delimiters and `ams` ▸ `\eqref` numbering convention as the Feature Manual. Since each section is a
+  separate page, a same-page `\eqref{}` is left for MathJax to resolve on its own, but a reference to an equation defined in a
+  *different* section or chapter is resolved at build time to a link with an explicit page-local number, e.g. `(2.5-35)`.
+* **Figures:** images that aren't part of the pilot's LyX/BibTeX inputs are fetched by `build.py` from the upstream
+  [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio) repository at build time.
 
 See `CONVERSION_NOTES.md` in the repository root for a per-section breakdown of what converted cleanly and what still needs a human
 pass.

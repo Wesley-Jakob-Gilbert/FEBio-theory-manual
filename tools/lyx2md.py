@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 lyx2md.py -- Deterministic LyX -> Markdown converter for the FEBio Theory
-Manual, Chapter 2 (Continuum Mechanics).
+Manual. Started as a Chapter 2 (Continuum Mechanics) single-chapter pilot;
+now handles the complete manual, though CHAPTERS_TO_CONVERT below limits
+which chapters actually produce output pages at any given time.
 
 No external dependencies (stdlib only).
 
@@ -11,15 +13,14 @@ Usage:
 Reads (checked in this order so the repo is self-contained for CI/GitHub
 Actions, but still picks up live edits from the original workspace input
 directory during local development):
-    source/ch2.lyx           (vendored copy, checked into this repo)
+    source/FEBio_Theory_Manual.lyx   (vendored copy, checked into this repo)
     source/FEBio3.bib
-    ../febio-docs/ch2.lyx    (fallback: sibling workspace dir, if present)
+    ../febio-docs/FEBio_Theory_Manual.lyx   (fallback: sibling workspace dir, if present)
     ../febio-docs/FEBio3.bib
 
 Writes:
-    docs/theory/chapter2/2.N-slug.md   (one file per top-level \begin_layout Section)
-    tools/_nav.json                    (nav entries consumed by build.py)
-    tools/_stats.json                  (conversion statistics consumed by build.py / CONVERSION_NOTES)
+    docs/theory/chapter<N>/<N>.M-slug.md   (one file per converted Section)
+    tools/_stats.json                      (conversion statistics consumed by build.py / CONVERSION_NOTES)
 
 Design
 ------
@@ -67,15 +68,25 @@ def _first_existing(*candidates):
 # Fall back to the sibling workspace directory this pilot was originally
 # developed against, for convenience during local iteration.
 LYX_PATH = _first_existing(
-    os.path.join(ROOT, "source", "ch2.lyx"),
-    os.path.join(ROOT, "..", "febio-docs", "ch2.lyx"),
+    os.path.join(ROOT, "source", "FEBio_Theory_Manual.lyx"),
+    os.path.join(ROOT, "..", "febio-docs", "FEBio_Theory_Manual.lyx"),
 )
 BIB_PATH = _first_existing(
     os.path.join(ROOT, "source", "FEBio3.bib"),
     os.path.join(ROOT, "..", "febio-docs", "FEBio3.bib"),
 )
-OUT_DIR = os.path.join(ROOT, "docs", "theory", "chapter2")
-FIGS_DIR = os.path.join(OUT_DIR, "figs")
+DOCS_THEORY_ROOT = os.path.join(ROOT, "docs", "theory")
+
+# Which chapters to actually convert this run, by their 1-indexed position
+# among \begin_layout Chapter entries in the full manual (Introduction=1,
+# Continuum Mechanics=2, The Nonlinear FE Method=3, ...). Chapters not
+# listed here are still scanned for their titles/boundaries (so section
+# numbering and cross-chapter \ref{}/\eqref{} resolution stays correct
+# regardless of conversion order) but produce no output files -- a
+# reference into an unconverted chapter degrades the same way an
+# out-of-scope reference already does (left unresolved, flagged in
+# needs_review), not a crash.
+CHAPTERS_TO_CONVERT = {1, 2, 3}
 
 STATS = {
     "sections": [],
@@ -398,10 +409,16 @@ def slugify(title):
 # -----------------------------------------------------------------------
 
 class RenderCtx:
-    def __init__(self, bib, section_num, section_file=None):
+    def __init__(self, bib, section_num, section_file=None, chapter_dir=None):
         self.bib = bib
         self.section_num = section_num       # e.g. "2.1"
         self.section_file = section_file     # e.g. "2.1-vectors-and-tensors.md"
+        self.chapter_dir = chapter_dir       # e.g. "chapter2" -- which chapter's
+                                              # output directory this page lives in,
+                                              # needed to build correct relative
+                                              # links for cross-chapter references
+                                              # (docs/theory/chapter1/ vs chapter2/
+                                              # are sibling directories)
         self.citations_used = []             # ordered list of (key, footnote_index)
         self.citation_index = {}             # key -> footnote number within this page
         self.eq_counter = 0                  # per-section equation counter
@@ -725,6 +742,22 @@ def render_items_inline(items, ctx):
             spec, sub_items = rest
             # Nested layout inside inline content (rare: Plain Layout inside Float/Tabular)
             out += render_items_inline(sub_items, ctx)
+    # LyX scopes character formatting (\series/\emph/\shape/\family) to a
+    # single paragraph/layout -- it implicitly resets at \end_layout and
+    # does not require an explicit "...default" toggle first (confirmed:
+    # table cells in Chapter 3 end with e.g. "\series bold\nI/J\n\end_layout"
+    # and no closing \series default at all). Auto-close any marker left
+    # open at the end of this call so it can never bleed into whatever the
+    # *caller* appends next -- without this, an unclosed "**" from one
+    # table cell would pair against the next available "**" anywhere later
+    # in the surrounding text (e.g. a different cell's opening marker),
+    # producing a bogus bold span across everything in between.
+    if state["bold"]:
+        out += "**"
+    if state["emph"] or state["shape_italic"]:
+        out += "_"
+    if state["tt"]:
+        out += "`"
     # normalize whitespace introduced by line joins; LyX continuation lines
     # begin with a single leading space which already provides the needed
     # word-separating space, so a straight concatenation is correct. Any
@@ -738,10 +771,60 @@ def render_items_inline(items, ctx):
     out = re.sub(r"\n[ \t]+", "\n", out)
     out = re.sub(r"[ \t]+\n", "\n", out)
     out = fix_emphasis_whitespace(out)
+    # A Markdown table needs a *single* real newline between every row (no
+    # blank lines allowed inside it, unlike the \n\n used elsewhere to
+    # separate blocks) -- exactly the "stray single newline" shape the
+    # substitution above collapses to a space. render_tabular() protects
+    # its row breaks with TABLE_ROW_BREAK so they survive that pass
+    # unchanged; restore them to real newlines now that it's done.
+    out = out.replace(TABLE_ROW_BREAK, "\n")
     return out
 
 
 INSET_HEAD_RE = re.compile(r"^(\S+)(?:\s+(.*))?$")
+
+ERT_HREF_RE = re.compile(r"\\href\{([^}]*)\}\{(.*)\}\s*$", re.DOTALL)
+ERT_EMPH_RE = re.compile(r"\\emph\{([^}]*)\}")
+
+
+def render_ert(sub_items, ctx):
+    """ERT ("evil red text") holds raw LaTeX source, not normal LyX
+    character-formatted prose -- e.g. \\href{url}{\\emph{link text}} for a
+    hyperlink LyX has no native inset for. It can't be rendered through
+    render_items_inline()'s normal text handling for two reasons: (1) that
+    would also pick up the inset's own "status open" attribute line as if
+    it were content (mirroring the Box/Float attribute-lines pattern, so
+    only the nested Plain Layout is real content), and (2) LyX encodes
+    each literal backslash in the LaTeX source as a standalone
+    "\\backslash" token line followed immediately by the rest of that
+    command with *no* inserted whitespace, which render_items_inline's
+    prose-joining rules (that assume a leading space means a real
+    word-separating space) would corrupt into something like
+    "\\backslashhref{...}".
+
+    Only \\href{}{} occurs anywhere in this document as of this writing
+    (confirmed by scanning every ERT inset), so that's the one pattern
+    handled -- rendered as a real Markdown link, unwrapping a nested
+    \\emph{} in the link text to Markdown emphasis rather than dropping it.
+    Anything else is flagged for manual review instead of silently
+    guessed at.
+    """
+    raw_parts = []
+    for item in sub_items:
+        if item[0] == "layout" and item[1] == "Plain Layout":
+            for it in item[2]:
+                if it[0] == "text":
+                    raw_parts.append("\\" if it[1] == "\\backslash" else it[1])
+    raw = "".join(raw_parts).strip()
+    if raw in ("", "\\-"):
+        return ""
+    m = ERT_HREF_RE.search(raw)
+    if m:
+        url, link_text = m.group(1), m.group(2)
+        link_text = ERT_EMPH_RE.sub(r"_\1_", link_text).strip()
+        return f"[{link_text}]({url})"
+    ctx.needs_review.append(f"ERT inset with content: {raw!r}")
+    return f"<!-- ERT: {raw} -->"
 
 
 def render_inset(spec, sub_items, ctx):
@@ -759,13 +842,7 @@ def render_inset(spec, sub_items, ctx):
     if kind == "Newpage":
         return ""
     if kind == "ERT":
-        # Evaluate: usually empty decorative ERT; render inline text if any
-        text = render_items_inline(sub_items, ctx)
-        text = text.strip()
-        if text and text not in ("", "\\-"):
-            ctx.needs_review.append(f"ERT inset with content: {text!r}")
-            return f"<!-- ERT: {text} -->"
-        return ""
+        return render_ert(sub_items, ctx)
     if kind == "Float":
         return render_float(spec, sub_items, ctx)
     if kind == "Caption":
@@ -774,6 +851,21 @@ def render_inset(spec, sub_items, ctx):
         return render_graphics(sub_items, ctx)
     if kind == "Tabular":
         return render_tabular(sub_items, ctx)
+    if kind == "Box":
+        # Purely decorative in print (border/background/frame styling around
+        # its content, e.g. a figure); Markdown has no equivalent, so just
+        # render the content transparently. sub_items' leading lines are
+        # box attributes (position, width, thickness, ...), which -- like
+        # Float's attribute lines -- are plain 'text' items and get skipped
+        # naturally by only processing 'layout' items.
+        return "".join(
+            render_items_inline(item[2], ctx) for item in sub_items if item[0] == "layout"
+        )
+    if kind == "VSpace":
+        # Decorative vertical whitespace (\vspace-equivalent); Markdown/CSS
+        # already handles paragraph spacing, so there's nothing meaningful
+        # to emit -- same treatment as Newpage above.
+        return ""
     # Unhandled inset kind
     ctx.unhandled_count += 1
     ctx.needs_review.append(f"Unhandled inset type: {spec!r}")
@@ -798,6 +890,34 @@ def render_formula_inset(sub_items, ctx):
     else:
         inner = body
     return "\n\n\\[\n" + inner + "\n\\]\n\n"
+
+
+def mathjax_eqn_id(label):
+    """MathJax builds an equation's DOM id as "mjx-eqn:<label>", but first
+    sanitizes the label -- confirmed empirically (only one label in this
+    document contains a space, "eq:virtual work") that it replaces spaces
+    with underscores, giving "mjx-eqn:eq:virtual_work", not a literal
+    space. A link built from the raw label would point at a nonexistent
+    id and silently fail to navigate to the right anchor.
+    """
+    return f"mjx-eqn:{label.replace(' ', '_')}"
+
+
+def build_relative_link(target_dir, target_file, ctx, anchor):
+    """Build a relative href from the current page (ctx.chapter_dir /
+    ctx.section_file) to another page's #anchor, handling same-page,
+    same-chapter-different-page, and cross-chapter cases. Every chapter
+    lives in a sibling directory under docs/theory/ (chapter1/, chapter2/,
+    ...), so a cross-chapter link is always exactly
+    "../<target_dir>/<file>#anchor" -- no general-purpose path
+    relativization is needed.
+    """
+    same_page = target_file == ctx.section_file and target_dir == ctx.chapter_dir
+    if same_page:
+        return f"#{anchor}"
+    if target_dir == ctx.chapter_dir:
+        return f"{target_file}#{anchor}"
+    return f"../{target_dir}/{target_file}#{anchor}"
 
 
 def render_command_inset(spec, sub_items, ctx):
@@ -831,19 +951,32 @@ def render_command_inset(spec, sub_items, ctx):
         reference = attrs.get("reference", "")
         if cmd == "eqref":
             eq_entry = EQ_LABEL_REGISTRY.get(reference)
-            if eq_entry and eq_entry["file"] and eq_entry["file"] != ctx.section_file:
-                # Cross-section: MathJax can't resolve this (separate page,
-                # separate auto-numbering), so resolve it statically instead
-                # of emitting \eqref{} (which would just render as "???").
+            if eq_entry and eq_entry["file"] and (eq_entry["file"] != ctx.section_file or eq_entry["dir"] != ctx.chapter_dir):
+                # Cross-section (possibly cross-chapter): MathJax can't
+                # resolve this (separate page, separate auto-numbering), so
+                # resolve it statically instead of emitting \eqref{} (which
+                # would just render as "???").
                 label_text = f"({eq_entry['section']}-{eq_entry['number']})"
-                return f"[{label_text}]({eq_entry['file']}#mjx-eqn:{reference})"
+                link = build_relative_link(eq_entry["dir"], eq_entry["file"], ctx, mathjax_eqn_id(reference))
+                return f"[{label_text}]({link})"
             return f"\\eqref{{{reference}}}"
         else:
             entry = LABEL_REGISTRY.get(reference)
-            if entry:
+            if entry and entry["file"]:
                 label_text = entry["title"] if entry["title"] != "Figure" else f"Figure ({entry['section']})"
-                target_file = entry["file"] or ""
-                link = f"{target_file}#{reference}" if target_file and target_file != ctx.section_file else f"#{reference}"
+                link = build_relative_link(entry["dir"], entry["file"], ctx, reference)
+                return f"[{label_text}]({link})"
+            # A plain \ref{} (LatexCommand "ref", not "eqref") can still
+            # target an equation label -- unusual (normally \eqref{} is
+            # used for that, to get the auto-parenthesized number), but it
+            # happens at least once in this document (eq87, referenced via
+            # plain \ref from section 2.6) and is a real, resolvable label,
+            # not a broken reference -- LABEL_REGISTRY only ever holds
+            # subsection/figure labels, so it alone can't find it.
+            eq_entry = EQ_LABEL_REGISTRY.get(reference)
+            if eq_entry and eq_entry["file"]:
+                label_text = f"({eq_entry['section']}-{eq_entry['number']})"
+                link = build_relative_link(eq_entry["dir"], eq_entry["file"], ctx, mathjax_eqn_id(reference))
                 return f"[{label_text}]({link})"
             ctx.needs_review.append(f"Unresolved \\ref target: {reference!r}")
             return f"[{reference}](#{slugify_ref(reference)})"
@@ -890,7 +1023,6 @@ def render_float(spec, sub_items, ctx):
                 fig_anchor = anchor_match.group(0) if anchor_match else ""
                 caption_md = LABEL_ANCHOR_RE.sub("", caption_raw).strip()
                 caption_md = re.sub(r"\s+", " ", caption_md)
-    ctx.fig_counter += 1
     out = "\n\n"
     out += (fig_anchor + "\n\n" if fig_anchor else "") + image_md
     if caption_md:
@@ -912,6 +1044,7 @@ def render_graphics(sub_items, ctx):
     if not filename:
         ctx.needs_review.append("Graphics inset with no filename")
         return "<!-- MISSING GRAPHICS FILENAME -->"
+    ctx.fig_counter += 1
     base = os.path.basename(filename)
     name_no_ext = os.path.splitext(base)[0]
     ctx.needs_review.append(
@@ -932,17 +1065,67 @@ def render_graphics(sub_items, ctx):
     return f"![{name_no_ext}](figs/{base}){attr}"
 
 
+TABLE_CELL_SPAN_RE = re.compile(r'multicolumn="[12]"|multirow="[1-9]')
+TABLE_ROW_BREAK = "\x01"
+
+
 def render_tabular(sub_items, ctx):
-    # Not present in ch2.lyx (no Tabular insets), but implemented for completeness.
+    """LyX's tabular format is *not* the usual \\begin_layout/\\begin_inset
+    keyword syntax -- inside a Tabular inset it switches to an embedded
+    pseudo-XML dialect (<lyxtabular>, <column>, <row>, <cell>). parse_flat
+    doesn't understand that dialect, so these lines just come through as
+    plain ('text', line) items; the only *real* structure inside them that
+    parse_flat *does* recognize is each cell's content, wrapped in an
+    ordinary \\begin_inset Text ... \\end_inset (which is correctly
+    balanced/parsed already). So: use the <row>/<cell> text markers purely
+    as delimiters to group the Text insets we do get, and render each
+    cell's content the normal way.
+
+    Basic Markdown tables can't represent merged cells (colspan/rowspan);
+    none occur anywhere in this document as of this writing, so this
+    covers every real table, but a merged cell is flagged for manual
+    review rather than silently producing a misaligned table if one ever
+    shows up.
+    """
     rows = []
-    for kind, spec, items in sub_items:
-        if kind == "inset" and spec.startswith("Row") or spec == "Row":
-            pass
-    # Fallback generic renderer: look for nested 'Cell' insets grouped by 'Row'
-    # LyX tabular format: features nested insets we won't fully model; if
-    # encountered, flag for manual review.
-    ctx.needs_review.append("Tabular inset encountered -- rendered best-effort; verify manually.")
-    return "<!-- TABLE: manual review needed -->"
+    current_row = None
+    has_spanning = False
+    for item in sub_items:
+        if item[0] == "text":
+            line = item[1].strip()
+            if line.startswith("<row"):
+                current_row = []
+            elif line == "</row>":
+                if current_row is not None:
+                    rows.append(current_row)
+                current_row = None
+            elif line.startswith("<cell") and TABLE_CELL_SPAN_RE.search(line):
+                has_spanning = True
+        elif item[0] == "inset" and item[1] == "Text" and current_row is not None:
+            cell_parts = [
+                render_items_inline(sub[2], ctx) for sub in item[2] if sub[0] == "layout"
+            ]
+            cell_text = re.sub(r"\s+", " ", " ".join(cell_parts)).strip()
+            cell_text = cell_text.replace("|", "\\|")
+            current_row.append(cell_text)
+
+    if has_spanning:
+        ctx.needs_review.append(
+            "Tabular inset has merged cells (multicolumn/multirow) -- not "
+            "representable in plain Markdown tables; rendered best-effort."
+        )
+    if not rows:
+        ctx.needs_review.append("Tabular inset had no parsable rows")
+        return "\n\n<!-- TABLE: could not parse -->\n\n"
+
+    ncols = max(len(r) for r in rows)
+    pad = lambda r: r + [""] * (ncols - len(r))  # noqa: E731
+
+    header, *body = rows
+    lines = ["| " + " | ".join(pad(header)) + " |", "|" + "|".join(["---"] * ncols) + "|"]
+    lines += ["| " + " | ".join(pad(r)) + " |" for r in body]
+
+    return "\n\n" + TABLE_ROW_BREAK.join(lines) + "\n\n"
 
 
 # -----------------------------------------------------------------------
@@ -987,15 +1170,20 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             title, anchor = extract_heading_label(raw_title)
             attr = f" {{: #{anchor} }}" if anchor else ""
             md_parts.append(f"\n\n## {title}{attr}\n")
-            if anchor:
-                register_label(anchor, ctx.section_num, title)
+            # NOTE: do not re-register this label here. The prescan pass in
+            # main() already registered it (correctly, with its real
+            # filename) before rendering began; re-registering here with no
+            # filename argument used to silently overwrite that entry with
+            # file=None the moment *this* section got rendered, breaking
+            # any *later*-rendered section's cross-page link to it (it
+            # would resolve to a same-page "#anchor" instead) -- confirmed
+            # this was live: 2.10's reference to 2.6.8 was broken.
         elif spec == "Subsubsection":
             raw_title = render_items_inline(sub_items, ctx).strip()
             title, anchor = extract_heading_label(raw_title)
             attr = f" {{: #{anchor} }}" if anchor else ""
             md_parts.append(f"\n\n### {title}{attr}\n")
-            if anchor:
-                register_label(anchor, ctx.section_num, title)
+            # see NOTE above -- same fix, same reason.
         elif spec == "Standard":
             body = render_paragraph(spec, sub_items, ctx)
             if body:
@@ -1060,7 +1248,7 @@ LABEL_REGISTRY = {}
 EQ_LABEL_REGISTRY = {}
 
 
-def prescan_equation_labels(items, sec_num, fname, counter):
+def prescan_equation_labels(items, sec_num, fname, counter, chapter_dir=None):
     """Walk a section's body items (pre-render) to find display-equation
     \\label{} occurrences and register each one's 1-indexed position among
     that page's AMS-numbered equations into EQ_LABEL_REGISTRY. `counter`
@@ -1083,10 +1271,11 @@ def prescan_equation_labels(items, sec_num, fname, counter):
                     EQ_LABEL_REGISTRY[lbl] = {
                         "section": sec_num,
                         "file": fname,
+                        "dir": chapter_dir,
                         "number": counter[0],
                     }
         elif item[0] in ("inset", "layout"):
-            prescan_equation_labels(item[2], sec_num, fname, counter)
+            prescan_equation_labels(item[2], sec_num, fname, counter, chapter_dir)
 
 
 def strip_label_markup(title):
@@ -1104,8 +1293,13 @@ def extract_heading_label(raw_title):
     return clean, anchor
 
 
-def register_label(anchor, section_num, title, filename=None):
-    LABEL_REGISTRY[anchor] = {"section": section_num, "title": title, "file": filename}
+def register_label(anchor, section_num, title, filename=None, chapter_dir=None):
+    LABEL_REGISTRY[anchor] = {
+        "section": section_num,
+        "title": title,
+        "file": filename,
+        "dir": chapter_dir,
+    }
 
 
 # -----------------------------------------------------------------------
@@ -1118,27 +1312,18 @@ def read_lyx_lines(path):
 
 
 def main():
-    os.makedirs(OUT_DIR, exist_ok=True)
-    os.makedirs(FIGS_DIR, exist_ok=True)
+    os.makedirs(DOCS_THEORY_ROOT, exist_ok=True)
 
     bib = parse_bib(BIB_PATH)
     lines = read_lyx_lines(LYX_PATH)
     top_items = top_level_parse(lines)
-
-    # Find the Chapter layout and all top-level Section layouts (siblings,
-    # since LyX layouts of different "depth" are all flat \begin_layout
-    # entries at the same nesting level -- LyX does not nest Section inside
-    # Chapter in the token stream).
-    chapter_title = None
-    sections = []  # list of (title, items_after_header_until_next_section)
-    current_section_items = None
-    pending_chapter_intro = []
-
-    i = 0
     n = len(top_items)
-    idx = 0
-    # First pass: locate Chapter and Section boundaries
-    boundaries = []  # (index_in_top_items, kind, spec)
+
+    # Find every Chapter and Section layout (siblings, since LyX layouts of
+    # different "depth" are all flat \begin_layout entries at the same
+    # nesting level -- LyX does not nest Section inside Chapter in the
+    # token stream).
+    boundaries = []  # (index_in_top_items, kind, spec_items)
     for idx, item in enumerate(top_items):
         if item[0] == "layout" and item[1] in ("Chapter", "Section"):
             boundaries.append((idx, item[1], item[2]))
@@ -1147,45 +1332,121 @@ def main():
         print("ERROR: no Chapter/Section layouts found", file=sys.stderr)
         sys.exit(1)
 
-    chapter_idx = boundaries[0][0]
-    chapter_title = render_items_inline(boundaries[0][2], RenderCtxDummy()).strip()
-    chapter_title = strip_label_markup(chapter_title)
+    chapter_boundaries = [b for b in boundaries if b[1] == "Chapter"]
+    if not chapter_boundaries:
+        print("ERROR: no Chapter layouts found", file=sys.stderr)
+        sys.exit(1)
 
-    section_boundaries = [b for b in boundaries if b[1] == "Section"]
-
-    sections_data = []
-    for k, (bidx, spec, sub_items) in enumerate(section_boundaries):
-        title = None
-        # need ctx-less render for title extraction (labels are harmless placeholders)
-        title = render_items_inline(sub_items, RenderCtxDummy()).strip()
-        label_name = None
-        lm = re.search(r'<a id="([^"]+)"></a>', title)
-        if lm:
-            label_name = lm.group(1)
-        title = strip_label_markup(title)
-        end_idx = section_boundaries[k + 1][0] if k + 1 < len(section_boundaries) else n
-        body_items = top_items[bidx + 1: end_idx]
-        sec_num = f"2.{k + 1}"
-        slug = slugify(title)
-        fname = f"{sec_num}-{slug}.md"
-        sections_data.append({
-            "number": k + 1,
-            "sec_num": sec_num,
-            "title": title,
-            "label": label_name,
-            "items": body_items,
-            "file": fname,
+    # ---- Pass 1: walk every Chapter in the *whole* manual to compute each
+    # one's absolute chapter number (1-indexed position in the source) and
+    # which Section boundaries fall under it. This runs regardless of
+    # CHAPTERS_TO_CONVERT so numbering ("3.1", not "1.1", for the third
+    # chapter's first section) and cross-chapter \ref{}/\eqref{} targets
+    # stay correct even when we're only converting a subset. ----
+    chapters_meta = []
+    for c_idx, (c_bidx, _, c_sub_items) in enumerate(chapter_boundaries):
+        chap_num = c_idx + 1
+        raw_chap_title = render_items_inline(c_sub_items, RenderCtxDummy()).strip()
+        # A Chapter's own \label{} (e.g. "chap:continuum-mechanics") is
+        # embedded directly in its heading layout, the same way Section
+        # titles carry theirs -- confirmed for both Chapter 2 and Chapter 3
+        # ("\begin_layout Chapter\nContinuum Mechanics\n\begin_inset
+        # CommandInset label..."), so it must be captured the same way,
+        # via extract_heading_label(), not just stripped and discarded.
+        chap_title, chap_label = extract_heading_label(raw_chap_title)
+        chap_end_idx = chapter_boundaries[c_idx + 1][0] if c_idx + 1 < len(chapter_boundaries) else n
+        sec_boundaries = [b for b in boundaries if b[1] == "Section" and c_bidx < b[0] < chap_end_idx]
+        chapters_meta.append({
+            "chap_num": chap_num,
+            "title": chap_title,
+            "label": chap_label,
+            "start_idx": c_bidx,
+            "end_idx": chap_end_idx,
+            "section_boundaries": sec_boundaries,
         })
-        if label_name:
-            register_label(label_name, sec_num, title, fname)
+
+    # ---- Pass 2: for chapters actually being converted this run, split
+    # each into per-Section pages and register every Section's own label
+    # (if any) up front, exactly as before. ----
+    all_sections_data = []
+    chapters_output = []  # [{"chap_num", "title", "dir", "sections": [sec_data, ...]}]
+    for chap in chapters_meta:
+        chap_num = chap["chap_num"]
+        if chap_num not in CHAPTERS_TO_CONVERT:
+            continue
+        chap_dir = f"chapter{chap_num}"
+        out_dir = os.path.join(DOCS_THEORY_ROOT, chap_dir)
+        os.makedirs(out_dir, exist_ok=True)
+        os.makedirs(os.path.join(out_dir, "figs"), exist_ok=True)
+
+        sec_boundaries = chap["section_boundaries"]
+        chap_sections = []
+        for k, (bidx, spec, sub_items) in enumerate(sec_boundaries):
+            title = render_items_inline(sub_items, RenderCtxDummy()).strip()
+            label_name = None
+            lm = re.search(r'<a id="([^"]+)"></a>', title)
+            if lm:
+                label_name = lm.group(1)
+            title = strip_label_markup(title)
+            end_idx = sec_boundaries[k + 1][0] if k + 1 < len(sec_boundaries) else chap["end_idx"]
+            body_items = top_items[bidx + 1: end_idx]
+            sec_num = f"{chap_num}.{k + 1}"
+            slug = slugify(title)
+            fname = f"{sec_num}-{slug}.md"
+            sec_data = {
+                "chap_num": chap_num,
+                "chapter_dir": chap_dir,
+                "number": k + 1,
+                "sec_num": sec_num,
+                "title": title,
+                "label": label_name,
+                "items": body_items,
+                "file": fname,
+                "out_dir": out_dir,
+            }
+            all_sections_data.append(sec_data)
+            chap_sections.append(sec_data)
+            if label_name:
+                register_label(label_name, sec_num, title, fname, chap_dir)
+
+        # A Chapter's own \label{} (e.g. "chap:dynamics") is referenced
+        # from elsewhere in the manual via plain \ref{}. There's no
+        # dedicated chapter-landing page in this site's structure, so point
+        # it at the chapter's first section as the most reasonable target.
+        # Usually embedded in the heading itself (captured above as
+        # chap["label"]), but Chapter 1 instead carries it in a separate
+        # Standard paragraph right after the heading -- scan for that
+        # pattern too so both are covered.
+        if chap_sections:
+            if chap["label"]:
+                register_label(chap["label"], chap_sections[0]["sec_num"], chap["title"], chap_sections[0]["file"], chap_dir)
+            intro_items = top_items[chap["start_idx"] + 1: sec_boundaries[0][0] if sec_boundaries else chap["end_idx"]]
+            for item in intro_items:
+                if item[0] == "inset" and item[1] == "CommandInset label":
+                    for it in item[2]:
+                        if it[0] == "text":
+                            m = re.match(r'name\s+"([^"]+)"', it[1].strip())
+                            if m:
+                                register_label(m.group(1), chap_sections[0]["sec_num"], chap["title"], chap_sections[0]["file"], chap_dir)
+
+        chapters_output.append({
+            "chap_num": chap_num,
+            "title": chap["title"],
+            "dir": chap_dir,
+            "sections": chap_sections,
+        })
+
+    if not all_sections_data:
+        print(f"ERROR: none of the chapters in CHAPTERS_TO_CONVERT {CHAPTERS_TO_CONVERT} were found", file=sys.stderr)
+        sys.exit(1)
 
     # ---- Pre-scan pass: walk every section's body items (without full
     # rendering) purely to discover \label anchors on Subsection /
     # Subsubsection headings and Figure captions, so that \ref{} cross
-    # references anywhere in the chapter (including *forward* references)
-    # can be resolved to the correct page + anchor before we do the real
-    # rendering pass below. ----
-    def prescan(items, sec_num, fname):
+    # references anywhere in the converted chapters (including *forward*
+    # references, and references *across* chapters) can be resolved to the
+    # correct page + anchor before we do the real rendering pass below. ----
+    def prescan(items, sec_num, fname, chapter_dir):
         for item in items:
             if item[0] != "layout":
                 continue
@@ -1194,11 +1455,11 @@ def main():
                 raw_title = render_items_inline(sub_items, RenderCtxDummy()).strip()
                 clean, anchor = extract_heading_label(raw_title)
                 if anchor:
-                    register_label(anchor, sec_num, clean, fname)
+                    register_label(anchor, sec_num, clean, fname, chapter_dir)
             # descend into floats/nested layouts to find figure/table labels
-            prescan_nested(sub_items, sec_num, fname)
+            prescan_nested(sub_items, sec_num, fname, chapter_dir)
 
-    def prescan_nested(items, sec_num, fname):
+    def prescan_nested(items, sec_num, fname, chapter_dir):
         for item in items:
             if item[0] == "inset" and item[1].startswith("Float"):
                 for sub in item[2]:
@@ -1208,21 +1469,21 @@ def main():
                                 raw = render_items_inline(it[2], RenderCtxDummy()).strip()
                                 _, anchor = extract_heading_label(raw)
                                 if anchor:
-                                    register_label(anchor, sec_num, "Figure", fname)
+                                    register_label(anchor, sec_num, "Figure", fname, chapter_dir)
             elif item[0] in ("inset", "layout"):
-                prescan_nested(item[2], sec_num, fname)
+                prescan_nested(item[2], sec_num, fname, chapter_dir)
 
-    for sec in sections_data:
-        prescan(sec["items"], sec["sec_num"], sec["file"])
-        prescan_equation_labels(sec["items"], sec["sec_num"], sec["file"], [0])
+    for sec in all_sections_data:
+        prescan(sec["items"], sec["sec_num"], sec["file"], sec["chapter_dir"])
+        prescan_equation_labels(sec["items"], sec["sec_num"], sec["file"], [0], sec["chapter_dir"])
 
-    nav_entries = []
+    # ---- Render pass ----
     section_stats = []
 
-    for sec in sections_data:
+    for sec in all_sections_data:
         sec_num = sec["sec_num"]
         fname = sec["file"]
-        ctx = RenderCtx(bib, sec_num, fname)
+        ctx = RenderCtx(bib, sec_num, fname, sec["chapter_dir"])
         body_md = render_section_body(sec["items"], ctx, sec_num, sec["title"])
 
         # Build footnotes block
@@ -1241,16 +1502,15 @@ def main():
         if footnote_lines:
             page += "\n\n" + "\n".join(footnote_lines) + "\n"
 
-        out_path = os.path.join(OUT_DIR, fname)
+        out_path = os.path.join(sec["out_dir"], fname)
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(page)
-
-        nav_entries.append((f"{sec_num} {sec['title']}", f"theory/chapter2/{fname}"))
 
         section_stats.append({
             "section": sec_num,
             "title": sec["title"],
             "file": fname,
+            "chapter": sec["chap_num"],
             "inline_formulas": ctx.inline_formula_count,
             "display_formulas": ctx.display_formula_count,
             "citations": len(ctx.citations_used),
@@ -1266,13 +1526,23 @@ def main():
         STATS["totals"]["unhandled"] += ctx.unhandled_count
 
     STATS["sections"] = section_stats
-    STATS["chapter_title"] = chapter_title
-    STATS["nav"] = nav_entries
+    STATS["chapters"] = [
+        {
+            "chap_num": c["chap_num"],
+            "title": c["title"],
+            "dir": c["dir"],
+            "nav": [
+                [f"{s['sec_num']} {s['title']}", f"theory/{c['dir']}/{s['file']}"]
+                for s in c["sections"]
+            ],
+        }
+        for c in chapters_output
+    ]
 
     with open(os.path.join(ROOT, "tools", "_stats.json"), "w", encoding="utf-8") as f:
         json.dump(STATS, f, indent=2)
 
-    print(f"Converted {len(sections_data)} sections.")
+    print(f"Converted {len(all_sections_data)} sections across {len(chapters_output)} chapters.")
     print(f"Totals: {STATS['totals']}")
 
 
