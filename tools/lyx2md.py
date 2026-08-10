@@ -316,7 +316,7 @@ CHAR_STATE_LINES = {
     r"\color inherit", r"\color none",
 }
 
-ALIGN_RE = re.compile(r"^\\align\s+\w+\s*$")
+ALIGN_RE = re.compile(r"^\\align\s+(\w+)\s*$")
 LANG_RE = re.compile(r"^\\lang\s+\w+\s*$")
 
 
@@ -857,10 +857,32 @@ def render_inset(spec, sub_items, ctx):
         # render the content transparently. sub_items' leading lines are
         # box attributes (position, width, thickness, ...), which -- like
         # Float's attribute lines -- are plain 'text' items and get skipped
-        # naturally by only processing 'layout' items.
-        return "".join(
-            render_items_inline(item[2], ctx) for item in sub_items if item[0] == "layout"
-        )
+        # naturally by only processing 'layout' items. A \align command
+        # inside the Plain Layout (e.g. "\align center" wrapping a
+        # Graphics inset) is otherwise silently dropped by
+        # render_items_inline (it's plain inline character-formatting
+        # state there, with no way to emit a block-level wrapper) --
+        # re-detect it here at the layout level and center the image via
+        # CSS. (Wrapping in a raw <div align="center"> block does *not*
+        # work: nested Markdown image syntax inside a raw HTML block is
+        # left unprocessed -- literal "![...](...)" text -- without the
+        # md_in_html extension, which isn't enabled.)
+        parts = []
+        for item in sub_items:
+            if item[0] != "layout":
+                continue
+            align = None
+            for it in item[2]:
+                if it[0] == "text":
+                    m = ALIGN_RE.match(it[1])
+                    if m:
+                        align = m.group(1)
+                        break
+            content = render_items_inline(item[2], ctx)
+            if align == "center":
+                content = center_images(content)
+            parts.append(content)
+        return "".join(parts)
     if kind == "VSpace":
         # Decorative vertical whitespace (\vspace-equivalent); Markdown/CSS
         # already handles paragraph spacing, so there's nothing meaningful
@@ -1045,6 +1067,23 @@ def render_float(spec, sub_items, ctx):
     if caption_md:
         out += "\n\n/// figure-caption\n\n    " + caption_md + "\n\n///\n"
     return out + "\n"
+
+
+IMG_ATTR_RE = re.compile(r'(!\[[^\]]*\]\([^)]*\))(?:\{: style="([^"]*)" \})?')
+
+
+def center_images(content):
+    """Inject centering CSS into every Markdown image's attr_list style in
+    `content`, merging with any style already there (e.g. a LyX "scale"
+    width from render_graphics). Used for a LyX \\align center wrapping a
+    figure, since Markdown has no native image-centering syntax.
+    """
+    def repl(m):
+        img_md, existing_style = m.group(1), m.group(2)
+        center_css = "display:block; margin-left:auto; margin-right:auto;"
+        style = f"{existing_style.rstrip().rstrip(';')}; {center_css}" if existing_style else center_css
+        return f'{img_md}{{: style="{style}" }}'
+    return IMG_ATTR_RE.sub(repl, content)
 
 
 def render_graphics(sub_items, ctx):
