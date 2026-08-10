@@ -13,7 +13,11 @@ Mirrors the style of febio-feature-manual/build.py:
      pymdownx.blocks.caption, superfences, details), plus attr_list
      (needed so that the converter's explicit heading anchors --
      `## Title {: #label }`, produced from LyX \\label insets -- work for
-     cross-chapter/cross-section \\ref links).
+     cross-chapter/cross-section \\ref links) and md_in_html (needed so a
+     `<div markdown="1">` wrapper -- render_tabular()'s only way to center
+     a table, since a Markdown table has no native alignment syntax and
+     attr_list doesn't attach to one -- has its nested Markdown table
+     syntax actually parsed, instead of passed through as literal text).
 
 Navigation is a single unified sidebar tree (no navigation.tabs): a
 Preface entry, then one top-level nav group per converted chapter, each
@@ -94,6 +98,7 @@ with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
     f.write("markdown_extensions:\n")
     f.write("  - admonition\n")
     f.write("  - attr_list\n")
+    f.write("  - md_in_html\n")
     f.write("  - codehilite\n")
     f.write("  - footnotes\n")
     f.write("  - toc:\n")

@@ -1180,8 +1180,20 @@ def render_tabular(sub_items, ctx):
     header, *body = rows
     lines = ["| " + " | ".join(pad(header)) + " |", "|" + "|".join(["---"] * ncols) + "|"]
     lines += ["| " + " | ".join(pad(r)) + " |" for r in body]
+    table_md = TABLE_ROW_BREAK.join(lines)
 
-    return "\n\n" + TABLE_ROW_BREAK.join(lines) + "\n\n"
+    # A Markdown table has no native alignment syntax, and attr_list
+    # doesn't attach to one (confirmed: appending "{: ... }" right after a
+    # table gets swallowed as a bogus extra table row instead). The only
+    # way to center it is a raw HTML wrapper -- which needs the
+    # md_in_html extension (see build.py) and a markdown="1" attribute, or
+    # the nested table syntax is left as unprocessed literal text instead
+    # of being parsed as a real <table>.
+    return (
+        '\n\n<div markdown="1" style="display: flex; justify-content: center;">\n\n'
+        + table_md
+        + "\n\n</div>\n\n"
+    )
 
 
 # -----------------------------------------------------------------------
