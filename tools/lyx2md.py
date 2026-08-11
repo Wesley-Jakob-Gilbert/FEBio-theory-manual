@@ -609,6 +609,24 @@ def parse_flat(lines, i, end_predicate):
                 inner_items, i = parse_flat(lines, i, lambda l: END_INSET_RE.match(l))
                 i += 1
                 items.append(("inset", "Formula", sub_items))
+            elif spec.startswith("Formula ") and spec != "Formula":
+                # A multi-line formula whose first line of math content sits
+                # on the \begin_inset line itself (e.g.
+                # "\begin_inset Formula $\begin{array}{l}", closed by
+                # "\end{array}$" several lines later) rather than starting
+                # on its own line. Not caught by the single-line case above
+                # since it doesn't close here (count("$") == 1). Without this
+                # branch, that leading "$\begin{array}{l}" text is silently
+                # dropped -- it lives in `spec`, which nothing downstream
+                # reads except its first token ("Formula") -- corrupting the
+                # rendered formula (confirmed against Section 5.1's
+                # Lame-parameter conversion table, the only place this
+                # pattern occurs in the document).
+                math_part_prefix = spec[len("Formula "):]
+                inner_items, i = parse_flat(lines, i + 1, lambda l: END_INSET_RE.match(l))
+                i += 1
+                sub_items = [("text", math_part_prefix)] + inner_items
+                items.append(("inset", "Formula", sub_items))
             else:
                 sub_items, i = parse_flat(lines, i + 1, lambda l: END_INSET_RE.match(l))
                 i += 1  # skip the end_inset line

@@ -14,8 +14,8 @@ added.
 |---|---|
 | Chapters converted | 9 (Chapters 1–8 plus Appendix A / Tensor Calculus) |
 | Sections converted | 64 |
-| Inline `$...$` emitted | 5197 |
-| Display `\[...\]` emitted | 1925 |
+| Inline `$...$` emitted | 5203 |
+| Display `\[...\]` emitted | 1919 |
 | Citations | 203 |
 | Figures | 21 |
 | Leftover LyX artifacts (`\begin_`, `\end_inset`, `\begin_inset`, `SpecialChar`, `\lang `) | **0** |
@@ -101,7 +101,7 @@ visible output; see "Specific insets flagged" below.
 
 | Section | Title | Inline formulas | Display formulas | Citations | Figures | Converted cleanly? | Needs manual review |
 |---|---|---|---|---|---|---|---|
-| 5.1 | Linear Elasticity | 17 | 15 | 0 | 0 | Yes | None |
+| 5.1 | Linear Elasticity | 23 | 9 | 0 | 0 | Yes | 6 formulas in the Lame-parameter conversion table were misclassified as display/corrupted by a parser bug (see "Specific insets flagged" below); fixed, now correctly inline |
 | 5.2 | Compressible Materials | 188 | 98 | 7 | 0 | Yes | None |
 | 5.3 | Nearly-Incompressible Materials | 71 | 44 | 13 | 0 | Yes | None |
 | 5.4 | Viscoelasticity | 227 | 44 | 20 | 5 | Yes | 5 figures fetched from upstream (`FigStandardLinearSolid.png`, `FigRelaxationSpectrumMalkin.png`, `FigRelaxationMalkin.png`, `FigRelaxationSpectrumExponential.png`, `FigContinuousExponentialRelaxation.png`) |
@@ -181,6 +181,7 @@ it) from numeric to lettered numbering and from "Chapter" to "Appendix" in the n
 | 8.1, 8.2 | `Example` / `Theorem*` layouts | LyX's `theorems-ams` module — not previously encountered | Rendered as `!!! example "Example N"` (per-chapter numbered counter) / `!!! note "Theorem"` admonition blocks |
 | 8.2 | `\url{...}` ERT | Only `\href{}{}` had previously been seen; a bare `\url{}` is a different ERT pattern | Added `ERT_URL_RE`, rendering as a Markdown autolink `<url>` |
 | Throughout (all chapters) | `\begin_inset CommandInset bibtex` | LaTeX's `\bibliography{}` insertion marker, not a citation | Suppressed (renders as `""`) |
+| 5.1 | 6 `\begin_inset Formula` insets inside the Lame-parameter conversion table, e.g. `$\begin{array}{l}`/`E=...\\`/`\nu=...`/`\end{array}$` | **Real parser bug**: LyX writes this formula's first line of math content (`$\begin{array}{l}`) directly on the same physical line as `\begin_inset Formula` itself, but the formula doesn't close there (it continues for 2 more lines before `\end{array}$`). `parse_flat()`'s existing single-line-inline-formula special case only fires when the formula closes on that same line (`spec.count("$") >= 2`); otherwise that leading text was silently discarded (it lives only in `spec`, which nothing downstream reads beyond its first token), corrupting the formula -- rendered as a bare `\[ ... \end{array}$ \]` with the `\begin{array}{l}` opener missing and a stray trailing `$`. Confirmed via exhaustive search of the whole source that this exact pattern (a Formula inset opening with unclosed math on its `\begin_inset` line) occurs in exactly these 6 places, all in this one table -- no other page is affected | Added a parser branch for this case: the leading math text is now prepended as the inset's first content line instead of being dropped, so the full `$\begin{array}{l}...\end{array}$` reaches `render_formula_inset()` intact and correctly resolves as inline math |
 | 2.5, 5.4, 5.6, 5.7 | Figure `\ref{}`s (e.g. "is its complementary angle (Figure Figure (2.5)), so that" in 2.5) | The link text duplicated the literal word "Figure" already in the source prose, and showed the *section* number (`entry['section']`, e.g. "2.5") rather than a real per-figure count — the registry never tracked one | Added a per-page figure counter to the pre-scan pass (mirroring `ctx.fig_counter`, incremented on every `Graphics` inset in document order, matching what `pymdownx.blocks.caption` numbers on the page) and stored it in `LABEL_REGISTRY` as `fig_number`; a figure `\ref{}` now renders as just that number (e.g. "Figure [2](#fig17)"), with a `<section>.` prefix only for a figure defined on a different page — no cross-page figure reference currently occurs in the manual, but the logic mirrors `EQ_LABEL_REGISTRY`'s equation convention for when one does |
 | — | `eq87`, `eq:viscous-stress`, `eq:virtual work` | Earlier notes here described these as broken references in FEBio's own source | **Correction (still accurate):** all three are real, resolvable labels — missed by an incomplete search at the time (only `CommandInset label` was checked, not raw `\label{}` embedded in formula bodies). All now resolve, since every chapter is converted |
 

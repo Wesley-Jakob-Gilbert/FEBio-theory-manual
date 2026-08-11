@@ -388,8 +388,8 @@
       "title": "Linear Elasticity",
       "file": "5.1-linear-elasticity.md",
       "chapter": 5,
-      "inline_formulas": 17,
-      "display_formulas": 15,
+      "inline_formulas": 23,
+      "display_formulas": 9,
       "citations": 0,
       "figures": 0,
       "unhandled": 0,
@@ -810,8 +810,8 @@
     }
   ],
   "totals": {
-    "inline_formulas": 5197,
-    "display_formulas": 1925,
+    "inline_formulas": 5203,
+    "display_formulas": 1919,
     "citations": 203,
     "labels": 0,
     "refs": 0,

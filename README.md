@@ -225,8 +225,8 @@ breakdown.
 |---|---|
 | Chapters converted | 9 (Chapters 1–8 plus Appendix A / Tensor Calculus) |
 | Sections converted | 64 |
-| Inline `$...$` formulas emitted | 5197 |
-| Display `\[...\]` formulas emitted | 1925 |
+| Inline `$...$` formulas emitted | 5203 |
+| Display `\[...\]` formulas emitted | 1919 |
 | Citations | 203 |
 | Figures | 21 (artwork fetched at build time — see below) |
 | Unhandled/unknown inset kinds | 0 |
