@@ -140,7 +140,7 @@ visible output; see "Specific insets flagged" below.
 | 7.8 | Tied Fluid Interface | 73 | 26 | 1 | 0 | Yes | None |
 | 7.9 | Rigid Connectors | 163 | 92 | 0 | 0 | Yes | None |
 | 7.10 | Rigid-Deformable Coupling | 48 | 8 | 1 | 0 | Yes | None |
-| 7.11 | Nonlinear Constraints | 36 | 12 | 0 | 0 | Yes | None |
+| 7.11 | Nonlinear Constraints | 36 | 12 | 0 | 0 | Yes | 2 `Example` layouts (`theorems-ams` module) — see "Specific insets flagged" below |
 
 ### Chapter 8 — Optimization
 
@@ -156,8 +156,8 @@ it) from numeric to lettered numbering and from "Chapter" to "Appendix" in the n
 
 | Section | Title | Inline formulas | Display formulas | Citations | Figures | Converted cleanly? | Needs manual review |
 |---|---|---|---|---|---|---|---|
-| A.1 | Second-Order Tensors | 230 | 83 | 0 | 2 | Yes | `subsubsec:determinant`, referenced cross-chapter from Section 2.5, is defined here; 2 figures (`FigOrthoBases.png`, `FigRotationAboutX3.png`) fetched from upstream |
-| A.2 | Higher Order Tensors | 22 | 23 | 0 | 0 | Yes | None |
+| A.1 | Second-Order Tensors | 230 | 83 | 0 | 2 | Yes | `subsubsec:determinant`, referenced cross-chapter from Section 2.5, is defined here; 2 figures (`FigOrthoBases.png`, `FigRotationAboutX3.png`) fetched from upstream; 10 `Example` layouts and 2 `Theorem*` layouts — see "Specific insets flagged" below |
+| A.2 | Higher Order Tensors | 22 | 23 | 0 | 0 | Yes | 1 `Example` layout |
 
 ## Specific equations/insets flagged for human review
 
@@ -178,7 +178,7 @@ it) from numeric to lettered numbering and from "Chapter" to "Appendix" in the n
 | 5.7 | `fig:damage-parametric` | Figure label is a sibling of `Caption` within the same Plain Layout rather than nested inside it — every other figure in the document has the label inside the caption | Extended both `render_float()` and `prescan_nested()` to also detect a standalone `CommandInset label` sibling |
 | 6.1 | Chapter-opening prose + eq717–eq720 | **Real content-loss bug**: content between the `Chapter` heading and the first `Section` boundary (intro prose *and* 4 numbered equations) was entirely dropped, not just missing its label — caught via formula-count reconciliation (385/400) | `main()` now captures this intro content and prepends it to the first section's body; Chapter 6 reconciles exactly (400/400) afterward |
 | 7.1 | 23 `FormulaMacro` insets | LyX Math Macro *definitions* (BFSI contact notation shorthand), correctly produce no visible output — this explained an apparent 23-formula discrepancy that was not a bug | `FormulaMacro` insets render as `""`; equivalent macros added to `docs/js/mathjax_config.js`'s global `macros` block (MathJax has no per-page macro scoping) |
-| 8.1, 8.2 | `Example` / `Theorem*` layouts | LyX's `theorems-ams` module — not previously encountered | Rendered as `!!! example "Example N"` (per-chapter numbered counter) / `!!! note "Theorem"` admonition blocks |
+| 7.11, A.1, A.2 | `Example` (13 total: 2 in 7.11, 10 in A.1, 1 in A.2) / `Theorem*` (2, both in A.1) layouts | LyX's `theorems-ams` module — not previously encountered. Initially rendered as `!!! example "Example N"` / `!!! note "Theorem"` Material admonition callout boxes; the published manual doesn't box these off, it just numbers them inline like a normal LaTeX theorem environment, so the boxes were a visible deviation from the original | Rendered as a bold run-in label directly in the text flow instead — `**Example N.** <body>` / `**Theorem.** <body>` — with per-page numbering (mirrored between the pre-scan and render passes, same pattern as `ctx.eq_counter`/`ctx.fig_counter`) |
 | 8.2 | `\url{...}` ERT | Only `\href{}{}` had previously been seen; a bare `\url{}` is a different ERT pattern | Added `ERT_URL_RE`, rendering as a Markdown autolink `<url>` |
 | Throughout (all chapters) | `\begin_inset CommandInset bibtex` | LaTeX's `\bibliography{}` insertion marker, not a citation | Suppressed (renders as `""`) |
 | 5.1 | 6 `\begin_inset Formula` insets inside the Lame-parameter conversion table, e.g. `$\begin{array}{l}`/`E=...\\`/`\nu=...`/`\end{array}$` | **Real parser bug**: LyX writes this formula's first line of math content (`$\begin{array}{l}`) directly on the same physical line as `\begin_inset Formula` itself, but the formula doesn't close there (it continues for 2 more lines before `\end{array}$`). `parse_flat()`'s existing single-line-inline-formula special case only fires when the formula closes on that same line (`spec.count("$") >= 2`); otherwise that leading text was silently discarded (it lives only in `spec`, which nothing downstream reads beyond its first token), corrupting the formula -- rendered as a bare `\[ ... \end{array}$ \]` with the `\begin{array}{l}` opener missing and a stray trailing `$`. Confirmed via exhaustive search of the whole source that this exact pattern (a Formula inset opening with unclosed math on its `\begin_inset` line) occurs in exactly these 6 places, all in this one table -- no other page is affected | Added a parser branch for this case: the leading math text is now prepended as the inset's first content line instead of being dropped, so the full `$\begin{array}{l}...\end{array}$` reaches `render_formula_inset()` intact and correctly resolves as inline math |
@@ -221,10 +221,12 @@ with a headless-Chromium Playwright script
   no raw LaTeX visible.
 
 For the Chapters 4–9 conversion, Playwright was used again (headless Chromium, not just static grep) to
-spot-check: the full nav tree (all 9 chapters/appendix, in order, each expanding to its sections), an
-`Example`/`Theorem*` admonition rendering correctly, a footnote from a `Foot` inset rendering at the bottom
-of its page, the centered table and centered figure in Section 3.1, and the absence of any raw `\macro`
-command names leaking onto the page from Chapter 7's local `FormulaMacro` definitions.
+spot-check: the full nav tree (all 9 chapters/appendix, in order, each expanding to its sections), a
+footnote from a `Foot` inset rendering at the bottom of its page, the centered table and centered figure in
+Section 3.1, and the absence of any raw `\macro` command names leaking onto the page from Chapter 7's local
+`FormulaMacro` definitions. `Example`/`Theorem*` rendering was re-verified visually a second time after
+switching it from a Material admonition box to a plain bold run-in label (Section 7.11), confirming the
+label and body now flow inline with the surrounding text as in the published manual.
 
 Real rendering bugs that were only caught by actually looking at the rendered page, not by static
 grep-based checks, across the life of this project so far: the `\tr`/`\obslash` custom-macro gap, the

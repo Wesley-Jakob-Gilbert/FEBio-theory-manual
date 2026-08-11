@@ -1316,14 +1316,6 @@ def format_list_item(marker, body):
     return "\n".join(out)
 
 
-def format_admonition(kind, title, body):
-    """Render a Material `!!! kind "title"` admonition block, indenting
-    every non-blank line of `body` 4 spaces (same reasoning as
-    format_list_item: an un-indented line breaks out of the block)."""
-    indented = "\n".join("    " + l if l.strip() else "" for l in body.split("\n"))
-    return f'!!! {kind} "{title}"\n\n{indented}\n'
-
-
 def render_section_body(items, ctx, section_num, section_title, level_base=2):
     """items: list of top-level ('layout', kind, subitems) for everything
     following the Section header line, up to (not including) the next
@@ -1387,16 +1379,21 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             # pre-scan pass (same reason Subsection/Subsubsection don't
             # re-register here); example_counter must still be
             # incremented in lockstep with that pass so the *displayed*
-            # number matches what \ref{} resolved to.
+            # number matches what \ref{} resolved to. Rendered as a bold
+            # run-in label followed by the body in the normal text flow --
+            # matching the published manual's plain LaTeX theorem-style
+            # numbering -- not a Material admonition callout box (which
+            # the original document doesn't use).
             ctx.example_counter += 1
             raw_body = render_paragraph(spec, sub_items, ctx)
             body, _ = extract_heading_label(raw_body)
-            md_parts.append("\n\n" + format_admonition("example", f"Example {ctx.example_counter}", body) + "\n")
+            md_parts.append(f"\n\n**Example {ctx.example_counter}.** {body}\n")
         elif spec == "Theorem*":
-            # Unnumbered ("starred") environment from theorems-ams.
+            # Unnumbered ("starred") environment from theorems-ams; same
+            # plain run-in treatment as Example above.
             raw_body = render_paragraph(spec, sub_items, ctx)
             body, _ = extract_heading_label(raw_body)
-            md_parts.append("\n\n" + format_admonition("note", "Theorem", body) + "\n")
+            md_parts.append(f"\n\n**Theorem.** {body}\n")
         else:
             ctx.needs_review.append(f"Unhandled top-level layout kind in section body: {spec!r}")
             body = render_paragraph(spec, sub_items, ctx)

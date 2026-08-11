@@ -50,15 +50,13 @@ For any second-order tensor $\mathbf{S}$, it also follows that
 
 \[ \mathbb{T}:\mathbf{S}=T_{ijk}S_{jk}\mathbf{e}_{i}\,. \]
 
-!!! example "Example 1"
+**Example 1.** If we introduce the notation $\mathbb{E}$ as the third-order (pseudo-)tensor of Cartesian components $\varepsilon_{ijk}$, the relation between an antisymmetric tensor and its dual vector can also be written as
 
-    If we introduce the notation $\mathbb{E}$ as the third-order (pseudo-)tensor of Cartesian components $\varepsilon_{ijk}$, the relation between an antisymmetric tensor and its dual vector can also be written as
+\[ \begin{equation} \boxed{\boldsymbol{\Omega}=-\mathbb{E}\cdot\boldsymbol{\omega}}\label{eq26b} \end{equation} \]
 
-    \[ \begin{equation} \boxed{\boldsymbol{\Omega}=-\mathbb{E}\cdot\boldsymbol{\omega}}\label{eq26b} \end{equation} \]
+Similarly,
 
-    Similarly,
-
-    \[ \begin{equation} \boxed{\boldsymbol{\omega}=-\frac{1}{2}\mathbb{E}:\boldsymbol{\Omega}}\label{eq27b} \end{equation} \]
+\[ \begin{equation} \boxed{\boldsymbol{\omega}=-\frac{1}{2}\mathbb{E}:\boldsymbol{\Omega}}\label{eq27b} \end{equation} \]
 
 ## Fourth-Order Tensors {: #subsec:Fourth-Order-Tensors }
 

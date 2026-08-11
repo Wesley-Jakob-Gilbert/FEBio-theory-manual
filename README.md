@@ -205,13 +205,15 @@ other external tool.
     baseline set — it's required for the cross-section `\ref{}` links in
     step 3 to have a target to land on.
 
-12. **Admonition-style layouts.** LyX's `theorems-ams` module layouts `Example` (numbered, per-chapter
-    counter) and `Theorem*` (unnumbered) render as `!!! example "Example N"` / `!!! note "Theorem"`
-    admonition blocks. `Paragraph` layouts (an unnumbered run-in sub-heading, one level below
-    Subsubsection) render as a bold `####` heading. `FormulaMacro` insets (LyX Math Macro definitions,
-    e.g. Chapter 7's 23 local shorthand macros) render as nothing — they're definitions, not visible
-    content; the equivalent MathJax `macros` entries live in `docs/js/mathjax_config.js` instead, since
-    MathJax has no per-page macro scoping.
+12. **Theorem-style layouts.** LyX's `theorems-ams` module layouts `Example` (numbered, per-page counter)
+    and `Theorem*` (unnumbered) render as a bold run-in label directly in the text flow — `**Example
+    N.** <body>` / `**Theorem.** <body>` — matching the published manual's plain LaTeX theorem-style
+    numbering, not a Material admonition callout box (which the original document doesn't use; an earlier
+    version of this converter rendered these as `!!! example "Example N"` boxes, since corrected).
+    `Paragraph` layouts (an unnumbered run-in sub-heading, one level below Subsubsection) render as a bold
+    `####` heading. `FormulaMacro` insets (LyX Math Macro definitions, e.g. Chapter 7's 23 local shorthand
+    macros) render as nothing — they're definitions, not visible content; the equivalent MathJax `macros`
+    entries live in `docs/js/mathjax_config.js` instead, since MathJax has no per-page macro scoping.
 
 Output: one Markdown file per converted Section in
 `docs/theory/chapter<N>/`, named e.g. `2.1-vectors-and-tensors.md`.
