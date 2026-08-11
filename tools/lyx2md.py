@@ -48,6 +48,7 @@ any gaps.
 import json
 import os
 import re
+import string
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -86,7 +87,7 @@ DOCS_THEORY_ROOT = os.path.join(ROOT, "docs", "theory")
 # reference into an unconverted chapter degrades the same way an
 # out-of-scope reference already does (left unresolved, flagged in
 # needs_review), not a crash.
-CHAPTERS_TO_CONVERT = {1, 2, 3}
+CHAPTERS_TO_CONVERT = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 STATS = {
     "sections": [],
@@ -423,6 +424,8 @@ class RenderCtx:
         self.citation_index = {}             # key -> footnote number within this page
         self.eq_counter = 0                  # per-section equation counter
         self.fig_counter = 0
+        self.example_counter = 0             # per-section Example environment counter
+        self.inline_footnotes = []           # rendered text of each Foot inset, in order
         self.needs_review = []
         self.inline_formula_count = 0
         self.display_formula_count = 0
@@ -721,6 +724,17 @@ def render_items_inline(items, ctx):
                 pass
             elif raw.startswith("\\bar ") or raw.startswith("\\noun ") or raw.startswith("\\color "):
                 pass
+            elif raw == "\\start_of_appendix":
+                # LyX's native marker for "this Chapter and all following
+                # ones are lettered appendices, not numbered chapters"
+                # (equivalent to LaTeX's \appendix) -- embedded directly
+                # in the Chapter heading's own content (right before the
+                # title text), so it must be stripped here or it becomes
+                # literal text glued onto the title. main()'s chapter
+                # boundary detection separately checks for this same
+                # marker to decide the display numbering; this is just
+                # about not corrupting the rendered title string.
+                pass
             elif raw == "":
                 # A truly empty line (zero-length) is LyX bookkeeping
                 # filler, e.g. the blank line right after \end_inset or
@@ -784,6 +798,7 @@ def render_items_inline(items, ctx):
 INSET_HEAD_RE = re.compile(r"^(\S+)(?:\s+(.*))?$")
 
 ERT_HREF_RE = re.compile(r"\\href\{([^}]*)\}\{(.*)\}\s*$", re.DOTALL)
+ERT_URL_RE = re.compile(r"\\url\{([^}]*)\}\s*$")
 ERT_EMPH_RE = re.compile(r"\\emph\{([^}]*)\}")
 
 
@@ -802,12 +817,12 @@ def render_ert(sub_items, ctx):
     word-separating space) would corrupt into something like
     "\\backslashhref{...}".
 
-    Only \\href{}{} occurs anywhere in this document as of this writing
-    (confirmed by scanning every ERT inset), so that's the one pattern
-    handled -- rendered as a real Markdown link, unwrapping a nested
-    \\emph{} in the link text to Markdown emphasis rather than dropping it.
-    Anything else is flagged for manual review instead of silently
-    guessed at.
+    \\href{url}{text} and bare \\url{url} are the two patterns that occur
+    anywhere in this document as of this writing (confirmed by scanning
+    every ERT inset): both render as real Markdown links, \\href unwrapping
+    a nested \\emph{} in its link text to Markdown emphasis rather than
+    dropping it. Anything else is flagged for manual review instead of
+    silently guessed at.
     """
     raw_parts = []
     for item in sub_items:
@@ -823,6 +838,9 @@ def render_ert(sub_items, ctx):
         url, link_text = m.group(1), m.group(2)
         link_text = ERT_EMPH_RE.sub(r"_\1_", link_text).strip()
         return f"[{link_text}]({url})"
+    m = ERT_URL_RE.search(raw)
+    if m:
+        return f"<{m.group(1)}>"
     ctx.needs_review.append(f"ERT inset with content: {raw!r}")
     return f"<!-- ERT: {raw} -->"
 
@@ -888,6 +906,30 @@ def render_inset(spec, sub_items, ctx):
         # already handles paragraph spacing, so there's nothing meaningful
         # to emit -- same treatment as Newpage above.
         return ""
+    if kind == "FormulaMacro":
+        # A LyX Math Macro definition (\newcommand{\X}{...}), not visible
+        # content -- the expansion needs to be usable by any *later*
+        # formula in the document that invokes \X, which MathJax can only
+        # do via its own global `macros` config (docs/js/mathjax_config.js),
+        # not anything embedded in the page itself. Every FormulaMacro in
+        # this document has been transcribed there by hand; this just
+        # suppresses the definition inset from rendering as literal text.
+        return ""
+    if kind == "Foot":
+        # A real footnote (distinct from citations, which get their own
+        # [^sec-n] numbering via cite_footnote_num()) -- collect the
+        # rendered text and emit a reference marker; main() appends the
+        # matching [^...]: definition at the bottom of the page alongside
+        # the citation footnotes. "fn" in the marker keeps it from ever
+        # colliding with a citation's plain numeric suffix on the same
+        # page. sub_items' first lines are inset attributes (status
+        # collapsed/open), which -- like Box/Float -- are skipped
+        # naturally by only processing 'layout' items.
+        text = "".join(
+            render_items_inline(item[2], ctx) for item in sub_items if item[0] == "layout"
+        ).strip()
+        ctx.inline_footnotes.append(text)
+        return f"[^{ctx.section_num}-fn{len(ctx.inline_footnotes)}]"
     # Unhandled inset kind
     ctx.unhandled_count += 1
     ctx.needs_review.append(f"Unhandled inset type: {spec!r}")
@@ -1027,6 +1069,12 @@ def render_command_inset(spec, sub_items, ctx):
             num = ctx.cite_footnote_num(k)
             out += f"[^{ctx.section_num}-{num}]"
         return out
+    if subtype == "bibtex":
+        # LaTeX's "generate a consolidated bibliography here" marker.
+        # Irrelevant to this converter: citations already render as
+        # per-page Markdown footnotes (via cite_footnote_num() above),
+        # not a single end-of-document bibliography list.
+        return ""
     ctx.unhandled_count += 1
     ctx.needs_review.append(f"Unhandled CommandInset subtype: {subtype!r}")
     return f"<!-- UNHANDLED CommandInset {subtype} -->"
@@ -1062,6 +1110,16 @@ def render_float(spec, sub_items, ctx):
                 fig_anchor = anchor_match.group(0) if anchor_match else ""
                 caption_md = LABEL_ANCHOR_RE.sub("", caption_raw).strip()
                 caption_md = re.sub(r"\s+", " ", caption_md)
+            elif it[0] == "inset" and it[1] == "CommandInset label" and not fig_anchor:
+                # At least one figure in this document has its label as a
+                # sibling of Caption within the same Plain Layout, not
+                # embedded inside the caption text like every other one --
+                # same anchor-hoisting outcome, just found a different way.
+                for sub in it[2]:
+                    if sub[0] == "text":
+                        m = re.match(r'name\s+"([^"]+)"', sub[1].strip())
+                        if m:
+                            fig_anchor = f'<a id="{m.group(1)}"></a>'
     out = "\n\n"
     out += (fig_anchor + "\n\n" if fig_anchor else "") + image_md
     if caption_md:
@@ -1222,6 +1280,14 @@ def format_list_item(marker, body):
     return "\n".join(out)
 
 
+def format_admonition(kind, title, body):
+    """Render a Material `!!! kind "title"` admonition block, indenting
+    every non-blank line of `body` 4 spaces (same reasoning as
+    format_list_item: an un-indented line breaks out of the block)."""
+    indented = "\n".join("    " + l if l.strip() else "" for l in body.split("\n"))
+    return f'!!! {kind} "{title}"\n\n{indented}\n'
+
+
 def render_section_body(items, ctx, section_num, section_title, level_base=2):
     """items: list of top-level ('layout', kind, subitems) for everything
     following the Section header line, up to (not including) the next
@@ -1270,6 +1336,31 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             body = render_paragraph(spec, sub_items, ctx)
             if body:
                 md_parts.append("\n\n" + body + "\n")
+        elif spec == "Paragraph":
+            # LaTeX's \paragraph{} heading level -- one level deeper than
+            # Subsubsection in the Chapter > Section > Subsection >
+            # Subsubsection > Paragraph sectioning hierarchy.
+            raw_title = render_items_inline(sub_items, ctx).strip()
+            title, anchor = extract_heading_label(raw_title)
+            attr = f" {{: #{anchor} }}" if anchor else ""
+            md_parts.append(f"\n\n#### {title}{attr}\n")
+        elif spec == "Example":
+            # Numbered environment from the theorems-ams LyX module (no
+            # title of its own in the source -- LaTeX auto-numbers it).
+            # Label registration for \ref{} already happened in the
+            # pre-scan pass (same reason Subsection/Subsubsection don't
+            # re-register here); example_counter must still be
+            # incremented in lockstep with that pass so the *displayed*
+            # number matches what \ref{} resolved to.
+            ctx.example_counter += 1
+            raw_body = render_paragraph(spec, sub_items, ctx)
+            body, _ = extract_heading_label(raw_body)
+            md_parts.append("\n\n" + format_admonition("example", f"Example {ctx.example_counter}", body) + "\n")
+        elif spec == "Theorem*":
+            # Unnumbered ("starred") environment from theorems-ams.
+            raw_body = render_paragraph(spec, sub_items, ctx)
+            body, _ = extract_heading_label(raw_body)
+            md_parts.append("\n\n" + format_admonition("note", "Theorem", body) + "\n")
         else:
             ctx.needs_review.append(f"Unhandled top-level layout kind in section body: {spec!r}")
             body = render_paragraph(spec, sub_items, ctx)
@@ -1423,8 +1514,20 @@ def main():
     # chapter's first section) and cross-chapter \ref{}/\eqref{} targets
     # stay correct even when we're only converting a subset. ----
     chapters_meta = []
+    in_appendix = False   # LyX's \start_of_appendix marker switches numbering
+    appendix_index = 0    # from numeric chapters to lettered appendices (A, B,
+                           # ...) from that chapter onward, mirroring LaTeX's
+                           # \appendix command -- see the "Tensor Calculus"
+                           # chapter, whose heading contains this exact marker.
     for c_idx, (c_bidx, _, c_sub_items) in enumerate(chapter_boundaries):
         chap_num = c_idx + 1
+        if any(it[0] == "text" and it[1].strip() == "\\start_of_appendix" for it in c_sub_items):
+            in_appendix = True
+        if in_appendix:
+            appendix_index += 1
+            chap_display = string.ascii_uppercase[appendix_index - 1]
+        else:
+            chap_display = str(chap_num)
         raw_chap_title = render_items_inline(c_sub_items, RenderCtxDummy()).strip()
         # A Chapter's own \label{} (e.g. "chap:continuum-mechanics") is
         # embedded directly in its heading layout, the same way Section
@@ -1450,9 +1553,11 @@ def main():
                                 chap_label = m.group(1)
                                 break
         if chap_label:
-            CHAPTER_LABEL_REGISTRY[chap_label] = {"number": chap_num, "file": None, "dir": None}
+            CHAPTER_LABEL_REGISTRY[chap_label] = {"number": chap_display, "file": None, "dir": None}
         chapters_meta.append({
             "chap_num": chap_num,
+            "chap_display": chap_display,
+            "is_appendix": in_appendix,
             "title": chap_title,
             "label": chap_label,
             "start_idx": c_bidx,
@@ -1469,13 +1574,23 @@ def main():
         chap_num = chap["chap_num"]
         if chap_num not in CHAPTERS_TO_CONVERT:
             continue
-        chap_dir = f"chapter{chap_num}"
+        chap_dir = f"chapter{chap['chap_display']}"
         out_dir = os.path.join(DOCS_THEORY_ROOT, chap_dir)
         os.makedirs(out_dir, exist_ok=True)
         os.makedirs(os.path.join(out_dir, "figs"), exist_ok=True)
 
         sec_boundaries = chap["section_boundaries"]
         chap_sections = []
+        # A Chapter can carry real content of its own -- not just a label
+        # -- in Standard paragraph(s) between the Chapter heading and its
+        # first Section (e.g. Chapter 6 "Dynamics" opens with 4 equations
+        # before section 6.1 even starts). There's no separate
+        # chapter-landing page in this site's structure, and until this
+        # fix that content had nowhere to go at all -- silently dropped
+        # entirely, not just its label (confirmed: exactly explains a
+        # formula-count reconciliation gap against source). Prepend it to
+        # the first section's own body instead.
+        intro_body_items = top_items[chap["start_idx"] + 1: sec_boundaries[0][0]] if sec_boundaries else []
         for k, (bidx, spec, sub_items) in enumerate(sec_boundaries):
             title = render_items_inline(sub_items, RenderCtxDummy()).strip()
             label_name = None
@@ -1485,7 +1600,9 @@ def main():
             title = strip_label_markup(title)
             end_idx = sec_boundaries[k + 1][0] if k + 1 < len(sec_boundaries) else chap["end_idx"]
             body_items = top_items[bidx + 1: end_idx]
-            sec_num = f"{chap_num}.{k + 1}"
+            if k == 0 and intro_body_items:
+                body_items = intro_body_items + body_items
+            sec_num = f"{chap['chap_display']}.{k + 1}"
             slug = slugify(title)
             fname = f"{sec_num}-{slug}.md"
             sec_data = {
@@ -1514,6 +1631,8 @@ def main():
 
         chapters_output.append({
             "chap_num": chap_num,
+            "chap_display": chap["chap_display"],
+            "is_appendix": chap["is_appendix"],
             "title": chap["title"],
             "dir": chap_dir,
             "sections": chap_sections,
@@ -1530,6 +1649,7 @@ def main():
     # references, and references *across* chapters) can be resolved to the
     # correct page + anchor before we do the real rendering pass below. ----
     def prescan(items, sec_num, fname, chapter_dir):
+        example_counter = [0]  # per-section, mirrors ctx.example_counter in the render pass
         for item in items:
             if item[0] != "layout":
                 continue
@@ -1539,6 +1659,16 @@ def main():
                 clean, anchor = extract_heading_label(raw_title)
                 if anchor:
                     register_label(anchor, sec_num, clean, fname, chapter_dir)
+            elif spec == "Example":
+                # Numbered (from the theorems-ams LyX module), so a \ref{}
+                # to one needs a resolved title like "Example 3" -- counted
+                # per-page here to exactly mirror ctx.example_counter in
+                # render_section_body() below (same items, same order).
+                example_counter[0] += 1
+                raw_body = render_items_inline(sub_items, RenderCtxDummy()).strip()
+                _, anchor = extract_heading_label(raw_body)
+                if anchor:
+                    register_label(anchor, sec_num, f"Example {example_counter[0]}", fname, chapter_dir)
             # descend into floats/nested layouts to find figure/table labels
             prescan_nested(sub_items, sec_num, fname, chapter_dir)
 
@@ -1547,12 +1677,23 @@ def main():
             if item[0] == "inset" and item[1].startswith("Float"):
                 for sub in item[2]:
                     if sub[0] == "layout":
+                        anchor = None
                         for it in sub[2]:
                             if it[0] == "inset" and it[1].startswith("Caption"):
                                 raw = render_items_inline(it[2], RenderCtxDummy()).strip()
-                                _, anchor = extract_heading_label(raw)
-                                if anchor:
-                                    register_label(anchor, sec_num, "Figure", fname, chapter_dir)
+                                _, anchor_in_caption = extract_heading_label(raw)
+                                anchor = anchor or anchor_in_caption
+                            elif it[0] == "inset" and it[1] == "CommandInset label" and not anchor:
+                                # See the matching case in render_float():
+                                # at least one figure has its label as a
+                                # sibling of Caption, not embedded in it.
+                                for it2 in it[2]:
+                                    if it2[0] == "text":
+                                        m = re.match(r'name\s+"([^"]+)"', it2[1].strip())
+                                        if m:
+                                            anchor = m.group(1)
+                        if anchor:
+                            register_label(anchor, sec_num, "Figure", fname, chapter_dir)
             elif item[0] in ("inset", "layout"):
                 prescan_nested(item[2], sec_num, fname, chapter_dir)
 
@@ -1578,6 +1719,8 @@ def main():
             footnote_lines.append(f"[^{sec_num}-{num}]: {text}")
             if not fields:
                 ctx.needs_review.append(f"Citation key '{key}' not found in FEBio3.bib")
+        for i, foot_text in enumerate(ctx.inline_footnotes, 1):
+            footnote_lines.append(f"[^{sec_num}-fn{i}]: {foot_text}")
 
         page_attr = f" {{: #{sec['label']} }}" if sec.get("label") else ""
         page = f"# {sec_num} {sec['title']}{page_attr}\n\n"
@@ -1612,6 +1755,8 @@ def main():
     STATS["chapters"] = [
         {
             "chap_num": c["chap_num"],
+            "chap_display": c["chap_display"],
+            "is_appendix": c["is_appendix"],
             "title": c["title"],
             "dir": c["dir"],
             "nav": [

@@ -44,7 +44,42 @@ window.MathJax = {
       // rendering for both the macro-nesting cases and the plain-word
       // cases ("and", "grad", "div", "M") in one alias.
       mbox: ['\\mathrm{#1}', 1],
-      thinspace: '\\,'
+      thinspace: '\\,',
+      // Chapter 7 (Contact and Coupling) defines 23 of its own local
+      // shorthand macros via LyX Math Macro insets (\newcommand{\no}{...}
+      // etc., BFSI contact notation), rendered nowhere else in the
+      // document. MathJax's macros config has no per-chapter/per-page
+      // scoping, so -- same as the \tr/\dev/etc. set above -- these are
+      // added globally; a short generic-looking name like \no or \so is
+      // only ever invoked with a leading backslash (a LaTeX macro
+      // command), so it can't collide with the plain English words "no"/
+      // "so" appearing as ordinary prose text elsewhere. It *could*
+      // collide with an unrelated future chapter's own local macro
+      // reusing one of these same short names for something different --
+      // worth rechecking if that ever happens.
+      mueff: '\\mu_{\\text{eff}}',
+      mueq: '\\mu_{\\text{eq}}',
+      mumin: '\\mu_{\\text{min}}',
+      no: '\\mathbf{\\mathbf{n}}^{(1)}',
+      so: '\\mathbf{s}^{(1)}',
+      jeta: 'J_{\\eta}^{(1)}',
+      wn: 'w_{n}^{(1)}',
+      jn: 'j_{n}^{(1)}',
+      Na: 'N_{a}^{(1)}',
+      Nb: 'N_{b}^{(2)}',
+      Nc: 'N_{c}^{(1)}',
+      Nd: 'N_{d}^{(2)}',
+      mc: '\\bar{\\mathbf{m}}_{c}^{(1)}',
+      mb: '\\bar{\\mathbf{m}}_{b}^{(2)}',
+      Mb: '\\bar{\\mathbf{M}}_{b}^{(2)}',
+      Mc: '\\bar{\\mathbf{M}}_{c}^{(1)}',
+      Ac: '\\mathbf{A}_{c}^{(1)}',
+      No: '\\mathbf{N}^{(1)}',
+      Nbo: '\\mathbf{\\bar{\\mathbf{N}}}^{(1)}',
+      Nt: '\\tilde{\\mathbf{\\mathbf{N}}}^{(1)}',
+      So: '\\mathbf{\\mathbf{S}}^{(1)}',
+      Sb: '\\mathbf{\\bar{\\mathbf{S}}}^{(1)}',
+      Nh: '\\hat{\\mathbf{N}}^{(1)}'
     }
   },
   startup: {

@@ -4,8 +4,7 @@ A MkDocs site converting the FEBio Theory Manual from LyX to Markdown, built to 
 the sibling [`febio-feature-manual`](https://github.com/febiosoftware/febio-feature-manual) repository
 (Material for MkDocs theme, indigo palette, `pymdownx.arithmatex` +
 MathJax for equations, footnote-based citations). Started as a single-chapter pilot (Chapter 2, Continuum
-Mechanics); now also covers Chapter 1 (Introduction) and Chapter 3 (The Nonlinear FE Method), with more
-chapters to follow.
+Mechanics); now covers the complete manual — Chapters 1 through 8 plus Appendix A (Tensor Calculus).
 
 ## Table of Contents
 - [Repository layout](#repository-layout)
@@ -36,10 +35,12 @@ sibling directory outside this repo. (`tools/lyx2md.py` will also pick up a sibl
 directory instead, if present, which is how it was used during local development against the original
 workspace layout — see the module docstring.)
 
-Only a subset of the manual's chapters are actually converted into pages at any given time, controlled by
-`CHAPTERS_TO_CONVERT` in `tools/lyx2md.py` (currently `{1, 2, 3}`) — chapters not in that set are still
-scanned for their titles and label positions (so numbering and cross-references stay correct regardless of
-conversion order), they just don't produce output files yet.
+Which chapters actually get converted into pages is controlled by `CHAPTERS_TO_CONVERT` in
+`tools/lyx2md.py`, currently `{1, 2, 3, 4, 5, 6, 7, 8, 9}` — i.e. every chapter in the manual (chapter 9 is
+the source's `\start_of_appendix`-marked chapter, rendered as "Appendix A"). Chapters not in that set are
+still scanned for their titles and label positions (so numbering and cross-references stay correct
+regardless of conversion order), they just don't produce output files yet — this is how the site grew from
+a single-chapter pilot to the full manual without ever needing to rewrite the cross-reference machinery.
 
 ## Prerequisites
 
@@ -104,7 +105,14 @@ other external tool.
 
 2. **Chapter/section boundary detection.** `main()` locates every `Chapter` layout in the source (not just
    the ones being converted) to compute each one's absolute chapter number by position, then splits each
-   converted chapter into its `Section` boundaries and numbers them `<chapter>.<n>`.
+   converted chapter into its `Section` boundaries and numbers them `<chapter>.<n>`. Content that appears
+   between the `Chapter` heading and the first `Section` boundary (chapter-level intro prose, and in one
+   case — Chapter 6 — several numbered equations) is prepended to the first section's body rather than
+   dropped; this was a real bug caught by reconciling formula counts chapter-by-chapter against the source
+   (see `CONVERSION_NOTES.md`). A chapter whose source is marked with LyX's native `\start_of_appendix`
+   layout (and every chapter after it) is numbered with a letter instead of a digit and labeled "Appendix"
+   instead of "Chapter" in the nav — this is how Chapter 9 becomes "Appendix A" without hardcoding a chapter
+   number.
 
 3. **Two-pass label resolution.** Before rendering, a pre-scan pass walks
    every converted section and registers all `\begin_inset CommandInset label` targets
@@ -113,7 +121,11 @@ other external tool.
    `\ref{}`/`\eqref{}` cross-references — including ones that point to a *different*
    section's or *chapter's* file — can be resolved to the correct relative link, regardless of processing
    order. Every chapter lives in its own sibling directory under `docs/theory/` (`chapter1/`, `chapter2/`,
-   ...), so `build_relative_link()` computes same-page / same-chapter / cross-chapter links accordingly.
+   ...), so `build_relative_link()` computes same-page / same-chapter / cross-chapter links accordingly. A
+   third registry, `CHAPTER_LABEL_REGISTRY`, is populated for *every* chapter in the source regardless of
+   whether it's actually converted, so a `\ref{}` to a chapter (e.g. "see Chapter 5") always renders the
+   correct chapter *number* — hyperlinked if that chapter has been converted, plain text if not — instead of
+   the chapter's full title.
 
 4. **Character formatting** (`\series bold` → `**`, `\emph on` → `_`,
    `\shape italic` → `_`, `\family typewriter` → `` ` ``) is applied via a
@@ -141,7 +153,10 @@ other external tool.
    BibTeX key cited twice on one page reuses one footnote number), with
    definitions resolved from `source/FEBio3.bib` via a small hand-written
    BibTeX field parser (`parse_bib()`), and appended at the bottom of each
-   page as `Author. "Title." *Journal* (Year).`.
+   page as `Author. "Title." *Journal* (Year).`. `\begin_inset CommandInset bibtex`
+   (LaTeX's `\bibliography{}` insertion marker, not an actual citation) is suppressed. Real footnotes
+   (`\begin_inset Foot`, distinct from citations) are collected separately and appended as
+   `[^section-fn1]`, `[^section-fn2]`, etc.
 
 7. **Figures** (`\begin_inset Float figure` + `\begin_inset Graphics`)
    become `![name](figs/name.png)` followed by a
@@ -154,17 +169,24 @@ other external tool.
    otherwise purely presentational and rendered as their content passed through transparently) is also
    handled.
 
-8. **Tables** (`\begin_inset Tabular`) become plain Markdown tables (first row as header). LyX's tabular
-   format is an embedded pseudo-XML dialect (`<lyxtabular>`, `<row>`, `<cell>`) that `parse_flat()` doesn't
-   parse structurally; `render_tabular()` uses those tags purely as delimiters to group the `Text` insets
-   (which *are* ordinary, correctly-parsed insets) holding each cell's real content. Merged cells
+8. **Tables** (`\begin_inset Tabular`) become plain Markdown tables (first row as header), always wrapped in
+   a centering `<div markdown="1" style="display: flex; justify-content: center;">` — a plain Markdown table
+   has no native alignment syntax, and `attr_list` doesn't attach to a table at all (confirmed empirically:
+   an appended `{: ... }` gets absorbed as a bogus extra table row instead), so `md_in_html` is required in
+   `mkdocs.yml` to get the nested table syntax inside that wrapper `div` actually parsed rather than passed
+   through as literal text. LyX's tabular format is an embedded pseudo-XML dialect (`<lyxtabular>`, `<row>`,
+   `<cell>`) that `parse_flat()` doesn't parse structurally; `render_tabular()` uses those tags purely as
+   delimiters to group the `Text` insets (which *are* ordinary, correctly-parsed insets) holding each cell's
+   real content, protecting row-separator newlines with a sentinel character so they survive a later
+   prose-whitespace-normalization pass that would otherwise collapse them onto one line. Merged cells
    (colspan/rowspan) aren't representable in plain Markdown and are flagged for manual review rather than
-   silently producing a misaligned table, though none occur anywhere in the document as of this writing.
+   silently producing a misaligned table (occurs in the element-property tables of Section 4.1).
 
 9. **ERT** ("evil red text", raw LaTeX LyX has no native inset for) is reconstructed from its per-line
-   `\backslash`-token encoding and currently handles the one pattern that occurs in this document,
-   `\href{url}{text}`, rendering a real Markdown link (unwrapping a nested `\emph{}` in the link text to
-   Markdown emphasis). Anything else is flagged for manual review instead of guessed at.
+   `\backslash`-token encoding and handles the two patterns that occur in this document: `\href{url}{text}`
+   (rendering a real Markdown link, unwrapping a nested `\emph{}` in the link text to Markdown emphasis) and
+   a bare `\url{url}` (rendering as a Markdown autolink `<url>`). Anything else is flagged for manual review
+   instead of guessed at.
 
 10. **Unhandled inset kinds** render as `<!-- UNHANDLED INSET ... -->` HTML
     comments and are logged to `needs_review` — this makes the required
@@ -178,22 +200,30 @@ other external tool.
     baseline set — it's required for the cross-section `\ref{}` links in
     step 3 to have a target to land on.
 
+12. **Admonition-style layouts.** LyX's `theorems-ams` module layouts `Example` (numbered, per-chapter
+    counter) and `Theorem*` (unnumbered) render as `!!! example "Example N"` / `!!! note "Theorem"`
+    admonition blocks. `Paragraph` layouts (an unnumbered run-in sub-heading, one level below
+    Subsubsection) render as a bold `####` heading. `FormulaMacro` insets (LyX Math Macro definitions,
+    e.g. Chapter 7's 23 local shorthand macros) render as nothing — they're definitions, not visible
+    content; the equivalent MathJax `macros` entries live in `docs/js/mathjax_config.js` instead, since
+    MathJax has no per-page macro scoping.
+
 Output: one Markdown file per converted Section in
 `docs/theory/chapter<N>/`, named e.g. `2.1-vectors-and-tensors.md`.
 
 ## Conversion statistics
 
-Current totals for the converted chapters (1, 2, 3); see `CONVERSION_NOTES.md` for the full per-section
+Totals for the complete, now fully-converted manual; see `CONVERSION_NOTES.md` for the full per-section
 breakdown.
 
 | Metric | Count |
 |---|---|
-| Chapters converted | 3 (Introduction; Continuum Mechanics; The Nonlinear FE Method) |
-| Sections converted | 28 |
-| Inline `$...$` formulas emitted | 2442 |
-| Display `\[...\]` formulas emitted | 868 |
-| Citations | 83 |
-| Figures | 4 (artwork fetched at build time — see below) |
+| Chapters converted | 9 (Chapters 1–8 plus Appendix A / Tensor Calculus) |
+| Sections converted | 64 |
+| Inline `$...$` formulas emitted | 5197 |
+| Display `\[...\]` formulas emitted | 1925 |
+| Citations | 203 |
+| Figures | 21 (artwork fetched at build time — see below) |
 | Unhandled/unknown inset kinds | 0 |
 | Leftover LyX bookkeeping artifacts in output | 0 |
 
@@ -228,14 +258,18 @@ breakdown and every item flagged for manual review.
   also re-attempts the scroll once typesetting finishes, via MathJax's
   `startup.pageReady` hook. Same-page references are untouched since
   MathJax already resolves those correctly on its own.
-- **A handful of cross-references point outside the currently-converted chapters** (into chapters not yet
-  in `CHAPTERS_TO_CONVERT`, e.g. Element Library, Constitutive Models, Contact and Coupling, or the Tensor
-  Calculus appendix). These render as literal `#anchor-not-found` links (or, for equation references, a
-  passthrough `\eqref{}` that MathJax can't resolve) and are flagged by `mkdocs build --strict` as
-  `INFO`-level messages (not warnings/errors, so `--strict` still exits 0) — expected, and will resolve
-  automatically as more chapters are converted. (Earlier notes in this file mis-described three of these —
-  `eq87`, `eq:viscous-stress`, `eq:virtual work` — as broken references in FEBio's own source; they're
-  real, resolvable labels, just missed by an incomplete search at the time. Corrected here.)
+- **Merged cells (colspan/rowspan) aren't representable in plain Markdown tables.** The element-property
+  tables in Section 4.1 use them; `render_tabular()` flags each occurrence for manual review and renders a
+  best-effort approximation rather than silently producing a misaligned table.
+- **Every chapter is now converted, so cross-references no longer point outside the site.** (Earlier notes
+  in this file mis-described three references — `eq87`, `eq:viscous-stress`, `eq:virtual work` — as broken
+  references in FEBio's own source; they were always real, resolvable labels, just in chapters not yet
+  converted at the time. All three, and every other cross-reference in the manual, now resolve.) `mkdocs
+  build --strict` still emits `INFO`-level "does not contain an anchor" messages for cross-page equation
+  links — this is a static-checker false positive, not a broken link: `#mjx-eqn:<label>` anchors are
+  injected client-side by MathJax only after it typesets the target page, so mkdocs's link checker (which
+  only inspects the built HTML/Markdown source) can't see them, even though they resolve correctly in a
+  real browser. Zero `WARNING`-level messages.
 - **`\obslash` has no LaTeX macro definition anywhere in the LyX source.**
   The document's preamble defines `\tr`, `\dev`, `\grad`, `\divg`, etc. as
   `\newcommand`s (and `docs/js/mathjax_config.js` reproduces them as MathJax
@@ -267,9 +301,12 @@ breakdown and every item flagged for manual review.
    **zero matches** across all converted pages.
 3. Zero unhandled/unknown inset kinds logged across all converted chapters.
 4. Formula counts reported by the converter's own render-pass counters (not a post-hoc regex scan) were
-   checked chapter-by-chapter against the source; Chapter 2 alone reconciles exactly (1455 inline + 368
+   checked chapter-by-chapter against the source. Chapter 2 alone reconciles exactly (1455 inline + 368
    display = 1823, matching `grep -c "begin_inset Formula"` over its source range exactly, as in the
-   original single-chapter pilot).
+   original single-chapter pilot); Chapter 6 also reconciles exactly (400/400) after the chapter-intro
+   content-loss fix described above. Chapter 3 has one long-standing, tiny (1 of 1096, ~0.1%) unreconciled
+   formula not further pursued — see `CONVERSION_NOTES.md`. Chapter 7's apparent 23-formula "gap" is fully
+   explained by its 23 `FormulaMacro` definitions, which correctly produce no visible output.
 5. A real browser (headless Chromium via Playwright) was used throughout development to verify things a
    static grep can't catch: MathJax equation/table/figure rendering, the removal of `navigation.tabs` in
    favor of a single unified sidebar, a chapter title containing inline math (`$\alpha-$Method`) rendering

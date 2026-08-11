@@ -114,7 +114,8 @@ with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
     f.write("nav:\n")
     f.write("  - Preface: index.md\n")
     for chap in chapters:
-        f.write(f"  - Chapter {chap['chap_num']} - {chap['title']}:\n")
+        kind = "Appendix" if chap.get("is_appendix") else "Chapter"
+        f.write(f"  - {kind} {chap['chap_display']} - {chap['title']}:\n")
         for title, path in chap["nav"]:
             f.write(f"    - {title}: {path}\n")
 

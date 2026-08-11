@@ -65,3 +65,45 @@ nav:
     - 3.8 Weak Formulation for Fluid-Solutes Analyses: theory/chapter3/3.8-weak-formulation-for-fluid-solutes-analyses.md
     - 3.9 Newton-Raphson Method: theory/chapter3/3.9-newton-raphson-method.md
     - 3.10 Generalized $\alpha-$Method: theory/chapter3/3.10-generalized-alpha-method.md
+  - Chapter 4 - Element Library:
+    - 4.1 Solid Elements: theory/chapter4/4.1-solid-elements.md
+    - 4.2 Shell Elements: theory/chapter4/4.2-shell-elements.md
+  - Chapter 5 - Constitutive Models:
+    - 5.1 Linear Elasticity: theory/chapter5/5.1-linear-elasticity.md
+    - 5.2 Compressible Materials: theory/chapter5/5.2-compressible-materials.md
+    - 5.3 Nearly-Incompressible Materials: theory/chapter5/5.3-nearly-incompressible-materials.md
+    - 5.4 Viscoelasticity: theory/chapter5/5.4-viscoelasticity.md
+    - 5.5 Reactive Damage Mechanics: theory/chapter5/5.5-reactive-damage-mechanics.md
+    - 5.6 Reactive Plasticity: theory/chapter5/5.6-reactive-plasticity.md
+    - 5.7 Reactive Elastoplastic Damage Mechanics: theory/chapter5/5.7-reactive-elastoplastic-damage-mechanics.md
+    - 5.8 Hydraulic Permeability: theory/chapter5/5.8-hydraulic-permeability.md
+    - 5.9 Solute Diffusivity: theory/chapter5/5.9-solute-diffusivity.md
+    - 5.10 Solute Solubility: theory/chapter5/5.10-solute-solubility.md
+    - 5.11 Osmotic Coefficient: theory/chapter5/5.11-osmotic-coefficient.md
+    - 5.12 Active Contraction Model: theory/chapter5/5.12-active-contraction-model.md
+    - 5.13 Prescribed Active Contraction: theory/chapter5/5.13-prescribed-active-contraction.md
+    - 5.14 Chemical Reaction Production Rate: theory/chapter5/5.14-chemical-reaction-production-rate.md
+    - 5.15 Specific Reaction Rate: theory/chapter5/5.15-specific-reaction-rate.md
+    - 5.16 Viscous Fluids: theory/chapter5/5.16-viscous-fluids.md
+  - Chapter 6 - Dynamics:
+    - 6.1 Newmark Integration: theory/chapter6/6.1-newmark-integration.md
+    - 6.2 Elastodynamics: theory/chapter6/6.2-elastodynamics.md
+    - 6.3 Rigid Body Dynamics: theory/chapter6/6.3-rigid-body-dynamics.md
+  - Chapter 7 - Contact and Coupling:
+    - 7.1 Sliding Interfaces: theory/chapter7/7.1-sliding-interfaces.md
+    - 7.2 Biphasic Contact: theory/chapter7/7.2-biphasic-contact.md
+    - 7.3 Biphasic-Solute Contact: theory/chapter7/7.3-biphasic-solute-contact.md
+    - 7.4 Multiphasic Contact: theory/chapter7/7.4-multiphasic-contact.md
+    - 7.5 Tied Contact: theory/chapter7/7.5-tied-contact.md
+    - 7.6 Tied Biphasic Contact: theory/chapter7/7.6-tied-biphasic-contact.md
+    - 7.7 Tied Multiphasic Contact: theory/chapter7/7.7-tied-multiphasic-contact.md
+    - 7.8 Tied Fluid Interface: theory/chapter7/7.8-tied-fluid-interface.md
+    - 7.9 Rigid Connectors: theory/chapter7/7.9-rigid-connectors.md
+    - 7.10 Rigid-Deformable Coupling: theory/chapter7/7.10-rigid-deformable-coupling.md
+    - 7.11 Nonlinear Constraints: theory/chapter7/7.11-nonlinear-constraints.md
+  - Chapter 8 - Optimization:
+    - 8.1 The Objective Function: theory/chapter8/8.1-the-objective-function.md
+    - 8.2 The Levenberg-Marquardt Method: theory/chapter8/8.2-the-levenberg-marquardt-method.md
+  - Appendix A - Tensor Calculus:
+    - A.1 Second-Order Tensors: theory/chapterA/A.1-second-order-tensors.md
+    - A.2 Higher Order Tensors: theory/chapterA/A.2-higher-order-tensors.md

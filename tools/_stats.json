@@ -31,7 +31,7 @@
       "chapter": 2,
       "inline_formulas": 42,
       "display_formulas": 26,
-      "citations": 1,
+      "citations": 2,
       "figures": 0,
       "unhandled": 0,
       "needs_review": []
@@ -85,8 +85,7 @@
       "needs_review": [
         "Figure image 'FigKinematicsContinuum.png' referenced (source path 'Figures/FigKinematicsContinuum.png') -- placeholder written to figs/FigKinematicsContinuum.png, original binary not available in inputs.",
         "Figure image 'FigShearStrain.png' referenced (source path 'Figures/FigShearStrain.png') -- placeholder written to figs/FigShearStrain.png, original binary not available in inputs.",
-        "Figure image 'FigReferentialVolume.png' referenced (source path 'Figures/FigReferentialVolume.png') -- placeholder written to figs/FigReferentialVolume.png, original binary not available in inputs.",
-        "Unresolved \\ref target: 'subsubsec:determinant'"
+        "Figure image 'FigReferentialVolume.png' referenced (source path 'Figures/FigReferentialVolume.png') -- placeholder written to figs/FigReferentialVolume.png, original binary not available in inputs."
       ]
     },
     {
@@ -183,9 +182,7 @@
       "citations": 0,
       "figures": 0,
       "unhandled": 0,
-      "needs_review": [
-        "Unresolved \\ref target: 'sec:Viscous-Fluids'"
-      ]
+      "needs_review": []
     },
     {
       "section": "2.14",
@@ -209,9 +206,7 @@
       "citations": 8,
       "figures": 0,
       "unhandled": 0,
-      "needs_review": [
-        "Unresolved \\ref target: 'sec:Hydraulic-Permeability'"
-      ]
+      "needs_review": []
     },
     {
       "section": "2.16",
@@ -346,21 +341,489 @@
       "figures": 0,
       "unhandled": 0,
       "needs_review": []
+    },
+    {
+      "section": "4.1",
+      "title": "Solid Elements",
+      "file": "4.1-solid-elements.md",
+      "chapter": 4,
+      "inline_formulas": 23,
+      "display_formulas": 7,
+      "citations": 1,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Figure image 'FigSolidElementsTM.png' referenced (source path 'Figures/FigSolidElementsTM.png') -- placeholder written to figs/FigSolidElementsTM.png, original binary not available in inputs.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Figure image 'FigQuadraticTetrahedralElements.png' referenced (source path 'Figures/FigQuadraticTetrahedralElements.png') -- placeholder written to figs/FigQuadraticTetrahedralElements.png, original binary not available in inputs.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort.",
+        "Tabular inset has merged cells (multicolumn/multirow) -- not representable in plain Markdown tables; rendered best-effort."
+      ]
+    },
+    {
+      "section": "4.2",
+      "title": "Shell Elements",
+      "file": "4.2-shell-elements.md",
+      "chapter": 4,
+      "inline_formulas": 69,
+      "display_formulas": 56,
+      "citations": 11,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigShellElementsTM.png' referenced (source path 'Figures/FigShellElementsTM.png') -- placeholder written to figs/FigShellElementsTM.png, original binary not available in inputs.",
+        "Figure image 'FigShellElementTypesTM.png' referenced (source path 'Figures/FigShellElementTypesTM.png') -- placeholder written to figs/FigShellElementTypesTM.png, original binary not available in inputs.",
+        "Figure image 'FigShellElementsFB.png' referenced (source path 'Figures/FigShellElementsFB.png') -- placeholder written to figs/FigShellElementsFB.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "5.1",
+      "title": "Linear Elasticity",
+      "file": "5.1-linear-elasticity.md",
+      "chapter": 5,
+      "inline_formulas": 17,
+      "display_formulas": 15,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.2",
+      "title": "Compressible Materials",
+      "file": "5.2-compressible-materials.md",
+      "chapter": 5,
+      "inline_formulas": 188,
+      "display_formulas": 98,
+      "citations": 7,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.3",
+      "title": "Nearly-Incompressible Materials",
+      "file": "5.3-nearly-incompressible-materials.md",
+      "chapter": 5,
+      "inline_formulas": 71,
+      "display_formulas": 44,
+      "citations": 13,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.4",
+      "title": "Viscoelasticity",
+      "file": "5.4-viscoelasticity.md",
+      "chapter": 5,
+      "inline_formulas": 227,
+      "display_formulas": 44,
+      "citations": 20,
+      "figures": 5,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigStandardLinearSolid.png' referenced (source path 'Figures/FigStandardLinearSolid.png') -- placeholder written to figs/FigStandardLinearSolid.png, original binary not available in inputs.",
+        "Figure image 'FigRelaxationSpectrumMalkin.png' referenced (source path 'Figures/FigRelaxationSpectrumMalkin.png') -- placeholder written to figs/FigRelaxationSpectrumMalkin.png, original binary not available in inputs.",
+        "Figure image 'FigRelaxationMalkin.png' referenced (source path 'Figures/FigRelaxationMalkin.png') -- placeholder written to figs/FigRelaxationMalkin.png, original binary not available in inputs.",
+        "Figure image 'FigRelaxationSpectrumExponential.png' referenced (source path 'Figures/FigRelaxationSpectrumExponential.png') -- placeholder written to figs/FigRelaxationSpectrumExponential.png, original binary not available in inputs.",
+        "Figure image 'FigContinuousExponentialRelaxation.png' referenced (source path 'Figures/FigContinuousExponentialRelaxation.png') -- placeholder written to figs/FigContinuousExponentialRelaxation.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "5.5",
+      "title": "Reactive Damage Mechanics",
+      "file": "5.5-reactive-damage-mechanics.md",
+      "chapter": 5,
+      "inline_formulas": 109,
+      "display_formulas": 47,
+      "citations": 10,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.6",
+      "title": "Reactive Plasticity",
+      "file": "5.6-reactive-plasticity.md",
+      "chapter": 5,
+      "inline_formulas": 209,
+      "display_formulas": 17,
+      "citations": 3,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigReactivePlasticityStress.png' referenced (source path 'Figures/FigReactivePlasticityStress.png') -- placeholder written to figs/FigReactivePlasticityStress.png, original binary not available in inputs.",
+        "Figure image 'FigReactivePlasticityYieldThresholds.png' referenced (source path 'Figures/FigReactivePlasticityYieldThresholds.png') -- placeholder written to figs/FigReactivePlasticityYieldThresholds.png, original binary not available in inputs.",
+        "Figure image 'FigReactivePlasticityYieldModel.png' referenced (source path 'Figures/FigReactivePlasticityYieldModel.png') -- placeholder written to figs/FigReactivePlasticityYieldModel.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "5.7",
+      "title": "Reactive Elastoplastic Damage Mechanics",
+      "file": "5.7-reactive-elastoplastic-damage-mechanics.md",
+      "chapter": 5,
+      "inline_formulas": 118,
+      "display_formulas": 11,
+      "citations": 4,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigReactivePlasticityDamage.png' referenced (source path 'Figures/FigReactivePlasticityDamage.png') -- placeholder written to figs/FigReactivePlasticityDamage.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "5.8",
+      "title": "Hydraulic Permeability",
+      "file": "5.8-hydraulic-permeability.md",
+      "chapter": 5,
+      "inline_formulas": 22,
+      "display_formulas": 17,
+      "citations": 2,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.9",
+      "title": "Solute Diffusivity",
+      "file": "5.9-solute-diffusivity.md",
+      "chapter": 5,
+      "inline_formulas": 21,
+      "display_formulas": 6,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.10",
+      "title": "Solute Solubility",
+      "file": "5.10-solute-solubility.md",
+      "chapter": 5,
+      "inline_formulas": 2,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.11",
+      "title": "Osmotic Coefficient",
+      "file": "5.11-osmotic-coefficient.md",
+      "chapter": 5,
+      "inline_formulas": 2,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.12",
+      "title": "Active Contraction Model",
+      "file": "5.12-active-contraction-model.md",
+      "chapter": 5,
+      "inline_formulas": 14,
+      "display_formulas": 3,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.13",
+      "title": "Prescribed Active Contraction",
+      "file": "5.13-prescribed-active-contraction.md",
+      "chapter": 5,
+      "inline_formulas": 7,
+      "display_formulas": 6,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.14",
+      "title": "Chemical Reaction Production Rate",
+      "file": "5.14-chemical-reaction-production-rate.md",
+      "chapter": 5,
+      "inline_formulas": 24,
+      "display_formulas": 7,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.15",
+      "title": "Specific Reaction Rate",
+      "file": "5.15-specific-reaction-rate.md",
+      "chapter": 5,
+      "inline_formulas": 11,
+      "display_formulas": 2,
+      "citations": 2,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.16",
+      "title": "Viscous Fluids",
+      "file": "5.16-viscous-fluids.md",
+      "chapter": 5,
+      "inline_formulas": 39,
+      "display_formulas": 5,
+      "citations": 3,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "6.1",
+      "title": "Newmark Integration",
+      "file": "6.1-newmark-integration.md",
+      "chapter": 6,
+      "inline_formulas": 31,
+      "display_formulas": 13,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "6.2",
+      "title": "Elastodynamics",
+      "file": "6.2-elastodynamics.md",
+      "chapter": 6,
+      "inline_formulas": 90,
+      "display_formulas": 53,
+      "citations": 6,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "6.3",
+      "title": "Rigid Body Dynamics",
+      "file": "6.3-rigid-body-dynamics.md",
+      "chapter": 6,
+      "inline_formulas": 153,
+      "display_formulas": 60,
+      "citations": 2,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.1",
+      "title": "Sliding Interfaces",
+      "file": "7.1-sliding-interfaces.md",
+      "chapter": 7,
+      "inline_formulas": 368,
+      "display_formulas": 115,
+      "citations": 18,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigTwoBodyContactProblem.png' referenced (source path 'Figures/FigTwoBodyContactProblem.png') -- placeholder written to figs/FigTwoBodyContactProblem.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "7.2",
+      "title": "Biphasic Contact",
+      "file": "7.2-biphasic-contact.md",
+      "chapter": 7,
+      "inline_formulas": 219,
+      "display_formulas": 67,
+      "citations": 11,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.3",
+      "title": "Biphasic-Solute Contact",
+      "file": "7.3-biphasic-solute-contact.md",
+      "chapter": 7,
+      "inline_formulas": 24,
+      "display_formulas": 26,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.4",
+      "title": "Multiphasic Contact",
+      "file": "7.4-multiphasic-contact.md",
+      "chapter": 7,
+      "inline_formulas": 25,
+      "display_formulas": 26,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.5",
+      "title": "Tied Contact",
+      "file": "7.5-tied-contact.md",
+      "chapter": 7,
+      "inline_formulas": 7,
+      "display_formulas": 17,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.6",
+      "title": "Tied Biphasic Contact",
+      "file": "7.6-tied-biphasic-contact.md",
+      "chapter": 7,
+      "inline_formulas": 33,
+      "display_formulas": 21,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.7",
+      "title": "Tied Multiphasic Contact",
+      "file": "7.7-tied-multiphasic-contact.md",
+      "chapter": 7,
+      "inline_formulas": 38,
+      "display_formulas": 24,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.8",
+      "title": "Tied Fluid Interface",
+      "file": "7.8-tied-fluid-interface.md",
+      "chapter": 7,
+      "inline_formulas": 73,
+      "display_formulas": 26,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.9",
+      "title": "Rigid Connectors",
+      "file": "7.9-rigid-connectors.md",
+      "chapter": 7,
+      "inline_formulas": 163,
+      "display_formulas": 92,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.10",
+      "title": "Rigid-Deformable Coupling",
+      "file": "7.10-rigid-deformable-coupling.md",
+      "chapter": 7,
+      "inline_formulas": 48,
+      "display_formulas": 8,
+      "citations": 1,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.11",
+      "title": "Nonlinear Constraints",
+      "file": "7.11-nonlinear-constraints.md",
+      "chapter": 7,
+      "inline_formulas": 36,
+      "display_formulas": 12,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "8.1",
+      "title": "The Objective Function",
+      "file": "8.1-the-objective-function.md",
+      "chapter": 8,
+      "inline_formulas": 4,
+      "display_formulas": 1,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "8.2",
+      "title": "The Levenberg-Marquardt Method",
+      "file": "8.2-the-levenberg-marquardt-method.md",
+      "chapter": 8,
+      "inline_formulas": 18,
+      "display_formulas": 5,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.1",
+      "title": "Second-Order Tensors",
+      "file": "A.1-second-order-tensors.md",
+      "chapter": 9,
+      "inline_formulas": 230,
+      "display_formulas": 83,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'FigOrthoBases.png' referenced (source path 'Figures/FigOrthoBases.png') -- placeholder written to figs/FigOrthoBases.png, original binary not available in inputs.",
+        "Figure image 'FigRotationAboutX3.png' referenced (source path 'Figures/FigRotationAboutX3.png') -- placeholder written to figs/FigRotationAboutX3.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "A.2",
+      "title": "Higher Order Tensors",
+      "file": "A.2-higher-order-tensors.md",
+      "chapter": 9,
+      "inline_formulas": 22,
+      "display_formulas": 23,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
     }
   ],
   "totals": {
-    "inline_formulas": 2442,
-    "display_formulas": 868,
-    "citations": 83,
+    "inline_formulas": 5197,
+    "display_formulas": 1925,
+    "citations": 203,
     "labels": 0,
     "refs": 0,
-    "figures": 4,
+    "figures": 21,
     "unhandled": 0
   },
   "needs_review": [],
   "chapters": [
     {
       "chap_num": 1,
+      "chap_display": "1",
+      "is_appendix": false,
       "title": "Introduction",
       "dir": "chapter1",
       "nav": [
@@ -376,6 +839,8 @@
     },
     {
       "chap_num": 2,
+      "chap_display": "2",
+      "is_appendix": false,
       "title": "Continuum Mechanics",
       "dir": "chapter2",
       "nav": [
@@ -447,6 +912,8 @@
     },
     {
       "chap_num": 3,
+      "chap_display": "3",
+      "is_appendix": false,
       "title": "The Nonlinear FE Method",
       "dir": "chapter3",
       "nav": [
@@ -489,6 +956,204 @@
         [
           "3.10 Generalized $\\alpha-$Method",
           "theory/chapter3/3.10-generalized-alpha-method.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 4,
+      "chap_display": "4",
+      "is_appendix": false,
+      "title": "Element Library",
+      "dir": "chapter4",
+      "nav": [
+        [
+          "4.1 Solid Elements",
+          "theory/chapter4/4.1-solid-elements.md"
+        ],
+        [
+          "4.2 Shell Elements",
+          "theory/chapter4/4.2-shell-elements.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 5,
+      "chap_display": "5",
+      "is_appendix": false,
+      "title": "Constitutive Models",
+      "dir": "chapter5",
+      "nav": [
+        [
+          "5.1 Linear Elasticity",
+          "theory/chapter5/5.1-linear-elasticity.md"
+        ],
+        [
+          "5.2 Compressible Materials",
+          "theory/chapter5/5.2-compressible-materials.md"
+        ],
+        [
+          "5.3 Nearly-Incompressible Materials",
+          "theory/chapter5/5.3-nearly-incompressible-materials.md"
+        ],
+        [
+          "5.4 Viscoelasticity",
+          "theory/chapter5/5.4-viscoelasticity.md"
+        ],
+        [
+          "5.5 Reactive Damage Mechanics",
+          "theory/chapter5/5.5-reactive-damage-mechanics.md"
+        ],
+        [
+          "5.6 Reactive Plasticity",
+          "theory/chapter5/5.6-reactive-plasticity.md"
+        ],
+        [
+          "5.7 Reactive Elastoplastic Damage Mechanics",
+          "theory/chapter5/5.7-reactive-elastoplastic-damage-mechanics.md"
+        ],
+        [
+          "5.8 Hydraulic Permeability",
+          "theory/chapter5/5.8-hydraulic-permeability.md"
+        ],
+        [
+          "5.9 Solute Diffusivity",
+          "theory/chapter5/5.9-solute-diffusivity.md"
+        ],
+        [
+          "5.10 Solute Solubility",
+          "theory/chapter5/5.10-solute-solubility.md"
+        ],
+        [
+          "5.11 Osmotic Coefficient",
+          "theory/chapter5/5.11-osmotic-coefficient.md"
+        ],
+        [
+          "5.12 Active Contraction Model",
+          "theory/chapter5/5.12-active-contraction-model.md"
+        ],
+        [
+          "5.13 Prescribed Active Contraction",
+          "theory/chapter5/5.13-prescribed-active-contraction.md"
+        ],
+        [
+          "5.14 Chemical Reaction Production Rate",
+          "theory/chapter5/5.14-chemical-reaction-production-rate.md"
+        ],
+        [
+          "5.15 Specific Reaction Rate",
+          "theory/chapter5/5.15-specific-reaction-rate.md"
+        ],
+        [
+          "5.16 Viscous Fluids",
+          "theory/chapter5/5.16-viscous-fluids.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 6,
+      "chap_display": "6",
+      "is_appendix": false,
+      "title": "Dynamics",
+      "dir": "chapter6",
+      "nav": [
+        [
+          "6.1 Newmark Integration",
+          "theory/chapter6/6.1-newmark-integration.md"
+        ],
+        [
+          "6.2 Elastodynamics",
+          "theory/chapter6/6.2-elastodynamics.md"
+        ],
+        [
+          "6.3 Rigid Body Dynamics",
+          "theory/chapter6/6.3-rigid-body-dynamics.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 7,
+      "chap_display": "7",
+      "is_appendix": false,
+      "title": "Contact and Coupling",
+      "dir": "chapter7",
+      "nav": [
+        [
+          "7.1 Sliding Interfaces",
+          "theory/chapter7/7.1-sliding-interfaces.md"
+        ],
+        [
+          "7.2 Biphasic Contact",
+          "theory/chapter7/7.2-biphasic-contact.md"
+        ],
+        [
+          "7.3 Biphasic-Solute Contact",
+          "theory/chapter7/7.3-biphasic-solute-contact.md"
+        ],
+        [
+          "7.4 Multiphasic Contact",
+          "theory/chapter7/7.4-multiphasic-contact.md"
+        ],
+        [
+          "7.5 Tied Contact",
+          "theory/chapter7/7.5-tied-contact.md"
+        ],
+        [
+          "7.6 Tied Biphasic Contact",
+          "theory/chapter7/7.6-tied-biphasic-contact.md"
+        ],
+        [
+          "7.7 Tied Multiphasic Contact",
+          "theory/chapter7/7.7-tied-multiphasic-contact.md"
+        ],
+        [
+          "7.8 Tied Fluid Interface",
+          "theory/chapter7/7.8-tied-fluid-interface.md"
+        ],
+        [
+          "7.9 Rigid Connectors",
+          "theory/chapter7/7.9-rigid-connectors.md"
+        ],
+        [
+          "7.10 Rigid-Deformable Coupling",
+          "theory/chapter7/7.10-rigid-deformable-coupling.md"
+        ],
+        [
+          "7.11 Nonlinear Constraints",
+          "theory/chapter7/7.11-nonlinear-constraints.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 8,
+      "chap_display": "8",
+      "is_appendix": false,
+      "title": "Optimization",
+      "dir": "chapter8",
+      "nav": [
+        [
+          "8.1 The Objective Function",
+          "theory/chapter8/8.1-the-objective-function.md"
+        ],
+        [
+          "8.2 The Levenberg-Marquardt Method",
+          "theory/chapter8/8.2-the-levenberg-marquardt-method.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 9,
+      "chap_display": "A",
+      "is_appendix": true,
+      "title": "Tensor Calculus",
+      "dir": "chapterA",
+      "nav": [
+        [
+          "A.1 Second-Order Tensors",
+          "theory/chapterA/A.1-second-order-tensors.md"
+        ],
+        [
+          "A.2 Higher Order Tensors",
+          "theory/chapterA/A.2-higher-order-tensors.md"
         ]
       ]
     }
