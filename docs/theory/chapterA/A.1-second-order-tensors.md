@@ -48,7 +48,9 @@ This result, when generalized, leads to the useful identity
 
 \[ \begin{equation} \boxed{\mathbf{T}\cdot\mathbf{e}_{i}=T_{ji}\mathbf{e}_{j}}=T_{1i}\mathbf{e}_{1}+T_{2i}\mathbf{e}_{2}+T_{3i}\mathbf{e}_{3}\label{eq8-1} \end{equation} \]
 
-**Example 1.** Scaling transformation. A scaling transformation $\mathbf{T}$ with different scale factors along $x_{1},x_{2},x_{3}$ should satisfy the following relations by definition:
+**Example 1.** Scaling transformation
+
+A scaling transformation $\mathbf{T}$ with different scale factors along $x_{1},x_{2},x_{3}$ should satisfy the following relations by definition:
 
 \[ \mathbf{T}\cdot\mathbf{a}=s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3} \]
 
@@ -200,7 +202,9 @@ Thus, for any tensor $\mathbf{T}$, $\tr\mathbf{T}=\mathbf{I}:\mathbf{T}$. In com
 
 The double product of second order tensors is commutative.
 
-**Example 3.** Show that $\mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)$ and $\left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)$. Using indicial notation,
+**Example 3.** Show that $\mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)$ and $\left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)$.
+
+Using indicial notation,
 
 \[ \mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=a_{i}T_{ij}b_{j}=T_{ij}a_{i}b_{j}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)\,, \]
 

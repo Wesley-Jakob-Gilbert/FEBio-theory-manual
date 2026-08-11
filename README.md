@@ -209,11 +209,17 @@ other external tool.
     and `Theorem*` (unnumbered) render as a bold run-in label directly in the text flow — `**Example
     N.** <body>` / `**Theorem.** <body>` — matching the published manual's plain LaTeX theorem-style
     numbering, not a Material admonition callout box (which the original document doesn't use; an earlier
-    version of this converter rendered these as `!!! example "Example N"` boxes, since corrected).
-    `Paragraph` layouts (an unnumbered run-in sub-heading, one level below Subsubsection) render as a bold
-    `####` heading. `FormulaMacro` insets (LyX Math Macro definitions, e.g. Chapter 7's 23 local shorthand
-    macros) render as nothing — they're definitions, not visible content; the equivalent MathJax `macros`
-    entries live in `docs/js/mathjax_config.js` instead, since MathJax has no per-page macro scoping.
+    version of this converter rendered these as `!!! example "Example N"` boxes, since corrected). Per
+    LyX/LaTeX semantics, *consecutive* same-kind layouts (nothing but a blank line between them) are
+    additional paragraphs of the **same** environment instance, not a new one each — `render_section_body()`
+    tracks the previous top-level layout's kind and only advances the counter / starts a fresh bold label
+    when it wasn't the same kind (a non-blank item in between, e.g. LyX's `\begin_deeper`, still breaks the
+    run, since that does mark a genuinely separate instance — confirmed against Appendix A.1, which has
+    both cases). `Paragraph` layouts (an unnumbered run-in sub-heading, one level below Subsubsection)
+    render as a bold `####` heading. `FormulaMacro` insets (LyX Math Macro definitions, e.g. Chapter 7's 23
+    local shorthand macros) render as nothing — they're definitions, not visible content; the equivalent
+    MathJax `macros` entries live in `docs/js/mathjax_config.js` instead, since MathJax has no per-page
+    macro scoping.
 
 Output: one Markdown file per converted Section in
 `docs/theory/chapter<N>/`, named e.g. `2.1-vectors-and-tensors.md`.

@@ -1322,9 +1322,23 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
     top-level Section."""
     md_parts = []
     heading_counters = [0, 0, 0]  # subsection, subsubsection depth trackers (informational)
+    prev_spec = None  # previous top-level layout's spec, for Example/Theorem* continuation (see below)
 
     for item in items:
         if item[0] != "layout":
+            # A blank text line is just LyX's between-layout formatting noise
+            # and doesn't break an Example/Theorem* continuation run below.
+            # Anything else non-blank at this level -- concretely,
+            # \begin_deeper/\end_deeper, which LyX emits around an
+            # indented-but-still-top-level paragraph and doesn't match
+            # INSET_RE/LAYOUT_RE -- is structurally significant (confirmed
+            # against Appendix A.1's two Theorem* environments: the second
+            # one is wrapped in \begin_deeper/\end_deeper and states an
+            # unrelated fact, not a continuation of the first), so it does
+            # break the run.
+            if item[0] == "text" and item[1].strip() == "":
+                continue
+            prev_spec = None
             continue
         kind, spec, sub_items = item
         if spec == "Subsection":
@@ -1375,30 +1389,49 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
         elif spec == "Example":
             # Numbered environment from the theorems-ams LyX module (no
             # title of its own in the source -- LaTeX auto-numbers it).
-            # Label registration for \ref{} already happened in the
-            # pre-scan pass (same reason Subsection/Subsubsection don't
-            # re-register here); example_counter must still be
-            # incremented in lockstep with that pass so the *displayed*
-            # number matches what \ref{} resolved to. Rendered as a bold
-            # run-in label followed by the body in the normal text flow --
-            # matching the published manual's plain LaTeX theorem-style
-            # numbering -- not a Material admonition callout box (which
-            # the original document doesn't use).
-            ctx.example_counter += 1
+            # In LyX/LaTeX, consecutive same-style paragraphs continue the
+            # *same* environment instance rather than each starting a new
+            # one -- a run of several adjacent "Example" layouts (e.g. a
+            # problem statement, then "Solution.", then the derivation) is
+            # one logical example with several paragraphs, not one example
+            # per layout. So the counter only advances -- and a fresh bold
+            # label is only emitted -- when the *previous* top-level item
+            # wasn't also "Example"; a continuation paragraph is appended
+            # to the current example's body instead (confirmed against
+            # Appendix A.1, where several examples span 2-4 consecutive
+            # Example layouts in the source). Label registration for
+            # \ref{} already happened in the pre-scan pass (same reason
+            # Subsection/Subsubsection don't re-register here); the
+            # pre-scan's own counter must apply this identical continuation
+            # rule so the *displayed* number matches what \ref{} resolved
+            # to. Rendered as a bold run-in label followed by the body in
+            # the normal text flow -- matching the published manual's
+            # plain LaTeX theorem-style numbering -- not a Material
+            # admonition callout box (which the original document doesn't
+            # use).
             raw_body = render_paragraph(spec, sub_items, ctx)
             body, _ = extract_heading_label(raw_body)
-            md_parts.append(f"\n\n**Example {ctx.example_counter}.** {body}\n")
+            if prev_spec == "Example":
+                md_parts.append(f"\n\n{body}\n")
+            else:
+                ctx.example_counter += 1
+                md_parts.append(f"\n\n**Example {ctx.example_counter}.** {body}\n")
         elif spec == "Theorem*":
             # Unnumbered ("starred") environment from theorems-ams; same
-            # plain run-in treatment as Example above.
+            # plain run-in treatment, and the same consecutive-paragraph
+            # continuation rule, as Example above.
             raw_body = render_paragraph(spec, sub_items, ctx)
             body, _ = extract_heading_label(raw_body)
-            md_parts.append(f"\n\n**Theorem.** {body}\n")
+            if prev_spec == "Theorem*":
+                md_parts.append(f"\n\n{body}\n")
+            else:
+                md_parts.append(f"\n\n**Theorem.** {body}\n")
         else:
             ctx.needs_review.append(f"Unhandled top-level layout kind in section body: {spec!r}")
             body = render_paragraph(spec, sub_items, ctx)
             if body:
                 md_parts.append("\n\n" + body + "\n")
+        prev_spec = spec
 
     text = "".join(md_parts)
     text = re.sub(r"\n{3,}", "\n\n", text).strip() + "\n"
@@ -1685,8 +1718,15 @@ def main():
     def prescan(items, sec_num, fname, chapter_dir):
         example_counter = [0]  # per-section, mirrors ctx.example_counter in the render pass
         fig_counter = [0]  # per-section, mirrors ctx.fig_counter in the render pass
+        prev_spec = [None]  # mirrors render_section_body's Example/Theorem* continuation rule
         for item in items:
             if item[0] != "layout":
+                # see the matching case in render_section_body(): a blank
+                # text line doesn't break a same-kind run, but anything
+                # else (e.g. \begin_deeper) does.
+                if item[0] == "text" and item[1].strip() == "":
+                    continue
+                prev_spec[0] = None
                 continue
             _, spec, sub_items = item
             if spec in ("Subsection", "Subsubsection"):
@@ -1698,14 +1738,19 @@ def main():
                 # Numbered (from the theorems-ams LyX module), so a \ref{}
                 # to one needs a resolved title like "Example 3" -- counted
                 # per-page here to exactly mirror ctx.example_counter in
-                # render_section_body() below (same items, same order).
-                example_counter[0] += 1
+                # render_section_body() below (same items, same order,
+                # same continuation rule: consecutive "Example" layouts are
+                # one example's paragraphs, not one example each -- see the
+                # comment there).
+                if prev_spec[0] != "Example":
+                    example_counter[0] += 1
                 raw_body = render_items_inline(sub_items, RenderCtxDummy()).strip()
                 _, anchor = extract_heading_label(raw_body)
                 if anchor:
                     register_label(anchor, sec_num, f"Example {example_counter[0]}", fname, chapter_dir)
             # descend into floats/nested layouts to find figure/table labels
             prescan_nested(sub_items, sec_num, fname, chapter_dir, fig_counter)
+            prev_spec[0] = spec
 
     def prescan_nested(items, sec_num, fname, chapter_dir, fig_counter):
         for item in items:
