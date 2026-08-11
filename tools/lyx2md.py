@@ -1044,7 +1044,25 @@ def render_command_inset(spec, sub_items, ctx):
                 return str(chap_entry["number"])
             entry = LABEL_REGISTRY.get(reference)
             if entry and entry["file"]:
-                label_text = entry["title"] if entry["title"] != "Figure" else f"Figure ({entry['section']})"
+                if entry["title"] == "Figure":
+                    # The source prose always writes the word "Figure"
+                    # (optionally with a non-breaking space) immediately
+                    # before this \ref{}, e.g. "(Figure \ref{fig17})" or
+                    # "Figure~\ref{...}a-c." -- so the ref itself should
+                    # resolve to just the figure's number, not repeat
+                    # "Figure" again. Numbered per-page (matching the
+                    # pymdownx.blocks.caption auto-numbering actually shown
+                    # next to each figure), with a "<section>." prefix only
+                    # when the reference points at a figure defined on a
+                    # *different* page -- same convention as eqref's
+                    # "(2.5-35)", per the user's explicit figure-numbering
+                    # request.
+                    if entry["section"] == ctx.section_num:
+                        label_text = str(entry["fig_number"])
+                    else:
+                        label_text = f"{entry['section']}.{entry['fig_number']}"
+                else:
+                    label_text = entry["title"]
                 link = build_relative_link(entry["dir"], entry["file"], ctx, reference)
                 return f"[{label_text}]({link})"
             # A plain \ref{} (LatexCommand "ref", not "eqref") can still
@@ -1463,12 +1481,13 @@ def extract_heading_label(raw_title):
     return clean, anchor
 
 
-def register_label(anchor, section_num, title, filename=None, chapter_dir=None):
+def register_label(anchor, section_num, title, filename=None, chapter_dir=None, fig_number=None):
     LABEL_REGISTRY[anchor] = {
         "section": section_num,
         "title": title,
         "file": filename,
         "dir": chapter_dir,
+        "fig_number": fig_number,
     }
 
 
@@ -1650,6 +1669,7 @@ def main():
     # correct page + anchor before we do the real rendering pass below. ----
     def prescan(items, sec_num, fname, chapter_dir):
         example_counter = [0]  # per-section, mirrors ctx.example_counter in the render pass
+        fig_counter = [0]  # per-section, mirrors ctx.fig_counter in the render pass
         for item in items:
             if item[0] != "layout":
                 continue
@@ -1670,16 +1690,24 @@ def main():
                 if anchor:
                     register_label(anchor, sec_num, f"Example {example_counter[0]}", fname, chapter_dir)
             # descend into floats/nested layouts to find figure/table labels
-            prescan_nested(sub_items, sec_num, fname, chapter_dir)
+            prescan_nested(sub_items, sec_num, fname, chapter_dir, fig_counter)
 
-    def prescan_nested(items, sec_num, fname, chapter_dir):
+    def prescan_nested(items, sec_num, fname, chapter_dir, fig_counter):
         for item in items:
+            if item[0] == "inset" and item[1].startswith("Graphics"):
+                # Mirrors render_graphics()'s ctx.fig_counter increment: counts
+                # every image (Float-wrapped or bare) in document order, so a
+                # figure \ref{}'s per-page number matches what
+                # pymdownx.blocks.caption actually displays next to it.
+                fig_counter[0] += 1
             if item[0] == "inset" and item[1].startswith("Float"):
                 for sub in item[2]:
                     if sub[0] == "layout":
                         anchor = None
                         for it in sub[2]:
-                            if it[0] == "inset" and it[1].startswith("Caption"):
+                            if it[0] == "inset" and it[1].startswith("Graphics"):
+                                fig_counter[0] += 1
+                            elif it[0] == "inset" and it[1].startswith("Caption"):
                                 raw = render_items_inline(it[2], RenderCtxDummy()).strip()
                                 _, anchor_in_caption = extract_heading_label(raw)
                                 anchor = anchor or anchor_in_caption
@@ -1693,9 +1721,9 @@ def main():
                                         if m:
                                             anchor = m.group(1)
                         if anchor:
-                            register_label(anchor, sec_num, "Figure", fname, chapter_dir)
+                            register_label(anchor, sec_num, "Figure", fname, chapter_dir, fig_number=fig_counter[0])
             elif item[0] in ("inset", "layout"):
-                prescan_nested(item[2], sec_num, fname, chapter_dir)
+                prescan_nested(item[2], sec_num, fname, chapter_dir, fig_counter)
 
     for sec in all_sections_data:
         prescan(sec["items"], sec["sec_num"], sec["file"], sec["chapter_dir"])

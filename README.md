@@ -146,7 +146,12 @@ other external tool.
    like in the Feature Manual. A same-page `\eqref{}`/`\ref{}` to an equation passes through as literal
    LaTeX for MathJax to resolve; a reference to an equation defined on a *different* page is resolved at
    build time instead (MathJax's per-page auto-numbering can't do this itself) — see the "Known
-   limitations" bullet below. `ref` to a subsection/figure becomes a Markdown link.
+   limitations" bullet below. `ref` to a subsection becomes a Markdown link showing the subsection's title;
+   `ref` to a figure becomes a Markdown link showing just the figure's number — its 1-indexed position among
+   `Graphics` insets on its own page (matching what `pymdownx.blocks.caption` displays next to it), with a
+   `<section>.` prefix only when the figure is defined on a *different* page than the reference, mirroring
+   the equation-reference convention above. No "Figure" text is added, since the source prose always writes
+   that word itself immediately before the `\ref{}` (e.g. "(Figure `\ref{fig17}`)" or "Figure~`\ref{...}`a-c.").
 
 6. **Citations** (`\begin_inset CommandInset citation`) become
    `[^section-n]` footnote references, deduplicated per page (the same
