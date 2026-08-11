@@ -48,15 +48,13 @@ This result, when generalized, leads to the useful identity
 
 \[ \begin{equation} \boxed{\mathbf{T}\cdot\mathbf{e}_{i}=T_{ji}\mathbf{e}_{j}}=T_{1i}\mathbf{e}_{1}+T_{2i}\mathbf{e}_{2}+T_{3i}\mathbf{e}_{3}\label{eq8-1} \end{equation} \]
 
-**Example 1.** Scaling transformation
-
-**Example 2.** A scaling transformation $\mathbf{T}$ with different scale factors along $x_{1},x_{2},x_{3}$ should satisfy the following relations by definition:
+**Example 1.** Scaling transformation. A scaling transformation $\mathbf{T}$ with different scale factors along $x_{1},x_{2},x_{3}$ should satisfy the following relations by definition:
 
 \[ \mathbf{T}\cdot\mathbf{a}=s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3} \]
 
 Verify that $\mathbf{T}$ is a tensor. Also find the matrix of $\mathbf{T}$ in $\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}$.
 
-**Example 3.** _Solution_. Is $\mathbf{T}$ a tensor? Let any $\mathbf{a}=a_{i}\mathbf{e}_{i}$ and $\mathbf{b}=b_{i}\mathbf{e}_{i}$, then
+_Solution_. Is $\mathbf{T}$ a tensor? Let any $\mathbf{a}=a_{i}\mathbf{e}_{i}$ and $\mathbf{b}=b_{i}\mathbf{e}_{i}$, then
 
 \[ \begin{aligned}\mathbf{T}\cdot\left(\alpha\mathbf{a}\right) & =s_{1}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ & =\alpha\left(s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\right)\\ & =\alpha\mathbf{T}\cdot\mathbf{a} \end{aligned} \]
 
@@ -64,7 +62,7 @@ and
 
 \[ \begin{aligned}\mathbf{T}\cdot\left(\mathbf{a}+\mathbf{b}\right) & =s_{1}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ & =s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ & +s_{1}\left(\mathbf{b}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{b}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{b}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ & =\mathbf{T}\cdot\mathbf{a}+\mathbf{T}\cdot\mathbf{b} \end{aligned} \]
 
-**Example 4.** Now that we have demonstrated that $\mathbf{T}$ is a tensor, its components are given by $T_{ij}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}$, thus
+Now that we have demonstrated that $\mathbf{T}$ is a tensor, its components are given by $T_{ij}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}$, thus
 
 \[ \begin{gathered}\left[T_{i1}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{1}\right]=\left[\mathbf{e}_{i}\cdot s_{1}\mathbf{e}_{1}\right]=\left[s_{1}\delta_{i1}\right]=\left[\begin{array}{c} s_{1}\\ 0\\ 0 \end{array}\right]\\ \left[T_{i2}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{2}\right]=\left[\mathbf{e}_{i}\cdot s_{2}\mathbf{e}_{2}\right]=\left[s_{2}\delta_{i2}\right]=\left[\begin{array}{c} 0\\ s_{2}\\ 0 \end{array}\right]\\ \left[T_{i3}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{3}\right]=\left[\mathbf{e}_{i}\cdot s_{3}\mathbf{e}_{3}\right]=\left[s_{3}\delta_{i3}\right]=\left[\begin{array}{c} 0\\ 0\\ s_{3} \end{array}\right] \end{gathered} \]
 
@@ -112,7 +110,7 @@ thus it is possible to represent a second-order tensor in terms of its Cartesian
 
 This turns out to be an important result that can be generalized to higher order tensors, e.g., third-order tensors can be represented in terms of their Cartesian components as $\mathbb{T}=T_{ijk}\mathbf{e}_{i}\otimes\mathbf{e}_{j}\otimes\mathbf{e}_{k}$, and similarly for higher orders.
 
-**Example 5.** The scaling transformation derived in a previous example can be represented as
+**Example 2.** The scaling transformation derived in a previous example can be represented as
 
 \[ \mathbf{T}=s_{1}\mathbf{e}_{1}\otimes\mathbf{e}_{1}+s_{2}\mathbf{e}_{2}\otimes\mathbf{e}_{2}+s_{3}\mathbf{e}_{3}\otimes\mathbf{e}_{3} \]
 
@@ -202,9 +200,7 @@ Thus, for any tensor $\mathbf{T}$, $\tr\mathbf{T}=\mathbf{I}:\mathbf{T}$. In com
 
 The double product of second order tensors is commutative.
 
-**Example 6.** Show that $\mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)$ and $\left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)$.
-
-**Example 7.** Using indicial notation,
+**Example 3.** Show that $\mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)$ and $\left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)$. Using indicial notation,
 
 \[ \mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=a_{i}T_{ij}b_{j}=T_{ij}a_{i}b_{j}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)\,, \]
 
@@ -268,7 +264,7 @@ Let $\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}$ and $\left\{ 
 
 where $Q_{mi}Q_{mj}=Q_{im}Q_{jm}=\delta_{ij}$. Since $Q_{mi}=\mathbf{e}_{m}\cdot\mathbf{Q}\cdot\mathbf{e}_{i}=\mathbf{e}_{m}\cdot\mathbf{e}'_{i}=\cos\left(\mathbf{e}_{m},\mathbf{e}'_{i}\right)$, the components of $\mathbf{Q}$ are direction cosines between $\mathbf{e}_{m}$ and $\mathbf{e}'_{i}$.
 
-**Example 8.** Rotation about $x_{3}$
+**Example 4.** Rotation about $x_{3}$
 
 ![FigRotationAboutX3](figs/FigRotationAboutX3.png)
 
@@ -280,7 +276,7 @@ Rotation about $x_{3}$.
 
 \[ \left[\mathbf{Q}\right]=\left[\begin{array}{ccc} \cos\theta & -\sin\theta & 0\\ \sin\theta & \cos\theta & 0\\ 0 & 0 & 1 \end{array}\right] \]
 
-**Example 9.** Reflection about $x_{2}-x_{3}$ plane, $\mathbf{e}'_{1}=\mathbf{Q}\cdot\mathbf{e}_{1}=-\mathbf{e}_{1},\,\mathbf{e}'_{2}=\mathbf{Q}\cdot\mathbf{e}_{2}=\mathbf{e}_{2},\,\mathbf{e}'_{3}=\mathbf{Q}\cdot\mathbf{e}_{3}=\mathbf{e}_{3}$.
+Reflection about $x_{2}-x_{3}$ plane, $\mathbf{e}'_{1}=\mathbf{Q}\cdot\mathbf{e}_{1}=-\mathbf{e}_{1},\,\mathbf{e}'_{2}=\mathbf{Q}\cdot\mathbf{e}_{2}=\mathbf{e}_{2},\,\mathbf{e}'_{3}=\mathbf{Q}\cdot\mathbf{e}_{3}=\mathbf{e}_{3}$.
 
 \[ \left[\mathbf{Q}\right]=\left[\begin{array}{ccc} -1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array}\right] \]
 
@@ -392,7 +388,7 @@ _Proof:_ Given $\mathbf{T}\cdot\mathbf{v}_{1}=\lambda_{1}\mathbf{v}_{1}$, $\math
 
 When two of the eigenvalues are repeated (a double root of the characteristic equation), the resulting eigenvectors are not necessarily orthogonal to each other; however, they remain orthogonal to the third eigenvector. This means that any vector lying in the plane normal to the third eigenvector is an eigenvector corresponding to the double root. Similarly, when all three eigenvalues are repeated (a triple root), any vector becomes an eigenvector of $\mathbf{T}$.
 
-**Example 10.** In hydrostatics the stress tensor is $\mathbf{T}=-p\mathbf{I}$, where $p$ is the hydrostatic pressure. In this case, $-p$ is a triple root of the characteristic equation of $\mathbf{T}$. Any vector $\mathbf{v}$ satisfies $\mathbf{T}\cdot\mathbf{v}=-p\mathbf{v}$, and is thus an eigenvector of $\mathbf{T}$.
+**Example 5.** In hydrostatics the stress tensor is $\mathbf{T}=-p\mathbf{I}$, where $p$ is the hydrostatic pressure. In this case, $-p$ is a triple root of the characteristic equation of $\mathbf{T}$. Any vector $\mathbf{v}$ satisfies $\mathbf{T}\cdot\mathbf{v}=-p\mathbf{v}$, and is thus an eigenvector of $\mathbf{T}$.
 
 In continuum mechanics the eigenvectors $\mathbf{v}$ of a tensor are generally normalized,
 
