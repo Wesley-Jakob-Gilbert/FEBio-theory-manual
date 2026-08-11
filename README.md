@@ -24,7 +24,8 @@ source/                   vendored copies of the LyX manual + BibTeX bibliograph
   FEBio3.bib
 tools/lyx2md.py            the converter (stdlib-only)
 build.py                   runs the converter, generates mkdocs.yml
-docs/                      generated Markdown SOURCE for mkdocs (+ index.md, js/mathjax_config.js) --
+docs/                      generated Markdown SOURCE for mkdocs (+ index.md, js/mathjax_config.js,
+                           febio.png -- the header logo, vendored from febio-feature-manual's docs/) --
                            this is mkdocs's input, not the deployed site; see "Deployment" below
 .github/workflows/deploy.yml   GitHub Actions workflow that builds and deploys to the gh-pages branch
 ```

@@ -1,8 +1,9 @@
-site_name: "FEBio 4.12 - Theory Manual"
+site_name: "FEBio 4.13 - Theory Manual"
 site_description: This manual provides the theoretical background for FEBio.
 site_author: FEBio Team
 theme:
   name: material
+  logo: febio.png
   palette:
     primary: indigo
     accent: indigo

@@ -7,7 +7,9 @@ Mirrors the style of febio-feature-manual/build.py:
      docs/theory/chapterN/*.md from source/FEBio_Theory_Manual.lyx, for
      whichever chapters tools/lyx2md.py's CHAPTERS_TO_CONVERT includes.
   2. Writes mkdocs.yml with the same Material theme / markdown_extensions
-     conventions as febio-feature-manual (indigo palette, arithmatex
+     conventions as febio-feature-manual (indigo palette, the FEBio logo
+     -- docs/febio.png, vendored from febio-feature-manual's own docs/
+     directory -- in place of Material's default logo, arithmatex
      generic + MathJax via docs/js/mathjax_config.js + jsdelivr
      tex-mml-chtml, admonition, footnotes, toc permalink,
      pymdownx.blocks.caption, superfences, details), plus attr_list
@@ -38,7 +40,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 args = sys.argv[1:]
 verbose = "-v" in args or "--verbose" in args
 
-print("Building FEBio 4.12 Theory Manual...")
+print("Building FEBio 4.13 Theory Manual...")
 
 # ---------------------------------------------------------------------
 # Step 1: run the LyX -> Markdown converter
@@ -77,11 +79,12 @@ if verbose:
     print("Writing mkdocs.yml...")
 
 with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
-    f.write('site_name: "FEBio 4.12 - Theory Manual"\n')
+    f.write('site_name: "FEBio 4.13 - Theory Manual"\n')
     f.write("site_description: This manual provides the theoretical background for FEBio.\n")
     f.write("site_author: FEBio Team\n")
     f.write("theme:\n")
     f.write("  name: material\n")
+    f.write("  logo: febio.png\n")
     f.write("  palette:\n")
     f.write("    primary: indigo\n")
     f.write("    accent: indigo\n")
