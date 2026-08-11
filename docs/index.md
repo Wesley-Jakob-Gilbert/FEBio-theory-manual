@@ -1,9 +1,7 @@
 # Preface
 
-This is a pilot MkDocs conversion of the [FEBio Theory Manual](https://help.febio.org/), currently covering **Chapter 1
-(Introduction), Chapter 2 (Continuum Mechanics), and Chapter 3 (The Nonlinear FE Method)**, with more chapters to follow.
-
-The manual was originally authored in [LyX](https://www.lyx.org/) (`FEBio_Theory_Manual.lyx`) and has been converted to Markdown using a
+This is a pilot MkDocs conversion of the [FEBio Theory Manual](https://help.febio.org/). The manual was originally authored in
+[LyX](https://www.lyx.org/) (`FEBio_Theory_Manual.lyx`) and has been converted to Markdown using a
 custom, deterministic converter (`tools/lyx2md.py`) so that it can be published as a searchable, versioned static site with
 [MkDocs](https://www.mkdocs.org/) and the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/) theme, following the
 same conventions established by the [FEBio Feature Manual](https://github.com/febiosoftware/febio-feature-manual) build.
