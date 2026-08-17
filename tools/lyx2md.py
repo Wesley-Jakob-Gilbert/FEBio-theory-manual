@@ -1,24 +1,33 @@
 #!/usr/bin/env python3
 """
-lyx2md.py -- Deterministic LyX -> Markdown converter for the FEBio Theory
-Manual. Started as a Chapter 2 (Continuum Mechanics) single-chapter pilot;
-now handles the complete manual, though CHAPTERS_TO_CONVERT below limits
-which chapters actually produce output pages at any given time.
+lyx2md.py -- Deterministic LyX -> Markdown converter, originally built for
+the FEBio Theory Manual (started as a Chapter 2 pilot, then grew to the
+complete manual) and now generic enough to convert any similarly-structured
+FEBio LyX manual (e.g. the FEBio Studio Manual) via CLI flags -- see
+`parse_args()`. Which chapters actually produce output pages at any given
+time is controlled by `--chapters` (defaults to the Theory Manual's full set).
 
 No external dependencies (stdlib only).
 
 Usage:
-    python3 tools/lyx2md.py
+    python3 tools/lyx2md.py [--lyx PATH] [--bib PATH] [--docs-root DIR]
+                             [--nav-root PREFIX] [--stats-out PATH]
+                             [--chapters 1,2,3|all]
+
+    With no flags, converts the Theory Manual exactly as before. `build.py`
+    invokes this once per manual (see its `MANUALS` list) with each
+    manual's own paths so per-run globals never cross-contaminate between
+    manuals -- each invocation is a separate subprocess.
 
 Reads (checked in this order so the repo is self-contained for CI/GitHub
 Actions, but still picks up live edits from the original workspace input
-directory during local development):
+directory during local development), unless overridden by `--lyx`/`--bib`:
     source/FEBio_Theory_Manual.lyx   (vendored copy, checked into this repo)
     source/FEBio3.bib
     ../febio-docs/FEBio_Theory_Manual.lyx   (fallback: sibling workspace dir, if present)
     ../febio-docs/FEBio3.bib
 
-Writes:
+Writes (unless overridden by `--docs-root`/`--stats-out`):
     docs/theory/chapter<N>/<N>.M-slug.md   (one file per converted Section)
     tools/_stats.json                      (conversion statistics consumed by build.py / CONVERSION_NOTES)
 
@@ -45,6 +54,7 @@ as an HTML comment marker `<!-- UNHANDLED: ... -->` so a `grep` for
 leftover LyX bookkeeping tokens (\\begin_, \\end_inset, etc.) will catch
 any gaps.
 """
+import argparse
 import json
 import os
 import re
@@ -88,6 +98,30 @@ DOCS_THEORY_ROOT = os.path.join(ROOT, "docs", "theory")
 # out-of-scope reference already does (left unresolved, flagged in
 # needs_review), not a crash.
 CHAPTERS_TO_CONVERT = {1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+DEFAULT_STATS_PATH = os.path.join(ROOT, "tools", "_stats.json")
+
+
+def parse_args():
+    """CLI flags, each defaulting to today's FEBio Theory Manual values so a
+    bare `python3 tools/lyx2md.py` behaves exactly as before. `build.py`
+    passes manual-specific values for other manuals (e.g. the Studio Manual)
+    so the same converter logic runs once per manual, unmodified."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--lyx", default=LYX_PATH, help="Path to the source .lyx file")
+    parser.add_argument("--bib", default=BIB_PATH, help="Path to the .bib bibliography file")
+    parser.add_argument("--docs-root", default=DOCS_THEORY_ROOT,
+                         help="Output directory for generated chapter Markdown")
+    parser.add_argument("--nav-root", default="theory",
+                         help="Path prefix used for nav entries in tools/_stats.json "
+                              "(e.g. 'theory' -> 'theory/chapter1/1.1-....md')")
+    parser.add_argument("--stats-out", default=DEFAULT_STATS_PATH,
+                         help="Path to write the stats JSON sidecar consumed by build.py")
+    parser.add_argument("--chapters", default=",".join(str(c) for c in sorted(CHAPTERS_TO_CONVERT)),
+                         help="Comma-separated 1-indexed chapter numbers to convert, or 'all' "
+                              "for every chapter found in the source")
+    return parser.parse_args()
+
 
 STATS = {
     "sections": [],
@@ -799,7 +833,13 @@ def render_items_inline(items, ctx):
     # display-math blocks from surrounding prose are preserved.
     out = re.sub(r"(?<!\n)\n(?!\n)", " ", out)
     out = re.sub(r"[ \t]{2,}", " ", out)
-    out = re.sub(r" +([,.;:])", r"\1", out)
+    # (?!\w): a "." immediately followed by a word character isn't
+    # sentence-ending punctuation with a spurious leading space -- it's a
+    # literal token like a file extension (".xplt", ".feb"), where the
+    # preceding space is real and must be kept (found via the FEBio Studio
+    # Manual's "the .xplt file extension" -- a pattern the Theory Manual's
+    # equation/citation-heavy prose never exercised).
+    out = re.sub(r" +([,.;:])(?!\w)", r"\1", out)
     out = re.sub(r"\n[ \t]+", "\n", out)
     out = re.sub(r"[ \t]+\n", "\n", out)
     out = fix_emphasis_whitespace(out)
@@ -879,7 +919,11 @@ def render_inset(spec, sub_items, ctx):
         return ""
     if kind == "ERT":
         return render_ert(sub_items, ctx)
-    if kind == "Float":
+    if kind in ("Float", "Wrap"):
+        # Wrap (LaTeX wrapfig -- text-wrapped figure) has the identical
+        # Plain-Layout-with-Graphics+Caption substructure as Float; Markdown
+        # has no text-wrap-around-image equivalent, so it renders the same
+        # as an ordinary figure.
         return render_float(spec, sub_items, ctx)
     if kind == "Caption":
         return render_items_inline(sub_items, ctx)
@@ -1097,6 +1141,15 @@ def render_command_inset(spec, sub_items, ctx):
                 return f"[{label_text}]({link})"
             ctx.needs_review.append(f"Unresolved \\ref target: {reference!r}")
             return f"[{reference}](#{slugify_ref(reference)})"
+    if subtype == "href":
+        # LyX's native hyperlink inset (distinct from the ERT \href{}{}/\url{}
+        # reconstruction elsewhere in this file) -- an optional display
+        # "name" plus a "target" URL. Same rendering convention as the ERT
+        # \href{}/\url{} handling: named link text becomes a Markdown link,
+        # an unnamed one becomes a bare autolink.
+        target = attrs.get("target", "")
+        name = attrs.get("name", "")
+        return f"[{name}]({target})" if name else f"<{target}>"
     if subtype == "citation":
         key = attrs.get("key", "")
         keys = [k.strip() for k in key.split(",") if k.strip()]
@@ -1549,10 +1602,15 @@ def read_lyx_lines(path):
 
 
 def main():
-    os.makedirs(DOCS_THEORY_ROOT, exist_ok=True)
+    args = parse_args()
+    docs_root = args.docs_root
+    nav_root = args.nav_root
+    stats_out = args.stats_out
 
-    bib = parse_bib(BIB_PATH)
-    lines = read_lyx_lines(LYX_PATH)
+    os.makedirs(docs_root, exist_ok=True)
+
+    bib = parse_bib(args.bib)
+    lines = read_lyx_lines(args.lyx)
     top_items = top_level_parse(lines)
     n = len(top_items)
 
@@ -1573,6 +1631,11 @@ def main():
     if not chapter_boundaries:
         print("ERROR: no Chapter layouts found", file=sys.stderr)
         sys.exit(1)
+
+    if args.chapters.strip().lower() == "all":
+        chapters_to_convert = set(range(1, len(chapter_boundaries) + 1))
+    else:
+        chapters_to_convert = {int(c) for c in args.chapters.split(",") if c.strip()}
 
     # ---- Pass 1: walk every Chapter in the *whole* manual to compute each
     # one's absolute chapter number (1-indexed position in the source) and
@@ -1639,10 +1702,10 @@ def main():
     chapters_output = []  # [{"chap_num", "title", "dir", "sections": [sec_data, ...]}]
     for chap in chapters_meta:
         chap_num = chap["chap_num"]
-        if chap_num not in CHAPTERS_TO_CONVERT:
+        if chap_num not in chapters_to_convert:
             continue
         chap_dir = f"chapter{chap['chap_display']}"
-        out_dir = os.path.join(DOCS_THEORY_ROOT, chap_dir)
+        out_dir = os.path.join(docs_root, chap_dir)
         os.makedirs(out_dir, exist_ok=True)
         os.makedirs(os.path.join(out_dir, "figs"), exist_ok=True)
 
@@ -1706,7 +1769,7 @@ def main():
         })
 
     if not all_sections_data:
-        print(f"ERROR: none of the chapters in CHAPTERS_TO_CONVERT {CHAPTERS_TO_CONVERT} were found", file=sys.stderr)
+        print(f"ERROR: none of the chapters in --chapters {chapters_to_convert} were found", file=sys.stderr)
         sys.exit(1)
 
     # ---- Pre-scan pass: walk every section's body items (without full
@@ -1756,11 +1819,11 @@ def main():
         for item in items:
             if item[0] == "inset" and item[1].startswith("Graphics"):
                 # Mirrors render_graphics()'s ctx.fig_counter increment: counts
-                # every image (Float-wrapped or bare) in document order, so a
-                # figure \ref{}'s per-page number matches what
+                # every image (Float/Wrap-wrapped or bare) in document order,
+                # so a figure \ref{}'s per-page number matches what
                 # pymdownx.blocks.caption actually displays next to it.
                 fig_counter[0] += 1
-            if item[0] == "inset" and item[1].startswith("Float"):
+            if item[0] == "inset" and (item[1].startswith("Float") or item[1].startswith("Wrap")):
                 for sub in item[2]:
                     if sub[0] == "layout":
                         anchor = None
@@ -1848,14 +1911,14 @@ def main():
             "title": c["title"],
             "dir": c["dir"],
             "nav": [
-                [f"{s['sec_num']} {s['title']}", f"theory/{c['dir']}/{s['file']}"]
+                [f"{s['sec_num']} {s['title']}", f"{nav_root}/{c['dir']}/{s['file']}"]
                 for s in c["sections"]
             ],
         }
         for c in chapters_output
     ]
 
-    with open(os.path.join(ROOT, "tools", "_stats.json"), "w", encoding="utf-8") as f:
+    with open(stats_out, "w", encoding="utf-8") as f:
         json.dump(STATS, f, indent=2)
 
     print(f"Converted {len(all_sections_data)} sections across {len(chapters_output)} chapters.")

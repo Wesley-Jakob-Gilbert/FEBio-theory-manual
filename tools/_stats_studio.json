@@ -1,0 +1,175 @@
+{
+  "sections": [
+    {
+      "section": "1.1",
+      "title": "Overview of FEBioStudio",
+      "file": "1.1-overview-of-febiostudio.md",
+      "chapter": 1,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "1.2",
+      "title": "About this document",
+      "file": "1.2-about-this-document.md",
+      "chapter": 1,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "2.1",
+      "title": "Starting FEBio Studio",
+      "file": "2.1-starting-febio-studio.md",
+      "chapter": 2,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'welcome.png' referenced (source path 'Figures/welcome.png') -- placeholder written to figs/welcome.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "2.2",
+      "title": "Creating a New Model",
+      "file": "2.2-creating-a-new-model.md",
+      "chapter": 2,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure_2_2.png' referenced (source path 'Figures/Figure_2_2.png') -- placeholder written to figs/Figure_2_2.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "2.3",
+      "title": "Opening a Model",
+      "file": "2.3-opening-a-model.md",
+      "chapter": 2,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure_2_3.png' referenced (source path 'Figures/Figure_2_3.png') -- placeholder written to figs/Figure_2_3.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "2.4",
+      "title": "Exploring a Model",
+      "file": "2.4-exploring-a-model.md",
+      "chapter": 2,
+      "inline_formulas": 1,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'subsubsec:navigating'"
+      ]
+    },
+    {
+      "section": "2.5",
+      "title": "Solving the Model",
+      "file": "2.5-solving-the-model.md",
+      "chapter": 2,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'run_febio.png' referenced (source path 'Figures/run_febio.png') -- placeholder written to figs/run_febio.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "2.6",
+      "title": "Loading the Results",
+      "file": "2.6-loading-the-results.md",
+      "chapter": 2,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Unresolved \\ref target: 'subsec:postui'",
+        "Figure image 'Figure_2_4.png' referenced (source path 'Figures/Figure_2_4.png') -- placeholder written to figs/Figure_2_4.png, original binary not available in inputs."
+      ]
+    }
+  ],
+  "totals": {
+    "inline_formulas": 1,
+    "display_formulas": 0,
+    "citations": 0,
+    "labels": 0,
+    "refs": 0,
+    "figures": 5,
+    "unhandled": 0
+  },
+  "needs_review": [],
+  "chapters": [
+    {
+      "chap_num": 1,
+      "chap_display": "1",
+      "is_appendix": false,
+      "title": "Introduction",
+      "dir": "chapter1",
+      "nav": [
+        [
+          "1.1 Overview of FEBioStudio",
+          "studio/chapter1/1.1-overview-of-febiostudio.md"
+        ],
+        [
+          "1.2 About this document",
+          "studio/chapter1/1.2-about-this-document.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 2,
+      "chap_display": "2",
+      "is_appendix": false,
+      "title": "Getting Started",
+      "dir": "chapter2",
+      "nav": [
+        [
+          "2.1 Starting FEBio Studio",
+          "studio/chapter2/2.1-starting-febio-studio.md"
+        ],
+        [
+          "2.2 Creating a New Model",
+          "studio/chapter2/2.2-creating-a-new-model.md"
+        ],
+        [
+          "2.3 Opening a Model",
+          "studio/chapter2/2.3-opening-a-model.md"
+        ],
+        [
+          "2.4 Exploring a Model",
+          "studio/chapter2/2.4-exploring-a-model.md"
+        ],
+        [
+          "2.5 Solving the Model",
+          "studio/chapter2/2.5-solving-the-model.md"
+        ],
+        [
+          "2.6 Loading the Results",
+          "studio/chapter2/2.6-loading-the-results.md"
+        ]
+      ]
+    }
+  ]
+}

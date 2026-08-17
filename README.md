@@ -1,10 +1,17 @@
 # febio-theory-manual
 
-A MkDocs site converting the FEBio Theory Manual from LyX to Markdown, built to mirror the conventions of
+A MkDocs site converting FEBio's LyX-authored manuals to Markdown, built to mirror the conventions of
 the sibling [`febio-feature-manual`](https://github.com/febiosoftware/febio-feature-manual) repository
 (Material for MkDocs theme, indigo palette, `pymdownx.arithmatex` +
-MathJax for equations, footnote-based citations). Started as a single-chapter pilot (Chapter 2, Continuum
-Mechanics); now covers the complete manual — Chapters 1 through 8 plus Appendix A (Tensor Calculus).
+MathJax for equations, footnote-based citations). The site has two tabs, each a separate converted manual:
+
+- **Theory** — the FEBio Theory Manual. Started as a single-chapter pilot (Chapter 2, Continuum
+  Mechanics); now covers the complete manual — Chapters 1 through 8 plus Appendix A (Tensor Calculus).
+- **Studio** — the FEBio Studio Manual. Currently a pilot covering Chapters 1–2 (Introduction, Getting
+  Started); see [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for scope and follow-up.
+
+Both manuals are converted by the same generic, stdlib-only converter (`tools/lyx2md.py`), run once per
+manual by `build.py` with each manual's own source/output paths — see "How the converter works" below.
 
 ## Table of Contents
 - [Repository layout](#repository-layout)
@@ -19,29 +26,41 @@ Mechanics); now covers the complete manual — Chapters 1 through 8 plus Appendi
 ## Repository layout
 
 ```
-source/                   vendored copies of the LyX manual + BibTeX bibliography
-  FEBio_Theory_Manual.lyx (the complete manual; from febiosoftware/FEBio's Documentation/ dir)
+source/                        vendored copies of each manual's LyX source + BibTeX bibliography
+  FEBio_Theory_Manual.lyx      Theory Manual (the complete manual; from febiosoftware/FEBio's Documentation/ dir)
   FEBio3.bib
-tools/lyx2md.py            the converter (stdlib-only)
-build.py                   runs the converter, generates mkdocs.yml
-docs/                      generated Markdown SOURCE for mkdocs (+ index.md, js/mathjax_config.js,
-                           febio.png -- the header logo, vendored from febio-feature-manual's docs/) --
-                           this is mkdocs's input, not the deployed site; see "Deployment" below
-.github/workflows/deploy.yml   GitHub Actions workflow that builds and deploys to the gh-pages branch
+  FEBioStudio_User_Manual.lyx  Studio Manual (from febiosoftware/FEBioStudio's Documentation/ dir)
+  FEBioStudio.bib
+tools/lyx2md.py                 the converter (stdlib-only, generic -- see "How the converter works")
+build.py                        runs the converter once per manual (see its MANUALS list), generates mkdocs.yml
+docs/                            generated Markdown SOURCE for mkdocs -- this is mkdocs's input, not the
+                                 deployed site; see "Deployment" below
+  index.md                      site root landing page (not manual-specific; links to both tabs)
+  theory/index.md                Theory Manual Preface (hand-authored)
+  theory/chapter<N>/*.md         Theory Manual generated pages
+  studio/index.md                Studio Manual Preface (hand-authored)
+  studio/chapter<N>/*.md         Studio Manual generated pages
+  js/mathjax_config.js, febio.png -- the header logo, vendored from febio-feature-manual's docs/
+tools/_stats.json                Theory Manual conversion stats (see build.py's MANUALS list)
+tools/_stats_studio.json         Studio Manual conversion stats
+.github/workflows/deploy.yml    GitHub Actions workflow that builds and deploys to the gh-pages branch
 ```
 
-`source/FEBio_Theory_Manual.lyx` and `source/FEBio3.bib` are vendored (checked-in) copies of the upstream
-files, so this repository builds standalone from a bare `git clone` — the converter does not depend on any
-sibling directory outside this repo. (`tools/lyx2md.py` will also pick up a sibling `../febio-docs/`
-directory instead, if present, which is how it was used during local development against the original
-workspace layout — see the module docstring.)
+Each manual's `.lyx`/`.bib` pair is vendored (checked-in) under `source/`, so this repository builds
+standalone from a bare `git clone` — the converter does not depend on any sibling directory outside this
+repo. (`tools/lyx2md.py` will also pick up the Theory Manual from a sibling `../febio-docs/` directory
+instead, if present and no `--lyx`/`--bib` flags are given, which is how it was used during local
+development against the original workspace layout — see the module docstring.)
 
-Which chapters actually get converted into pages is controlled by `CHAPTERS_TO_CONVERT` in
-`tools/lyx2md.py`, currently `{1, 2, 3, 4, 5, 6, 7, 8, 9}` — i.e. every chapter in the manual (chapter 9 is
-the source's `\start_of_appendix`-marked chapter, rendered as "Appendix A"). Chapters not in that set are
+Which chapters actually get converted into pages is controlled per-manual by the `"chapters"` entry in
+`build.py`'s `MANUALS` list (passed through to `tools/lyx2md.py --chapters`), either a comma-separated list
+or `"all"`. The Theory Manual uses `"all"` (`{1..9}`, where chapter 9 is the source's
+`\start_of_appendix`-marked chapter, rendered as "Appendix A"). The Studio Manual currently uses `"1,2"` (a
+pilot — see [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md)). Chapters not in a manual's set are
 still scanned for their titles and label positions (so numbering and cross-references stay correct
-regardless of conversion order), they just don't produce output files yet — this is how the site grew from
-a single-chapter pilot to the full manual without ever needing to rewrite the cross-reference machinery.
+regardless of conversion order), they just don't produce output files yet — this is how the Theory Manual
+grew from a single-chapter pilot to the full manual without ever needing to rewrite the cross-reference
+machinery, and the same mechanism lets the Studio Manual start as a pilot too.
 
 ## Prerequisites
 
@@ -57,12 +76,12 @@ mkdocs serve           # preview at http://127.0.0.1:8000
 mkdocs build --strict  # build the static site into site/
 ```
 
-`build.py` invokes `tools/lyx2md.py` as a subprocess, reads back the
-`tools/_stats.json` sidecar file it writes (per-chapter, per-section formula/citation/
-figure counts and nav ordering), and uses that to generate `mkdocs.yml` with the correct navigation
-automatically — the nav never needs to be hand-maintained. Navigation is a single unified sidebar tree (no
-`navigation.tabs`): a Preface entry, then one top-level nav group per converted chapter, each expanding to
-that chapter's sections.
+`build.py` invokes `tools/lyx2md.py` as a subprocess once per manual in its `MANUALS` list, reads back each
+manual's own stats sidecar file (per-chapter, per-section formula/citation/figure counts and nav ordering),
+and uses that to generate a single `mkdocs.yml` with the correct navigation automatically — the nav never
+needs to be hand-maintained. Navigation uses `navigation.tabs`: each manual is exactly one top-level nav
+key (rendered as a tab — currently "Theory" and "Studio"), each containing a Preface entry followed by one
+nav group per converted chapter, expanding to that chapter's sections.
 
 ## Deployment
 
@@ -77,7 +96,7 @@ content — pushing to `main` alone does not, by itself, change what's live.
 Two ways the `gh-pages` branch gets updated:
 
 - **Automatically:** `.github/workflows/deploy.yml` runs on every push to
-  `main`. It re-generates `docs/`/`mkdocs.yml` from `source/FEBio_Theory_Manual.lyx` (so the
+  `main`. It re-generates `docs/`/`mkdocs.yml` from both manuals' vendored `.lyx` sources (so the
   deploy can never drift from what's actually committed), validates with
   `mkdocs build --strict`, then runs `mkdocs gh-deploy --force`, which
   builds the site and pushes the result to `gh-pages`. GitHub's own internal
@@ -94,7 +113,12 @@ Two ways the `gh-pages` branch gets updated:
 
 `tools/lyx2md.py` is a **stdlib-only, deterministic** Python 3 parser for
 LyX's plain-text `.lyx` format. It does not shell out to LyX, Pandoc, or any
-other external tool.
+other external tool. It's generic across manuals — CLI flags (`--lyx`, `--bib`, `--docs-root`,
+`--nav-root`, `--stats-out`, `--chapters`) select which manual's source it reads and where it writes,
+each defaulting to the Theory Manual's paths so a bare `python3 tools/lyx2md.py` is unchanged; `build.py`
+invokes it once per manual (see its `MANUALS` list) as a separate subprocess, so module-level globals and
+label registries never cross-contaminate between manuals. The numbered steps below describe the rendering
+logic itself, which is identical regardless of which manual is being converted.
 
 1. **Tokenize into a tree.** `parse_flat()` reads the file line-by-line and
    builds an order-preserving tree of `('text', line)`, `('inset', spec,
@@ -173,7 +197,10 @@ other external tool.
    (`{: style="width:NN%" }` via `attr_list`) so the figure isn't embedded at full native pixel size. A bare
    `Graphics` inset not wrapped in a `Float` (decorated instead with LyX `Box`/`VSpace` insets, which are
    otherwise purely presentational and rendered as their content passed through transparently) is also
-   handled.
+   handled, as is `\begin_inset Wrap figure` (LaTeX's `wrapfig` text-wrapped figure, found in the Studio
+   Manual) — Markdown has no text-wrap-around-image equivalent, so it renders identically to an ordinary
+   `Float figure`, and the figure-numbering prescan counts it the same way so `\ref{}` numbering stays
+   consistent with what actually appears on the page.
 
 8. **Tables** (`\begin_inset Tabular`) become plain Markdown tables (first row as header), always wrapped in
    a centering `<div markdown="1" style="display: flex; justify-content: center;">` — a plain Markdown table
@@ -192,7 +219,9 @@ other external tool.
    `\backslash`-token encoding and handles the two patterns that occur in this document: `\href{url}{text}`
    (rendering a real Markdown link, unwrapping a nested `\emph{}` in the link text to Markdown emphasis) and
    a bare `\url{url}` (rendering as a Markdown autolink `<url>`). Anything else is flagged for manual review
-   instead of guessed at.
+   instead of guessed at. LyX's *native* hyperlink inset (`\begin_inset CommandInset href`, distinct from
+   the ERT reconstruction above and used throughout the Studio Manual) follows the same convention: an
+   optional display `name` becomes a Markdown link, an unnamed one becomes a bare autolink.
 
 10. **Unhandled inset kinds** render as `<!-- UNHANDLED INSET ... -->` HTML
     comments and are logged to `needs_review` — this makes the required
@@ -222,12 +251,14 @@ other external tool.
     MathJax `macros` entries live in `docs/js/mathjax_config.js` instead, since MathJax has no per-page
     macro scoping.
 
-Output: one Markdown file per converted Section in
-`docs/theory/chapter<N>/`, named e.g. `2.1-vectors-and-tensors.md`.
+Output: one Markdown file per converted Section, in `docs/theory/chapter<N>/` for the Theory Manual (e.g.
+`2.1-vectors-and-tensors.md`) or `docs/studio/chapter<N>/` for the Studio Manual.
 
 ## Conversion statistics
 
-Totals for the complete, now fully-converted manual; see `CONVERSION_NOTES.md` for the full per-section
+### Theory Manual
+
+Totals for the complete, fully-converted manual; see `CONVERSION_NOTES.md` for the full per-section
 breakdown.
 
 | Metric | Count |
@@ -244,14 +275,35 @@ breakdown.
 See [`CONVERSION_NOTES.md`](CONVERSION_NOTES.md) for the full per-section
 breakdown and every item flagged for manual review.
 
+### Studio Manual (pilot)
+
+| Metric | Count |
+|---|---|
+| Chapters converted | 2 of 20 (Introduction, Getting Started) — pilot scope |
+| Sections converted | 8 |
+| Figures | 5 (artwork fetched at build time from `febiosoftware/FEBioStudio`) |
+| Unhandled/unknown inset kinds | 0 |
+| Leftover LyX bookkeeping artifacts in output | 0 |
+
+See [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for the per-section breakdown and what's
+left for the remaining 18 chapters.
+
 ## Known limitations / needs manual review
 
-- **Figure artwork is fetched automatically at build time.** Figures aren't part of the pilot's original
-  LyX/BibTeX inputs, so `build.py` scans every converted chapter's generated Markdown for figure
-  references and fetches any missing ones from the upstream
-  [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio)
-  repository's `Documentation/Figures/` directory into that chapter's `figs/` directory (skipping the fetch
-  if a real copy is already present). The original LyX-authored captions are preserved intact either way.
+- **The Studio Manual is a pilot, covering only Chapters 1–2 of 20.** `build.py`'s `MANUALS` list has its
+  `"chapters"` entry set to `"1,2"` rather than `"all"`, so the converter's support for this manual's LyX
+  constructs (e.g. `Wrap`-figure insets, native `CommandInset href` links) could be validated against real
+  content before committing to a full 20-chapter/~105-section conversion. References from these chapters
+  into later, unconverted ones (e.g. "See section [subsubsec:navigating]") degrade the same way an
+  out-of-scope Theory Manual reference does — left as a same-page anchor link that doesn't resolve yet,
+  flagged in `needs_review`, not a crash. See `CONVERSION_NOTES_STUDIO.md` for what's left.
+- **Figure artwork is fetched automatically at build time, per manual.** Figures aren't part of either
+  manual's original LyX/BibTeX inputs, so `build.py` scans every converted chapter's generated Markdown for
+  figure references and fetches any missing ones from that manual's own upstream `Documentation/Figures/`
+  directory — [`febiosoftware/FEBio`](https://github.com/febiosoftware/FEBio) for the Theory Manual,
+  [`febiosoftware/FEBioStudio`](https://github.com/febiosoftware/FEBioStudio) for the Studio Manual — into
+  that chapter's `figs/` directory (skipping the fetch if a real copy is already present). The original
+  LyX-authored captions are preserved intact either way.
 - **Cross-section (and cross-chapter) `\eqref{}`/`\ref{}` references to equations are resolved to static
   links, not left as `\eqref{}`.** Each Section is a separately-loaded page, and
   MathJax's `tags: 'ams'` auto-numbering is per-page -- it has no way to
@@ -322,10 +374,12 @@ breakdown and every item flagged for manual review.
    formula not further pursued — see `CONVERSION_NOTES.md`. Chapter 7's apparent 23-formula "gap" is fully
    explained by its 23 `FormulaMacro` definitions, which correctly produce no visible output.
 5. A real browser (headless Chromium via Playwright) was used throughout development to verify things a
-   static grep can't catch: MathJax equation/table/figure rendering, the removal of `navigation.tabs` in
-   favor of a single unified sidebar, a chapter title containing inline math (`$\alpha-$Method`) rendering
-   correctly in both the page heading and the nav sidebar, and that a cross-chapter equation reference link
-   both navigates to the right page *and* scrolls to the right equation.
+   static grep can't catch: MathJax equation/table/figure rendering, a chapter title containing inline math
+   (`$\alpha-$Method`) rendering correctly in both the page heading and the nav sidebar, and that a
+   cross-chapter equation reference link both navigates to the right page *and* scrolls to the right
+   equation. (`navigation.tabs` was originally removed in favor of a single unified sidebar while this was
+   a single-manual site; it was reintroduced when the Studio Manual pilot was added, this time with each
+   manual as one top-level nav key/tab rather than one tab per chapter — see item 8 below.)
 6. Sections 2.1 and 2.6 were read in full and spot-checked against the
    published manual at
    [help.febio.org TM40-Section-2.1](https://help.febio.org/docs/FEBioTheory-4-0/TM40-Section-2.1.html)
@@ -336,3 +390,15 @@ breakdown and every item flagged for manual review.
    properly typeset math (fractions, matrices, tensor operators, numbered
    equations with working anchors) with no raw LaTeX source visible on the
    page.
+8. **Studio Manual pilot (Chapters 1–2) and `navigation.tabs` addition:** `python3 build.py &&
+   mkdocs build --strict` — exit code 0, zero `WARNING`-level messages, run against both manuals together.
+   The leftover-artifact grep from item 2 was re-run over all of `docs/` (both `docs/theory/` and
+   `docs/studio/`) — zero matches. The built HTML (`site/index.html`) was checked for `md-tabs__link`
+   elements confirming exactly two tabs render ("Theory", "Studio"). Two real converter gaps were found and
+   fixed against this manual's actual content (not present in the Theory Manual's source, so never
+   previously exercised): a `Wrap`-figure inset (LaTeX's `wrapfig`) had no renderer and was falling through
+   to `UNHANDLED INSET`, now aliased to the existing `Float figure` renderer; and a whitespace-normalization
+   regex intended to strip a spurious space before sentence-ending punctuation was also stripping the
+   genuine space before a literal file-extension token (`"the .xplt file extension"` was rendering as
+   `"the.xplt..."`), fixed with a negative lookahead so it only strips a space before punctuation *not*
+   immediately followed by a word character.

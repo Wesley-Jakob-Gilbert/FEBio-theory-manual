@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """
-build.py -- Build script for the FEBio Theory Manual.
+build.py -- Build script for the FEBio Manuals site (Theory Manual + Studio
+Manual).
 
 Mirrors the style of febio-feature-manual/build.py:
-  1. Runs the LyX -> Markdown converter (tools/lyx2md.py) to (re)generate
-     docs/theory/chapterN/*.md from source/FEBio_Theory_Manual.lyx, for
-     whichever chapters tools/lyx2md.py's CHAPTERS_TO_CONVERT includes.
+  1. Runs the LyX -> Markdown converter (tools/lyx2md.py) once per manual in
+     MANUALS below, to (re)generate that manual's docs/<nav_root>/chapterN/*.md
+     from its own vendored .lyx source, for whichever chapters that manual's
+     "chapters" entry includes. Each run is a separate subprocess, so
+     tools/lyx2md.py's module-level globals/label-registries never
+     cross-contaminate between manuals.
   2. Writes mkdocs.yml with the same Material theme / markdown_extensions
      conventions as febio-feature-manual (indigo palette, the FEBio logo
      -- docs/febio.png, vendored from febio-feature-manual's own docs/
@@ -21,9 +25,11 @@ Mirrors the style of febio-feature-manual/build.py:
      attr_list doesn't attach to one -- has its nested Markdown table
      syntax actually parsed, instead of passed through as literal text).
 
-Navigation is a single unified sidebar tree (no navigation.tabs): a
-Preface entry, then one top-level nav group per converted chapter, each
-expanding to that chapter's sections -- not one browser tab per chapter.
+Navigation uses navigation.tabs: each entry in MANUALS becomes exactly one
+top-level nav key (rendered as a tab), containing a Preface page plus one
+nav group per converted chapter, each expanding to that chapter's sections
+-- the same mechanism febio-feature-manual uses to render its own 5 tabs
+from 5 top-level nav keys.
 
 Usage:
     python3 build.py [-v|--verbose]
@@ -34,43 +40,84 @@ import re
 import subprocess
 import sys
 import os
+import urllib.request as _url
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 
 args = sys.argv[1:]
 verbose = "-v" in args or "--verbose" in args
 
-print("Building FEBio 4.13 Theory Manual...")
+# ---------------------------------------------------------------------
+# Manual configuration: one entry per manual converted into this site.
+# ---------------------------------------------------------------------
+MANUALS = [
+    {
+        "key": "theory",
+        "nav_label": "Theory",
+        "lyx": os.path.join(ROOT, "source", "FEBio_Theory_Manual.lyx"),
+        "bib": os.path.join(ROOT, "source", "FEBio3.bib"),
+        "docs_root": os.path.join(ROOT, "docs", "theory"),
+        "nav_root": "theory",
+        "stats_file": os.path.join(ROOT, "tools", "_stats.json"),
+        "chapters": "all",
+        "fig_base": "https://raw.githubusercontent.com/febiosoftware/FEBio/master/Documentation/Figures/",
+    },
+    {
+        "key": "studio",
+        "nav_label": "Studio",
+        "lyx": os.path.join(ROOT, "source", "FEBioStudio_User_Manual.lyx"),
+        "bib": os.path.join(ROOT, "source", "FEBioStudio.bib"),
+        "docs_root": os.path.join(ROOT, "docs", "studio"),
+        "nav_root": "studio",
+        "stats_file": os.path.join(ROOT, "tools", "_stats_studio.json"),
+        # Pilot scope: Chapters 1-2 (Introduction, Getting Started) only,
+        # while tools/lyx2md.py's support for this manual's LyX constructs
+        # (e.g. Wrap-figure insets, native href insets) is validated against
+        # real content. Widen toward "all" (20 chapters) in a follow-up
+        # pass -- see CONVERSION_NOTES_STUDIO.md.
+        "chapters": "1,2",
+        "fig_base": "https://raw.githubusercontent.com/febiosoftware/FEBioStudio/master/Documentation/Figures/",
+    },
+]
+
+print("Building FEBio Manuals site...")
 
 # ---------------------------------------------------------------------
-# Step 1: run the LyX -> Markdown converter
+# Step 1: run the LyX -> Markdown converter, once per manual
 # ---------------------------------------------------------------------
-if verbose:
-    print("Running tools/lyx2md.py ...")
+manual_stats = {}
+for manual in MANUALS:
+    if verbose:
+        print(f"Running tools/lyx2md.py for '{manual['key']}' ...")
 
-result = subprocess.run(
-    [sys.executable, os.path.join(ROOT, "tools", "lyx2md.py")],
-    cwd=ROOT,
-    capture_output=not verbose,
-    text=True,
-)
-if result.returncode != 0:
-    print("ERROR: lyx2md.py failed")
-    if not verbose:
-        print(result.stdout)
-        print(result.stderr)
-    sys.exit(1)
-elif not verbose:
-    print(result.stdout.strip())
+    result = subprocess.run(
+        [
+            sys.executable, os.path.join(ROOT, "tools", "lyx2md.py"),
+            "--lyx", manual["lyx"],
+            "--bib", manual["bib"],
+            "--docs-root", manual["docs_root"],
+            "--nav-root", manual["nav_root"],
+            "--stats-out", manual["stats_file"],
+            "--chapters", manual["chapters"],
+        ],
+        cwd=ROOT,
+        capture_output=not verbose,
+        text=True,
+    )
+    if result.returncode != 0:
+        print(f"ERROR: lyx2md.py failed for '{manual['key']}'")
+        if not verbose:
+            print(result.stdout)
+            print(result.stderr)
+        sys.exit(1)
+    elif not verbose:
+        print(result.stdout.strip())
 
-# ---------------------------------------------------------------------
-# Step 2: load conversion stats (per-chapter nav entries)
-# ---------------------------------------------------------------------
-stats_path = os.path.join(ROOT, "tools", "_stats.json")
-with open(stats_path, "r", encoding="utf-8") as f:
-    stats = json.load(f)
-
-chapters = stats["chapters"]  # [{"chap_num", "title", "dir", "nav": [[title, path], ...]}, ...]
+    # -------------------------------------------------------------
+    # Step 2: load this manual's conversion stats (per-chapter nav entries)
+    # -------------------------------------------------------------
+    with open(manual["stats_file"], "r", encoding="utf-8") as f:
+        manual_stats[manual["key"]] = json.load(f)
 
 # ---------------------------------------------------------------------
 # Step 3: write mkdocs.yml
@@ -79,8 +126,8 @@ if verbose:
     print("Writing mkdocs.yml...")
 
 with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
-    f.write('site_name: "FEBio 4.13 - Theory Manual"\n')
-    f.write("site_description: This manual provides the theoretical background for FEBio.\n")
+    f.write('site_name: "FEBio Manuals"\n')
+    f.write("site_description: Theoretical background and user documentation for FEBio and FEBio Studio.\n")
     f.write("site_author: FEBio Team\n")
     f.write("theme:\n")
     f.write("  name: material\n")
@@ -92,6 +139,7 @@ with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
     f.write("    text: 'Roboto'\n")
     f.write("    code: 'Roboto Mono'\n")
     f.write("  features:\n")
+    f.write("    - navigation.tabs\n")
     f.write("    - navigation.top\n")
     f.write("    - navigation.footer\n")
     f.write("    - search.highlight\n")
@@ -115,43 +163,46 @@ with open(os.path.join(ROOT, "mkdocs.yml"), mode="w", encoding="utf-8") as f:
     f.write("  - js/mathjax_config.js\n")
     f.write("  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\n")
     f.write("nav:\n")
-    f.write("  - Preface: index.md\n")
-    for chap in chapters:
-        kind = "Appendix" if chap.get("is_appendix") else "Chapter"
-        f.write(f"  - {kind} {chap['chap_display']} - {chap['title']}:\n")
-        for title, path in chap["nav"]:
-            f.write(f"    - {title}: {path}\n")
+    for manual in MANUALS:
+        chapters = manual_stats[manual["key"]]["chapters"]
+        f.write(f"  - {manual['nav_label']}:\n")
+        f.write(f"    - Preface: {manual['nav_root']}/index.md\n")
+        for chap in chapters:
+            kind = "Appendix" if chap.get("is_appendix") else "Chapter"
+            f.write(f"    - {kind} {chap['chap_display']} - {chap['title']}:\n")
+            for title, path in chap["nav"]:
+                f.write(f"      - {title}: {path}\n")
 
-total_sections = sum(len(c["nav"]) for c in chapters)
-print(f"Wrote mkdocs.yml with {len(chapters)} chapters, {total_sections} section pages.")
+for manual in MANUALS:
+    chapters = manual_stats[manual["key"]]["chapters"]
+    total_sections = sum(len(c["nav"]) for c in chapters)
+    print(f"  {manual['key']}: wrote nav for {len(chapters)} chapters, {total_sections} section pages.")
 
 # ---------------------------------------------------------------------
 # Step 4: fetch any figure artwork that isn't already vendored in the
-# repo. The originals live in the FEBio repo under Documentation/Figures/.
+# repo, once per manual from that manual's own upstream Figures/ dir.
 # Scans every converted chapter's generated Markdown for figure
 # references (not hardcoded to a specific chapter's known figures), so
 # this keeps working as more chapters get converted.
 # ---------------------------------------------------------------------
-import urllib.request as _url
-
-_FIG_BASE = "https://raw.githubusercontent.com/febiosoftware/FEBio/master/Documentation/Figures/"
 _FIG_RE = re.compile(r"!\[[^\]]*\]\(figs/([^)]+?)\)")
 
-for _md_path in glob.glob(os.path.join(ROOT, "docs", "theory", "chapter*", "*.md")):
-    _chapter_dir = os.path.dirname(_md_path)
-    _figs_dir = os.path.join(_chapter_dir, "figs")
-    with open(_md_path, "r", encoding="utf-8") as _f:
-        _text = _f.read()
-    for _fig in _FIG_RE.findall(_text):
-        os.makedirs(_figs_dir, exist_ok=True)
-        _dest = os.path.join(_figs_dir, _fig)
-        if os.path.exists(_dest) and os.path.getsize(_dest) > 2048:
-            continue
-        try:
-            _url.urlretrieve(_FIG_BASE + _fig, _dest)
-            print(f"  fetched figure: {_fig}")
-        except Exception as _e:
-            print(f"  WARNING: could not fetch {_fig}: {_e}")
+for manual in MANUALS:
+    for _md_path in glob.glob(os.path.join(manual["docs_root"], "chapter*", "*.md")):
+        _chapter_dir = os.path.dirname(_md_path)
+        _figs_dir = os.path.join(_chapter_dir, "figs")
+        with open(_md_path, "r", encoding="utf-8") as _f:
+            _text = _f.read()
+        for _fig in _FIG_RE.findall(_text):
+            os.makedirs(_figs_dir, exist_ok=True)
+            _dest = os.path.join(_figs_dir, _fig)
+            if os.path.exists(_dest) and os.path.getsize(_dest) > 2048:
+                continue
+            try:
+                _url.urlretrieve(manual["fig_base"] + _fig, _dest)
+                print(f"  fetched figure ({manual['key']}): {_fig}")
+            except Exception as _e:
+                print(f"  WARNING: could not fetch {_fig} ({manual['key']}): {_e}")
 
 print("Build complete.")
 print()
