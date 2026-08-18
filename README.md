@@ -7,8 +7,10 @@ MathJax for equations, footnote-based citations). The site has two tabs, each a 
 
 - **Theory** — the FEBio Theory Manual. Started as a single-chapter pilot (Chapter 2, Continuum
   Mechanics); now covers the complete manual — Chapters 1 through 8 plus Appendix A (Tensor Calculus).
-- **Studio** — the FEBio Studio Manual. Currently a pilot covering Chapters 1–2 (Introduction, Getting
-  Started); see [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for scope and follow-up.
+- **Studio** — the FEBio Studio Manual. Started as a 2-chapter pilot (Introduction, Getting Started);
+  now covers the complete manual — Chapters 1 through 20 plus Appendices A (Mesh Import Formats) and B
+  (Standard Data Fields). See [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for the full
+  per-chapter breakdown and the real converter gaps this manual's content surfaced.
 
 Both manuals are converted by the same generic, stdlib-only converter (`tools/lyx2md.py`), run once per
 manual by `build.py` with each manual's own source/output paths — see "How the converter works" below.
@@ -54,13 +56,16 @@ development against the original workspace layout — see the module docstring.)
 
 Which chapters actually get converted into pages is controlled per-manual by the `"chapters"` entry in
 `build.py`'s `MANUALS` list (passed through to `tools/lyx2md.py --chapters`), either a comma-separated list
-or `"all"`. The Theory Manual uses `"all"` (`{1..9}`, where chapter 9 is the source's
-`\start_of_appendix`-marked chapter, rendered as "Appendix A"). The Studio Manual currently uses `"1,2"` (a
-pilot — see [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md)). Chapters not in a manual's set are
-still scanned for their titles and label positions (so numbering and cross-references stay correct
-regardless of conversion order), they just don't produce output files yet — this is how the Theory Manual
-grew from a single-chapter pilot to the full manual without ever needing to rewrite the cross-reference
-machinery, and the same mechanism lets the Studio Manual start as a pilot too.
+or `"all"`. Both manuals now use `"all"`: the Theory Manual's `{1..9}` (chapter 9 is the source's
+`\start_of_appendix`-marked chapter, rendered as "Appendix A") and the Studio Manual's `{1..22}` (chapters
+21 and 22 are `\start_of_appendix`-marked, rendered as "Appendix A" and "Appendix B"). Chapters not in a
+manual's set are still scanned for their titles and label positions (so numbering and cross-references
+stay correct regardless of conversion order), they just don't produce output files yet — this is how both
+manuals grew from a small pilot to the full manual without ever needing to rewrite the cross-reference
+machinery. A chapter with no `\begin_layout Section` boundaries at all (Studio Manual's Appendix B is
+entirely Standard paragraphs and tables directly under the chapter heading) still produces a real output
+page — treated as a single synthetic section numbered `<chapter>.1` — since `mkdocs build --strict` rejects
+an empty nav list outright rather than degrading gracefully.
 
 ## Prerequisites
 
@@ -181,12 +186,18 @@ logic itself, which is identical regardless of which manual is being converted.
 6. **Citations** (`\begin_inset CommandInset citation`) become
    `[^section-n]` footnote references, deduplicated per page (the same
    BibTeX key cited twice on one page reuses one footnote number), with
-   definitions resolved from `source/FEBio3.bib` via a small hand-written
+   definitions resolved from that manual's `.bib` file via a small hand-written
    BibTeX field parser (`parse_bib()`), and appended at the bottom of each
    page as `Author. "Title." *Journal* (Year).`. `\begin_inset CommandInset bibtex`
    (LaTeX's `\bibliography{}` insertion marker, not an actual citation) is suppressed. Real footnotes
    (`\begin_inset Foot`, distinct from citations) are collected separately and appended as
-   `[^section-fn1]`, `[^section-fn2]`, etc.
+   `[^section-fn1]`, `[^section-fn2]`, etc. Author/title/journal fields sometimes spell an accented letter
+   as a raw LaTeX accent command rather than a literal Unicode character (e.g. `{\"u}` or `\"u` for
+   u-umlaut, found in author names like "Gültekin"); `decode_latex_accents()` translates the common ones
+   (umlaut, acute, grave, circumflex, tilde) to their real Unicode character, and residual `{...}`
+   capitalization-protection braces around specific words/acronyms in a title (e.g. `{A {Nonparametric}
+   Approach}`) are stripped, since no case-transformation is applied to citation text here that they'd need
+   to protect against.
 
 7. **Figures** (`\begin_inset Float figure` + `\begin_inset Graphics`)
    become `![name](figs/name.png)` followed by a
@@ -213,7 +224,11 @@ logic itself, which is identical regardless of which manual is being converted.
    real content, protecting row-separator newlines with a sentinel character so they survive a later
    prose-whitespace-normalization pass that would otherwise collapse them onto one line. Merged cells
    (colspan/rowspan) aren't representable in plain Markdown and are flagged for manual review rather than
-   silently producing a misaligned table (occurs in the element-property tables of Section 4.1).
+   silently producing a misaligned table (occurs in the element-property tables of Section 4.1). A table
+   wrapped in `\begin_inset Float table` (found throughout the Studio Manual; the Theory Manual only ever
+   uses bare `Tabular` insets) is rendered the same way, via the same `render_tabular()` call, with its
+   caption using `pymdownx.blocks.caption`'s separate `table-caption` type (own numbering sequence, doesn't
+   perturb figure `\ref{}` numbering).
 
 9. **ERT** ("evil red text", raw LaTeX LyX has no native inset for) is reconstructed from its per-line
    `\backslash`-token encoding and handles the two patterns that occur in this document: `\href{url}{text}`
@@ -251,6 +266,19 @@ logic itself, which is identical regardless of which manual is being converted.
     MathJax `macros` entries live in `docs/js/mathjax_config.js` instead, since MathJax has no per-page
     macro scoping.
 
+13. **`Description` layouts** (LaTeX's `description` list environment, used throughout the Studio Manual;
+    never occurs in the Theory Manual) render as a paragraph whose label (everything up to the first plain
+    space) is auto-bolded, matching LyX's own rendering — unless the body already starts with `**`, since
+    some source items explicitly wrap their label in `\series bold` instead of relying on auto-bolding, and
+    auto-bolding again would double it up.
+
+14. **`LyX-Code` layouts** (literal code/data listings — XML session-file snippets, CSV data rows, also
+    Studio-Manual-only) render via `render_code_line()`, which skips the prose-oriented character-formatting
+    state machine and whitespace normalization used everywhere else (both would corrupt significant
+    indentation/whitespace in a literal listing). Consecutive `LyX-Code` layouts are grouped into a single
+    fenced ` ``` ` block rather than one block per line, mirroring the Example/Theorem* continuation rule
+    above.
+
 Output: one Markdown file per converted Section, in `docs/theory/chapter<N>/` for the Theory Manual (e.g.
 `2.1-vectors-and-tensors.md`) or `docs/studio/chapter<N>/` for the Studio Manual.
 
@@ -275,28 +303,36 @@ breakdown.
 See [`CONVERSION_NOTES.md`](CONVERSION_NOTES.md) for the full per-section
 breakdown and every item flagged for manual review.
 
-### Studio Manual (pilot)
+### Studio Manual
+
+Totals for the complete, fully-converted manual; see `CONVERSION_NOTES_STUDIO.md` for the full per-chapter
+breakdown.
 
 | Metric | Count |
 |---|---|
-| Chapters converted | 2 of 20 (Introduction, Getting Started) — pilot scope |
-| Sections converted | 8 |
-| Figures | 5 (artwork fetched at build time from `febiosoftware/FEBioStudio`) |
+| Chapters converted | 22 (Chapters 1–20 plus Appendices A and B) |
+| Sections converted | 117 |
+| Inline `$...$` formulas emitted | 126 |
+| Display `\[...\]` formulas emitted | 18 |
+| Citations | 2 |
+| Figures | 194 (artwork fetched at build time — see below) |
 | Unhandled/unknown inset kinds | 0 |
 | Leftover LyX bookkeeping artifacts in output | 0 |
 
-See [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for the per-section breakdown and what's
-left for the remaining 18 chapters.
+See [`CONVERSION_NOTES_STUDIO.md`](CONVERSION_NOTES_STUDIO.md) for the full per-chapter breakdown and
+every real converter gap this manual's content surfaced (not present in the Theory Manual's source).
 
 ## Known limitations / needs manual review
 
-- **The Studio Manual is a pilot, covering only Chapters 1–2 of 20.** `build.py`'s `MANUALS` list has its
-  `"chapters"` entry set to `"1,2"` rather than `"all"`, so the converter's support for this manual's LyX
-  constructs (e.g. `Wrap`-figure insets, native `CommandInset href` links) could be validated against real
-  content before committing to a full 20-chapter/~105-section conversion. References from these chapters
-  into later, unconverted ones (e.g. "See section [subsubsec:navigating]") degrade the same way an
-  out-of-scope Theory Manual reference does — left as a same-page anchor link that doesn't resolve yet,
-  flagged in `needs_review`, not a crash. See `CONVERSION_NOTES_STUDIO.md` for what's left.
+- **Every chapter of the Studio Manual is now converted.** It started as a 2-chapter pilot so the
+  converter's support for this manual's LyX constructs (e.g. `Wrap`-figure insets, native
+  `CommandInset href` links, `Description`/`LyX-Code` layouts, a `Float table` content-loss bug) could be
+  validated against real content before committing to a full 20-chapter/117-section conversion — see
+  `CONVERSION_NOTES_STUDIO.md` for the complete list of real converter gaps this manual's content
+  surfaced, several of which also turned out to be latent bugs in the Theory Manual's own output (e.g.
+  malformed bold/italic nesting when LyX doesn't close formatting markers in reverse-of-open order,
+  `\size <name>` commands leaking as literal text, undecoded LaTeX accent escapes in citation author
+  names).
 - **Figure artwork is fetched automatically at build time, per manual.** Figures aren't part of either
   manual's original LyX/BibTeX inputs, so `build.py` scans every converted chapter's generated Markdown for
   figure references and fetches any missing ones from that manual's own upstream `Documentation/Figures/`
@@ -402,3 +438,19 @@ left for the remaining 18 chapters.
    genuine space before a literal file-extension token (`"the .xplt file extension"` was rendering as
    `"the.xplt..."`), fixed with a negative lookahead so it only strips a space before punctuation *not*
    immediately followed by a word character.
+9. **Studio Manual widened from the 2-chapter pilot to the complete manual (all 20 chapters plus
+   Appendices A and B, 117 sections):** `python3 build.py && mkdocs build --strict` — exit code 0, zero
+   `WARNING`-level messages. The leftover-artifact grep — zero matches across all 117 Studio Manual
+   sections plus all 64 Theory Manual sections. Every section's `needs_review` entries were scanned and
+   confirmed to be only the two routine, expected categories (figure-fetch placeholders, and — before every
+   chapter was converted — forward references into not-yet-converted chapters); zero unexpected entries
+   remained after the converter fixes below. A broad spot-check read roughly 15 sections spanning materials,
+   contact, post-processing, mesh data, Python scripting, and both appendices for rendering quality beyond
+   what the automated checks catch. Ten further real converter gaps were found and fixed this pass — see
+   `CONVERSION_NOTES_STUDIO.md` for the complete list — the most significant being a content-loss bug where
+   a table wrapped in a `\begin_inset Float table` (as opposed to the already-handled `Float figure`) was
+   silently dropped entirely (caption and anchor still rendered, but the table itself vanished with no
+   `needs_review` flag), and a formatting-nesting bug — also present in some pre-existing Theory Manual
+   output — where LyX source that closes character-formatting markers out of LIFO order (e.g. closing
+   `\series bold` while `\emph on`, opened after it, is still active) produced invalid Markdown nesting;
+   fixed by replacing four independent boolean flags with an explicit open-marker stack.

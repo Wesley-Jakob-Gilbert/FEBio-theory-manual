@@ -40,6 +40,7 @@ import re
 import subprocess
 import sys
 import os
+import urllib.parse as _urlparse
 import urllib.request as _url
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -70,12 +71,12 @@ MANUALS = [
         "docs_root": os.path.join(ROOT, "docs", "studio"),
         "nav_root": "studio",
         "stats_file": os.path.join(ROOT, "tools", "_stats_studio.json"),
-        # Pilot scope: Chapters 1-2 (Introduction, Getting Started) only,
-        # while tools/lyx2md.py's support for this manual's LyX constructs
-        # (e.g. Wrap-figure insets, native href insets) is validated against
-        # real content. Widen toward "all" (20 chapters) in a follow-up
-        # pass -- see CONVERSION_NOTES_STUDIO.md.
-        "chapters": "1,2",
+        # Widened from a "1,2"-only pilot to the full manual once
+        # tools/lyx2md.py's support for this manual's LyX constructs (e.g.
+        # Wrap-figure insets, native href insets, Description/LyX-Code
+        # layouts) was validated against real content -- see
+        # CONVERSION_NOTES_STUDIO.md.
+        "chapters": "all",
         "fig_base": "https://raw.githubusercontent.com/febiosoftware/FEBioStudio/master/Documentation/Figures/",
     },
 ]
@@ -199,7 +200,12 @@ for manual in MANUALS:
             if os.path.exists(_dest) and os.path.getsize(_dest) > 2048:
                 continue
             try:
-                _url.urlretrieve(manual["fig_base"] + _fig, _dest)
+                # Some Studio Manual figure filenames contain literal spaces
+                # (e.g. "Model Viewer.png") -- urlretrieve rejects a raw
+                # space in a URL outright ("URL can't contain control
+                # characters"), so the figure name portion needs percent-
+                # encoding even though the local path (_dest) doesn't.
+                _url.urlretrieve(manual["fig_base"] + _urlparse.quote(_fig), _dest)
                 print(f"  fetched figure ({manual['key']}): {_fig}")
             except Exception as _e:
                 print(f"  WARNING: could not fetch {_fig} ({manual['key']}): {_e}")

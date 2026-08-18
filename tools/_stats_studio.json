@@ -76,9 +76,7 @@
       "citations": 0,
       "figures": 0,
       "unhandled": 0,
-      "needs_review": [
-        "Unresolved \\ref target: 'subsubsec:navigating'"
-      ]
+      "needs_review": []
     },
     {
       "section": "2.5",
@@ -105,18 +103,1564 @@
       "figures": 1,
       "unhandled": 0,
       "needs_review": [
-        "Unresolved \\ref target: 'subsec:postui'",
         "Figure image 'Figure_2_4.png' referenced (source path 'Figures/Figure_2_4.png') -- placeholder written to figs/Figure_2_4.png, original binary not available in inputs."
       ]
+    },
+    {
+      "section": "3.1",
+      "title": "The Graphical User Interface",
+      "file": "3.1-the-graphical-user-interface.md",
+      "chapter": 3,
+      "inline_formulas": 2,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure_2_2.png' referenced (source path 'Figures/Figure_2_2.png') -- placeholder written to figs/Figure_2_2.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.2",
+      "title": "The Menu Bar",
+      "file": "3.2-the-menu-bar.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.3",
+      "title": "The Main Tool Bar",
+      "file": "3.3-the-main-tool-bar.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 5,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'new.png' referenced (source path 'Figures/new.png') -- placeholder written to figs/new.png, original binary not available in inputs.",
+        "Figure image 'open.png' referenced (source path 'Figures/open.png') -- placeholder written to figs/open.png, original binary not available in inputs.",
+        "Figure image 'save.png' referenced (source path 'Figures/save.png') -- placeholder written to figs/save.png, original binary not available in inputs.",
+        "Figure image 'snapshot.png' referenced (source path 'Figures/snapshot.png') -- placeholder written to figs/snapshot.png, original binary not available in inputs.",
+        "Figure image 'teapot.png' referenced (source path 'Figures/teapot.png') -- placeholder written to figs/teapot.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.4",
+      "title": "The Build Tool Bar",
+      "file": "3.4-the-build-tool-bar.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 28,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'undo.png' referenced (source path 'Figures/undo.png') -- placeholder written to figs/undo.png, original binary not available in inputs.",
+        "Figure image 'redo.png' referenced (source path 'Figures/redo.png') -- placeholder written to figs/redo.png, original binary not available in inputs.",
+        "Figure image 'selectRect.png' referenced (source path 'Figures/selectRect.png') -- placeholder written to figs/selectRect.png, original binary not available in inputs.",
+        "Figure image 'selectCircle.png' referenced (source path 'Figures/selectCircle.png') -- placeholder written to figs/selectCircle.png, original binary not available in inputs.",
+        "Figure image 'selectFree.png' referenced (source path 'Figures/selectFree.png') -- placeholder written to figs/selectFree.png, original binary not available in inputs.",
+        "Figure image 'measure.png' referenced (source path 'Figures/measure.png') -- placeholder written to figs/measure.png, original binary not available in inputs.",
+        "Figure image 'cut.png' referenced (source path 'Figures/cut.png') -- placeholder written to figs/cut.png, original binary not available in inputs.",
+        "Figure image 'select.png' referenced (source path 'Figures/select.png') -- placeholder written to figs/select.png, original binary not available in inputs.",
+        "Figure image 'translate.png' referenced (source path 'Figures/translate.png') -- placeholder written to figs/translate.png, original binary not available in inputs.",
+        "Figure image 'rotate.png' referenced (source path 'Figures/rotate.png') -- placeholder written to figs/rotate.png, original binary not available in inputs.",
+        "Figure image 'scale.png' referenced (source path 'Figures/scale.png') -- placeholder written to figs/scale.png, original binary not available in inputs.",
+        "Figure image 'coord.png' referenced (source path 'Figures/coord.png') -- placeholder written to figs/coord.png, original binary not available in inputs.",
+        "Figure image 'selectObject.png' referenced (source path 'Figures/selectObject.png') -- placeholder written to figs/selectObject.png, original binary not available in inputs.",
+        "Figure image 'selectPart.png' referenced (source path 'Figures/selectPart.png') -- placeholder written to figs/selectPart.png, original binary not available in inputs.",
+        "Figure image 'selectSurface.png' referenced (source path 'Figures/selectSurface.png') -- placeholder written to figs/selectSurface.png, original binary not available in inputs.",
+        "Figure image 'selectCurves.png' referenced (source path 'Figures/selectCurves.png') -- placeholder written to figs/selectCurves.png, original binary not available in inputs.",
+        "Figure image 'selectNodes.png' referenced (source path 'Figures/selectNodes.png') -- placeholder written to figs/selectNodes.png, original binary not available in inputs.",
+        "Figure image 'discrete.png' referenced (source path 'Figures/discrete.png') -- placeholder written to figs/discrete.png, original binary not available in inputs.",
+        "Figure image 'material.png' referenced (source path 'Figures/material.png') -- placeholder written to figs/material.png, original binary not available in inputs.",
+        "Figure image 'curves.png' referenced (source path 'Figures/curves.png') -- placeholder written to figs/curves.png, original binary not available in inputs.",
+        "Figure image 'inspect.png' referenced (source path 'Figures/inspect.png') -- placeholder written to figs/inspect.png, original binary not available in inputs.",
+        "Figure image 'run_febio_icon.png' referenced (source path 'Figures/run_febio_icon.png') -- placeholder written to figs/run_febio_icon.png, original binary not available in inputs.",
+        "Figure image 'merge.png' referenced (source path 'Figures/merge.png') -- placeholder written to figs/merge.png, original binary not available in inputs.",
+        "Figure image 'detach.png' referenced (source path 'Figures/detach.png') -- placeholder written to figs/detach.png, original binary not available in inputs.",
+        "Figure image 'extract.png' referenced (source path 'Figures/extract.png') -- placeholder written to figs/extract.png, original binary not available in inputs.",
+        "Figure image 'clone.png' referenced (source path 'Figures/clone.png') -- placeholder written to figs/clone.png, original binary not available in inputs.",
+        "Figure image 'clonegrid.png' referenced (source path 'Figures/clonegrid.png') -- placeholder written to figs/clonegrid.png, original binary not available in inputs.",
+        "Figure image 'clonerevolve.png' referenced (source path 'Figures/clonerevolve.png') -- placeholder written to figs/clonerevolve.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.5",
+      "title": "The Font Toolbar",
+      "file": "3.5-the-font-toolbar.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'font_bold.png' referenced (source path 'Figures/font_bold.png') -- placeholder written to figs/font_bold.png, original binary not available in inputs.",
+        "Figure image 'font_italic.png' referenced (source path 'Figures/font_italic.png') -- placeholder written to figs/font_italic.png, original binary not available in inputs.",
+        "Figure image 'properties.png' referenced (source path 'Figures/properties.png') -- placeholder written to figs/properties.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.6",
+      "title": "The Graphics View",
+      "file": "3.6-the-graphics-view.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.7",
+      "title": "The Graphics Toolbar",
+      "file": "3.7-the-graphics-toolbar.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 7,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'pivot.png' referenced (source path 'Figures/pivot.png') -- placeholder written to figs/pivot.png, original binary not available in inputs.",
+        "Figure image 'snaptogrid.png' referenced (source path 'Figures/snaptogrid.png') -- placeholder written to figs/snaptogrid.png, original binary not available in inputs.",
+        "Figure image 'snaptonode.png' referenced (source path 'Figures/snaptonode.png') -- placeholder written to figs/snaptonode.png, original binary not available in inputs.",
+        "Figure image 'toggle_visible.png' referenced (source path 'Figures/toggle_visible.png') -- placeholder written to figs/toggle_visible.png, original binary not available in inputs.",
+        "Figure image 'zoom_select.png' referenced (source path 'Figures/zoom_select.png') -- placeholder written to figs/zoom_select.png, original binary not available in inputs.",
+        "Figure image 'zoom_all.png' referenced (source path 'Figures/zoom_all.png') -- placeholder written to figs/zoom_all.png, original binary not available in inputs.",
+        "Figure image 'show_mesh.png' referenced (source path 'Figures/show_mesh.png') -- placeholder written to figs/show_mesh.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.8",
+      "title": "The Model Viewer",
+      "file": "3.8-the-model-viewer.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 1,
+      "citations": 0,
+      "figures": 15,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure2_73.png' referenced (source path 'Figures/Figure2_73.png') -- placeholder written to figs/Figure2_73.png, original binary not available in inputs.",
+        "Figure image 'select.png' referenced (source path 'Figures/select.png') -- placeholder written to figs/select.png, original binary not available in inputs.",
+        "Figure image 'select_highlight.png' referenced (source path 'Figures/select_highlight.png') -- placeholder written to figs/select_highlight.png, original binary not available in inputs.",
+        "Figure image 'delete.png' referenced (source path 'Figures/delete.png') -- placeholder written to figs/delete.png, original binary not available in inputs.",
+        "Figure image 'search.png' referenced (source path 'Figures/search.png') -- placeholder written to figs/search.png, original binary not available in inputs.",
+        "Figure image 'sync.png' referenced (source path 'Figures/sync.png') -- placeholder written to figs/sync.png, original binary not available in inputs.",
+        "Figure image 'refresh.png' referenced (source path 'Figures/refresh.png') -- placeholder written to figs/refresh.png, original binary not available in inputs.",
+        "Figure image 'Figure2_78.png' referenced (source path 'Figures/Figure2_78.png') -- placeholder written to figs/Figure2_78.png, original binary not available in inputs.",
+        "Figure image 'Figure2_79.png' referenced (source path 'Figures/Figure2_79.png') -- placeholder written to figs/Figure2_79.png, original binary not available in inputs.",
+        "Figure image 'figure2_80.png' referenced (source path 'Figures/figure2_80.png') -- placeholder written to figs/figure2_80.png, original binary not available in inputs.",
+        "Figure image 'selectAdd.png' referenced (source path 'Figures/selectAdd.png') -- placeholder written to figs/selectAdd.png, original binary not available in inputs.",
+        "Figure image 'selectSub.png' referenced (source path 'Figures/selectSub.png') -- placeholder written to figs/selectSub.png, original binary not available in inputs.",
+        "Figure image 'selectDel.png' referenced (source path 'Figures/selectDel.png') -- placeholder written to figs/selectDel.png, original binary not available in inputs.",
+        "Figure image 'select.png' referenced (source path 'Figures/select.png') -- placeholder written to figs/select.png, original binary not available in inputs.",
+        "Figure image 'AppearanceEditor.png' referenced (source path 'Figures/AppearanceEditor.png') -- placeholder written to figs/AppearanceEditor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.9",
+      "title": "The Build Panel",
+      "file": "3.9-the-build-panel.md",
+      "chapter": 3,
+      "inline_formulas": 48,
+      "display_formulas": 16,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.10",
+      "title": "The Repository Panel",
+      "file": "3.10-the-repository-panel.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 23,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'repoLocationDlg.png' referenced (source path 'Figures/repoLocationDlg.png') -- placeholder written to figs/repoLocationDlg.png, original binary not available in inputs.",
+        "Figure image 'repoPanel.png' referenced (source path 'Figures/repoPanel.png') -- placeholder written to figs/repoPanel.png, original binary not available in inputs.",
+        "Figure image 'refresh.png' referenced (source path 'Figures/refresh.png') -- placeholder written to figs/refresh.png, original binary not available in inputs.",
+        "Figure image 'download.png' referenced (source path 'Figures/download.png') -- placeholder written to figs/download.png, original binary not available in inputs.",
+        "Figure image 'open.png' referenced (source path 'Figures/open.png') -- placeholder written to figs/open.png, original binary not available in inputs.",
+        "Figure image 'openContaining.png' referenced (source path 'Figures/openContaining.png') -- placeholder written to figs/openContaining.png, original binary not available in inputs.",
+        "Figure image 'delete.png' referenced (source path 'Figures/delete.png') -- placeholder written to figs/delete.png, original binary not available in inputs.",
+        "Figure image 'search.png' referenced (source path 'Figures/search.png') -- placeholder written to figs/search.png, original binary not available in inputs.",
+        "Figure image 'clear.png' referenced (source path 'Figures/clear.png') -- placeholder written to figs/clear.png, original binary not available in inputs.",
+        "Figure image 'expand.png' referenced (source path 'Figures/expand.png') -- placeholder written to figs/expand.png, original binary not available in inputs.",
+        "Figure image 'upload.png' referenced (source path 'Figures/upload.png') -- placeholder written to figs/upload.png, original binary not available in inputs.",
+        "Figure image 'deleteRemote.png' referenced (source path 'Figures/deleteRemote.png') -- placeholder written to figs/deleteRemote.png, original binary not available in inputs.",
+        "Figure image 'edit.png' referenced (source path 'Figures/edit.png') -- placeholder written to figs/edit.png, original binary not available in inputs.",
+        "Figure image 'requestUploadPermissions.png' referenced (source path 'Figures/requestUploadPermissions.png') -- placeholder written to figs/requestUploadPermissions.png, original binary not available in inputs.",
+        "Figure image 'uploadWzd1.png' referenced (source path 'Figures/uploadWzd1.png') -- placeholder written to figs/uploadWzd1.png, original binary not available in inputs.",
+        "Figure image 'save.png' referenced (source path 'Figures/save.png') -- placeholder written to figs/save.png, original binary not available in inputs.",
+        "Figure image 'open.png' referenced (source path 'Figures/open.png') -- placeholder written to figs/open.png, original binary not available in inputs.",
+        "Figure image 'addPub.png' referenced (source path 'Figures/addPub.png') -- placeholder written to figs/addPub.png, original binary not available in inputs.",
+        "Figure image 'uploadWzd2.png' referenced (source path 'Figures/uploadWzd2.png') -- placeholder written to figs/uploadWzd2.png, original binary not available in inputs.",
+        "Figure image 'addFolder.png' referenced (source path 'Figures/addFolder.png') -- placeholder written to figs/addFolder.png, original binary not available in inputs.",
+        "Figure image 'new.png' referenced (source path 'Figures/new.png') -- placeholder written to figs/new.png, original binary not available in inputs.",
+        "Figure image 'rename.png' referenced (source path 'Figures/rename.png') -- placeholder written to figs/rename.png, original binary not available in inputs.",
+        "Figure image 'replaceFile.png' referenced (source path 'Figures/replaceFile.png') -- placeholder written to figs/replaceFile.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.11",
+      "title": "The Project Panel",
+      "file": "3.11-the-project-panel.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.12",
+      "title": "The Curve Editor",
+      "file": "3.12-the-curve-editor.md",
+      "chapter": 3,
+      "inline_formulas": 3,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 14,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'curve_editor.png' referenced (source path 'Figures/curve_editor.png') -- placeholder written to figs/curve_editor.png, original binary not available in inputs.",
+        "Figure image 'newpoint.png' referenced (source path 'Figures/newpoint.png') -- placeholder written to figs/newpoint.png, original binary not available in inputs.",
+        "Figure image 'deletepoint.png' referenced (source path 'Figures/deletepoint.png') -- placeholder written to figs/deletepoint.png, original binary not available in inputs.",
+        "Figure image 'snaptogrid.png' referenced (source path 'Figures/snaptogrid.png') -- placeholder written to figs/snaptogrid.png, original binary not available in inputs.",
+        "Figure image 'zoom_fit.png' referenced (source path 'Figures/zoom_fit.png') -- placeholder written to figs/zoom_fit.png, original binary not available in inputs.",
+        "Figure image 'open.png' referenced (source path 'Figures/open.png') -- placeholder written to figs/open.png, original binary not available in inputs.",
+        "Figure image 'save.png' referenced (source path 'Figures/save.png') -- placeholder written to figs/save.png, original binary not available in inputs.",
+        "Figure image 'clipboard.png' referenced (source path 'Figures/clipboard.png') -- placeholder written to figs/clipboard.png, original binary not available in inputs.",
+        "Figure image 'copy.png' referenced (source path 'Figures/copy.png') -- placeholder written to figs/copy.png, original binary not available in inputs.",
+        "Figure image 'paste.png' referenced (source path 'Figures/paste.png') -- placeholder written to figs/paste.png, original binary not available in inputs.",
+        "Figure image 'undo.png' referenced (source path 'Figures/undo.png') -- placeholder written to figs/undo.png, original binary not available in inputs.",
+        "Figure image 'redo.png' referenced (source path 'Figures/redo.png') -- placeholder written to figs/redo.png, original binary not available in inputs.",
+        "Figure image 'formula.png' referenced (source path 'Figures/formula.png') -- placeholder written to figs/formula.png, original binary not available in inputs.",
+        "Figure image 'equation_editor.png' referenced (source path 'Figures/equation_editor.png') -- placeholder written to figs/equation_editor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.13",
+      "title": "The Mesh Inspector",
+      "file": "3.13-the-mesh-inspector.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'mesh_inspector.png' referenced (source path 'Figures/mesh_inspector.png') -- placeholder written to figs/mesh_inspector.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "3.14",
+      "title": "The Measure Tool",
+      "file": "3.14-the-measure-tool.md",
+      "chapter": 3,
+      "inline_formulas": 15,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "3.15",
+      "title": "FEBio Studio Settings",
+      "file": "3.15-febio-studio-settings.md",
+      "chapter": 3,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'options.png' referenced (source path 'Figures/options.png') -- placeholder written to figs/options.png, original binary not available in inputs.",
+        "Figure image 'options_colormap.png' referenced (source path 'Figures/options_colormap.png') -- placeholder written to figs/options_colormap.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "4.1",
+      "title": "Starting a new model",
+      "file": "4.1-starting-a-new-model.md",
+      "chapter": 4,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'new_model.png' referenced (source path 'Figures/new_model.png') -- placeholder written to figs/new_model.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "4.2",
+      "title": "Loading a model",
+      "file": "4.2-loading-a-model.md",
+      "chapter": 4,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "4.3",
+      "title": "Saving a model",
+      "file": "4.3-saving-a-model.md",
+      "chapter": 4,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.1",
+      "title": "Creating Geometry",
+      "file": "5.1-creating-geometry.md",
+      "chapter": 5,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.2",
+      "title": "Importing Geometry",
+      "file": "5.2-importing-geometry.md",
+      "chapter": 5,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.3",
+      "title": "Editing Geometry",
+      "file": "5.3-editing-geometry.md",
+      "chapter": 5,
+      "inline_formulas": 5,
+      "display_formulas": 1,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "5.4",
+      "title": "Creating and Editing a Mesh",
+      "file": "5.4-creating-and-editing-a-mesh.md",
+      "chapter": 5,
+      "inline_formulas": 14,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 7,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'selElem.png' referenced (source path 'Figures/selElem.png') -- placeholder written to figs/selElem.png, original binary not available in inputs.",
+        "Figure image 'selFace.png' referenced (source path 'Figures/selFace.png') -- placeholder written to figs/selFace.png, original binary not available in inputs.",
+        "Figure image 'selEdge.png' referenced (source path 'Figures/selEdge.png') -- placeholder written to figs/selEdge.png, original binary not available in inputs.",
+        "Figure image 'selNode.png' referenced (source path 'Figures/selNode.png') -- placeholder written to figs/selNode.png, original binary not available in inputs.",
+        "Figure image 'select_connected.png' referenced (source path 'Figures/select_connected.png') -- placeholder written to figs/select_connected.png, original binary not available in inputs.",
+        "Figure image 'select_path.png' referenced (source path 'Figures/select_path.png') -- placeholder written to figs/select_path.png, original binary not available in inputs.",
+        "Figure image 'backface.png' referenced (source path 'Figures/backface.png') -- placeholder written to figs/backface.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "6.1",
+      "title": "Adding Mesh Data",
+      "file": "6.1-adding-mesh-data.md",
+      "chapter": 6,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_mesh_data.png' referenced (source path 'Figures/add_mesh_data.png') -- placeholder written to figs/add_mesh_data.png, original binary not available in inputs.",
+        "Figure image 'edit_mesh_data.png' referenced (source path 'Figures/edit_mesh_data.png') -- placeholder written to figs/edit_mesh_data.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "6.2",
+      "title": "FEBio Mesh Data Generators",
+      "file": "6.2-febio-mesh-data-generators.md",
+      "chapter": 6,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_mesh_data_generator.png' referenced (source path 'Figures/add_mesh_data_generator.png') -- placeholder written to figs/add_mesh_data_generator.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "6.3",
+      "title": "The Scalar Field Tool",
+      "file": "6.3-the-scalar-field-tool.md",
+      "chapter": 6,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'scalar_field_tool.png' referenced (source path 'Figures/scalar_field_tool.png') -- placeholder written to figs/scalar_field_tool.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "6.4",
+      "title": "The Fiber Generator Tool",
+      "file": "6.4-the-fiber-generator-tool.md",
+      "chapter": 6,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'fiber_generator_tool.png' referenced (source path 'Figures/fiber_generator_tool.png') -- placeholder written to figs/fiber_generator_tool.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "6.5",
+      "title": "Visualizing Mesh Data",
+      "file": "6.5-visualizing-mesh-data.md",
+      "chapter": 6,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'mesh_data_visual.png' referenced (source path 'Figures/mesh_data_visual.png') -- placeholder written to figs/mesh_data_visual.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "7.1",
+      "title": "Adding materials",
+      "file": "7.1-adding-materials.md",
+      "chapter": 7,
+      "inline_formulas": 1,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'material_editor.png' referenced (source path 'Figures/material_editor.png') -- placeholder written to figs/material_editor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "7.2",
+      "title": "Setting material parameters",
+      "file": "7.2-setting-material-parameters.md",
+      "chapter": 7,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.3",
+      "title": "Assigning materials",
+      "file": "7.3-assigning-materials.md",
+      "chapter": 7,
+      "inline_formulas": 2,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'selectObject.png' referenced (source path 'Figures/selectObject.png') -- placeholder written to figs/selectObject.png, original binary not available in inputs.",
+        "Figure image 'selectPart.png' referenced (source path 'Figures/selectPart.png') -- placeholder written to figs/selectPart.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "7.4",
+      "title": "Creating a Solute Table",
+      "file": "7.4-creating-a-solute-table.md",
+      "chapter": 7,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.5",
+      "title": "Creating a Solid-Bound Molecule Table",
+      "file": "7.5-creating-a-solid-bound-molecule-table.md",
+      "chapter": 7,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "7.6",
+      "title": "Adding Chemical Reactions",
+      "file": "7.6-adding-chemical-reactions.md",
+      "chapter": 7,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'reaction_editor.png' referenced (source path 'Figures/reaction_editor.png') -- placeholder written to figs/reaction_editor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "8.1",
+      "title": "Boundary Conditions",
+      "file": "8.1-boundary-conditions.md",
+      "chapter": 8,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_bc.png' referenced (source path 'Figures/add_bc.png') -- placeholder written to figs/add_bc.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "8.2",
+      "title": "Surface Loads",
+      "file": "8.2-surface-loads.md",
+      "chapter": 8,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_surface_load.png' referenced (source path 'Figures/add_surface_load.png') -- placeholder written to figs/add_surface_load.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "8.3",
+      "title": "Initial Conditions",
+      "file": "8.3-initial-conditions.md",
+      "chapter": 8,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_ic.png' referenced (source path 'Figures/add_ic.png') -- placeholder written to figs/add_ic.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "8.4",
+      "title": "Assigning Boundary Conditions",
+      "file": "8.4-assigning-boundary-conditions.md",
+      "chapter": 8,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "9.1",
+      "title": "Contact",
+      "file": "9.1-contact.md",
+      "chapter": 9,
+      "inline_formulas": 1,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_contact.png' referenced (source path 'Figures/add_contact.png') -- placeholder written to figs/add_contact.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "9.2",
+      "title": "Nonlinear constraints",
+      "file": "9.2-nonlinear-constraints.md",
+      "chapter": 9,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_surface_constraint.png' referenced (source path 'Figures/add_surface_constraint.png') -- placeholder written to figs/add_surface_constraint.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "10.1",
+      "title": "Rigid Body Constraints",
+      "file": "10.1-rigid-body-constraints.md",
+      "chapter": 10,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_rigid_constraint.png' referenced (source path 'Figures/add_rigid_constraint.png') -- placeholder written to figs/add_rigid_constraint.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "10.2",
+      "title": "Rigid Body Initial Conditions",
+      "file": "10.2-rigid-body-initial-conditions.md",
+      "chapter": 10,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_rigid_ic.png' referenced (source path 'Figures/add_rigid_ic.png') -- placeholder written to figs/add_rigid_ic.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "10.3",
+      "title": "Rigid Body Loads",
+      "file": "10.3-rigid-body-loads.md",
+      "chapter": 10,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_rigid_load.png' referenced (source path 'Figures/add_rigid_load.png') -- placeholder written to figs/add_rigid_load.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "10.4",
+      "title": "Rigid Connectors",
+      "file": "10.4-rigid-connectors.md",
+      "chapter": 10,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_rigid_connector.png' referenced (source path 'Figures/add_rigid_connector.png') -- placeholder written to figs/add_rigid_connector.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "10.5",
+      "title": "The Rigid Boundary Condition",
+      "file": "10.5-the-rigid-boundary-condition.md",
+      "chapter": 10,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "11.1",
+      "title": "The Initial Step",
+      "file": "11.1-the-initial-step.md",
+      "chapter": 11,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "11.2",
+      "title": "Adding an Analysis Step",
+      "file": "11.2-adding-an-analysis-step.md",
+      "chapter": 11,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "12.1",
+      "title": "FEBio Logfile",
+      "file": "12.1-febio-logfile.md",
+      "chapter": 12,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'output_log.png' referenced (source path 'Figures/output_log.png') -- placeholder written to figs/output_log.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "12.2",
+      "title": "FEBio Plotfile",
+      "file": "12.2-febio-plotfile.md",
+      "chapter": 12,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'output_plot.png' referenced (source path 'Figures/output_plot.png') -- placeholder written to figs/output_plot.png, original binary not available in inputs.",
+        "Figure image 'output_custom_plot.png' referenced (source path 'Figures/output_custom_plot.png') -- placeholder written to figs/output_custom_plot.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "13.1",
+      "title": "Running FEBio",
+      "file": "13.1-running-febio.md",
+      "chapter": 13,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'run_febio.png' referenced (source path 'Figures/run_febio.png') -- placeholder written to figs/run_febio.png, original binary not available in inputs.",
+        "Figure image 'run_febio.png' referenced (source path 'Figures/run_febio.png') -- placeholder written to figs/run_febio.png, original binary not available in inputs.",
+        "Figure image 'job_monitor.png' referenced (source path 'Figures/job_monitor.png') -- placeholder written to figs/job_monitor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "13.2",
+      "title": "FEBio Launch Configurations",
+      "file": "13.2-febio-launch-configurations.md",
+      "chapter": 13,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'launchConfigDlg.png' referenced (source path 'Figures/launchConfigDlg.png') -- placeholder written to figs/launchConfigDlg.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "13.3",
+      "title": "The FEBio Monitor",
+      "file": "13.3-the-febio-monitor.md",
+      "chapter": 13,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 3,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'febio_monitor_dialog.png' referenced (source path 'Figures/febio_monitor_dialog.png') -- placeholder written to figs/febio_monitor_dialog.png, original binary not available in inputs.",
+        "Figure image 'febio_monitor.png' referenced (source path 'Figures/febio_monitor.png') -- placeholder written to figs/febio_monitor.png, original binary not available in inputs.",
+        "Figure image 'febio_monitor_toolbar.png' referenced (source path 'Figures/febio_monitor_toolbar.png') -- placeholder written to figs/febio_monitor_toolbar.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "13.4",
+      "title": "Running Batch Jobs",
+      "file": "13.4-running-batch-jobs.md",
+      "chapter": 13,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'batch_view.png' referenced (source path 'Figures/batch_view.png') -- placeholder written to figs/batch_view.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "13.5",
+      "title": "FEBio Job Reports",
+      "file": "13.5-febio-job-reports.md",
+      "chapter": 13,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'febio_job_report.png' referenced (source path 'Figures/febio_job_report.png') -- placeholder written to figs/febio_job_report.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "14.1",
+      "title": "The Post Environment UI",
+      "file": "14.1-the-post-environment-ui.md",
+      "chapter": 14,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure_2_4.png' referenced (source path 'Figures/Figure_2_4.png') -- placeholder written to figs/Figure_2_4.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "14.2",
+      "title": "The Post Menu",
+      "file": "14.2-the-post-menu.md",
+      "chapter": 14,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "14.3",
+      "title": "The Post Toolbar",
+      "file": "14.3-the-post-toolbar.md",
+      "chapter": 14,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 20,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'back.png' referenced (source path 'Figures/back.png') -- placeholder written to figs/back.png, original binary not available in inputs.",
+        "Figure image 'prev.png' referenced (source path 'Figures/prev.png') -- placeholder written to figs/prev.png, original binary not available in inputs.",
+        "Figure image 'play.png' referenced (source path 'Figures/play.png') -- placeholder written to figs/play.png, original binary not available in inputs.",
+        "Figure image 'next.png' referenced (source path 'Figures/next.png') -- placeholder written to figs/next.png, original binary not available in inputs.",
+        "Figure image 'forward.png' referenced (source path 'Figures/forward.png') -- placeholder written to figs/forward.png, original binary not available in inputs.",
+        "Figure image 'properties.png' referenced (source path 'Figures/properties.png') -- placeholder written to figs/properties.png, original binary not available in inputs.",
+        "Figure image 'colormap.png' referenced (source path 'Figures/colormap.png') -- placeholder written to figs/colormap.png, original binary not available in inputs.",
+        "Figure image 'cut.png' referenced (source path 'Figures/cut.png') -- placeholder written to figs/cut.png, original binary not available in inputs.",
+        "Figure image 'mirror.png' referenced (source path 'Figures/mirror.png') -- placeholder written to figs/mirror.png, original binary not available in inputs.",
+        "Figure image 'vectors.png' referenced (source path 'Figures/vectors.png') -- placeholder written to figs/vectors.png, original binary not available in inputs.",
+        "Figure image 'tensor.png' referenced (source path 'Figures/tensor.png') -- placeholder written to figs/tensor.png, original binary not available in inputs.",
+        "Figure image 'isosurface.png' referenced (source path 'Figures/isosurface.png') -- placeholder written to figs/isosurface.png, original binary not available in inputs.",
+        "Figure image 'post_slice.png' referenced (source path 'Figures/post_slice.png') -- placeholder written to figs/post_slice.png, original binary not available in inputs.",
+        "Figure image 'streamlines.png' referenced (source path 'Figures/streamlines.png') -- placeholder written to figs/streamlines.png, original binary not available in inputs.",
+        "Figure image 'particle.png' referenced (source path 'Figures/particle.png') -- placeholder written to figs/particle.png, original binary not available in inputs.",
+        "Figure image 'imageslice.png' referenced (source path 'Figures/imageslice.png') -- placeholder written to figs/imageslice.png, original binary not available in inputs.",
+        "Figure image 'volrender.png' referenced (source path 'Figures/volrender.png') -- placeholder written to figs/volrender.png, original binary not available in inputs.",
+        "Figure image 'marching_cubes.png' referenced (source path 'Figures/marching_cubes.png') -- placeholder written to figs/marching_cubes.png, original binary not available in inputs.",
+        "Figure image 'chart.png' referenced (source path 'Figures/chart.png') -- placeholder written to figs/chart.png, original binary not available in inputs.",
+        "Figure image 'integrate.png' referenced (source path 'Figures/integrate.png') -- placeholder written to figs/integrate.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "14.4",
+      "title": "The Graphics View",
+      "file": "14.4-the-graphics-view.md",
+      "chapter": 14,
+      "inline_formulas": 3,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Figure5.png' referenced (source path 'Figures/Figure5.png') -- placeholder written to figs/Figure5.png, original binary not available in inputs.",
+        "Figure image 'text_properties.png' referenced (source path 'Figures/text_properties.png') -- placeholder written to figs/text_properties.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "15.1",
+      "title": "The Capture Frame",
+      "file": "15.1-the-capture-frame.md",
+      "chapter": 15,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "15.2",
+      "title": "Taking a snapshot",
+      "file": "15.2-taking-a-snapshot.md",
+      "chapter": 15,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "15.3",
+      "title": "Using the Ray Tracer",
+      "file": "15.3-using-the-ray-tracer.md",
+      "chapter": 15,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'ray-trace.png' referenced (source path 'Figures/ray-trace.png') -- placeholder written to figs/ray-trace.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "15.4",
+      "title": "Recording an animation",
+      "file": "15.4-recording-an-animation.md",
+      "chapter": 15,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "15.5",
+      "title": "Camera Control",
+      "file": "15.5-camera-control.md",
+      "chapter": 15,
+      "inline_formulas": 3,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "16.1",
+      "title": "The View Tab",
+      "file": "16.1-the-view-tab.md",
+      "chapter": 16,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 2,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'file viewer.png' referenced (source path 'Figures/file viewer.png') -- placeholder written to figs/file viewer.png, original binary not available in inputs.",
+        "Figure image 'Model Viewer.png' referenced (source path 'Figures/Model Viewer.png') -- placeholder written to figs/Model Viewer.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "16.2",
+      "title": "The Material Tab",
+      "file": "16.2-the-material-tab.md",
+      "chapter": 16,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'Material Viewer.png' referenced (source path 'Figures/Material Viewer.png') -- placeholder written to figs/Material Viewer.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "16.3",
+      "title": "The Data Tab",
+      "file": "16.3-the-data-tab.md",
+      "chapter": 16,
+      "inline_formulas": 7,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'add_data_from_file.png' referenced (source path 'Figures/add_data_from_file.png') -- placeholder written to figs/add_data_from_file.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "16.4",
+      "title": "The State Tab",
+      "file": "16.4-the-state-tab.md",
+      "chapter": 16,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.1",
+      "title": "Properties of the Model",
+      "file": "17.1-properties-of-the-model.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.2",
+      "title": "Displacement Map",
+      "file": "17.2-displacement-map.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.3",
+      "title": "Color Map",
+      "file": "17.3-color-map.md",
+      "chapter": 17,
+      "inline_formulas": 9,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.4",
+      "title": "Plane Cuts",
+      "file": "17.4-plane-cuts.md",
+      "chapter": 17,
+      "inline_formulas": 7,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.5",
+      "title": "Mirror Plane",
+      "file": "17.5-mirror-plane.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.6",
+      "title": "Vector Plot",
+      "file": "17.6-vector-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.7",
+      "title": "Isosurface plot",
+      "file": "17.7-isosurface-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.8",
+      "title": "Slice plot",
+      "file": "17.8-slice-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.9",
+      "title": "Tensor plot",
+      "file": "17.9-tensor-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.10",
+      "title": "Streamline Plot",
+      "file": "17.10-streamline-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.11",
+      "title": "Particle Flow Plot",
+      "file": "17.11-particle-flow-plot.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "17.12",
+      "title": "Additional Windows",
+      "file": "17.12-additional-windows.md",
+      "chapter": 17,
+      "inline_formulas": 4,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 8,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'summary.png' referenced (source path 'Figures/summary.png') -- placeholder written to figs/summary.png, original binary not available in inputs.",
+        "Figure image 'graph.png' referenced (source path 'Figures/graph.png') -- placeholder written to figs/graph.png, original binary not available in inputs.",
+        "Figure image 'graph_tools.png' referenced (source path 'Figures/graph_tools.png') -- placeholder written to figs/graph_tools.png, original binary not available in inputs.",
+        "Figure image 'node.png' referenced (source path 'Figures/node.png') -- placeholder written to figs/node.png, original binary not available in inputs.",
+        "Figure image 'edge.png' referenced (source path 'Figures/edge.png') -- placeholder written to figs/edge.png, original binary not available in inputs.",
+        "Figure image 'face.png' referenced (source path 'Figures/face.png') -- placeholder written to figs/face.png, original binary not available in inputs.",
+        "Figure image 'element.png' referenced (source path 'Figures/element.png') -- placeholder written to figs/element.png, original binary not available in inputs.",
+        "Figure image 'integrate_window.png' referenced (source path 'Figures/integrate_window.png') -- placeholder written to figs/integrate_window.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "17.13",
+      "title": "Post Session Files",
+      "file": "17.13-post-session-files.md",
+      "chapter": 17,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "18.1",
+      "title": "Loading 3D image data",
+      "file": "18.1-loading-3d-image-data.md",
+      "chapter": 18,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "18.2",
+      "title": "Image GUI Environment",
+      "file": "18.2-image-gui-environment.md",
+      "chapter": 18,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image '3dimage_settings.png' referenced (source path 'Figures/3dimage_settings.png') -- placeholder written to figs/3dimage_settings.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "18.3",
+      "title": "Filters",
+      "file": "18.3-filters.md",
+      "chapter": 18,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "18.4",
+      "title": "Other 3D Image Visualization Options",
+      "file": "18.4-other-3d-image-visualization-options.md",
+      "chapter": 18,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'image_renderers.png' referenced (source path 'Figures/image_renderers.png') -- placeholder written to figs/image_renderers.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "18.5",
+      "title": "Other 3D Image Tools",
+      "file": "18.5-other-3d-image-tools.md",
+      "chapter": 18,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 2,
+      "figures": 6,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'ImageMapTool.png' referenced (source path 'Figures/ImageMapTool.png') -- placeholder written to figs/ImageMapTool.png, original binary not available in inputs.",
+        "Figure image 'imageMapExample1.png' referenced (source path 'Figures/imageMapExample1.png') -- placeholder written to figs/imageMapExample1.png, original binary not available in inputs.",
+        "Figure image 'imageMapExample2.png' referenced (source path 'Figures/imageMapExample2.png') -- placeholder written to figs/imageMapExample2.png, original binary not available in inputs.",
+        "Figure image 'figFiberODF2.png' referenced (source path 'Figures/figFiberODF2.png') -- placeholder written to figs/figFiberODF2.png, original binary not available in inputs.",
+        "Figure image 'figFiberODF1.png' referenced (source path 'Figures/figFiberODF1.png') -- placeholder written to figs/figFiberODF1.png, original binary not available in inputs.",
+        "Figure image 'fiberODFRemesh.png' referenced (source path 'Figures/fiberODFRemesh.png') -- placeholder written to figs/fiberODFRemesh.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "19.1",
+      "title": "The Embedded Python Interpreter",
+      "file": "19.1-the-embedded-python-interpreter.md",
+      "chapter": 19,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'python_editor.png' referenced (source path 'Figures/python_editor.png') -- placeholder written to figs/python_editor.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "19.2",
+      "title": "The External Python Module",
+      "file": "19.2-the-external-python-module.md",
+      "chapter": 19,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "20.1",
+      "title": "The Plugin Repository",
+      "file": "20.1-the-plugin-repository.md",
+      "chapter": 20,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 1,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'febio_plugins.png' referenced (source path 'Figures/febio_plugins.png') -- placeholder written to figs/febio_plugins.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "20.2",
+      "title": "Creating FEBio Plugins",
+      "file": "20.2-creating-febio-plugins.md",
+      "chapter": 20,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 5,
+      "unhandled": 0,
+      "needs_review": [
+        "Figure image 'settings_febio.png' referenced (source path 'Figures/settings_febio.png') -- placeholder written to figs/settings_febio.png, original binary not available in inputs.",
+        "Figure image 'plugin_wizard_page1.png' referenced (source path 'Figures/plugin_wizard_page1.png') -- placeholder written to figs/plugin_wizard_page1.png, original binary not available in inputs.",
+        "Figure image 'plugin_wizard_page2.png' referenced (source path 'Figures/plugin_wizard_page2.png') -- placeholder written to figs/plugin_wizard_page2.png, original binary not available in inputs.",
+        "Figure image 'plugin_wizard_page3.png' referenced (source path 'Figures/plugin_wizard_page3.png') -- placeholder written to figs/plugin_wizard_page3.png, original binary not available in inputs.",
+        "Figure image 'plugin_project.png' referenced (source path 'Figures/plugin_project.png') -- placeholder written to figs/plugin_project.png, original binary not available in inputs."
+      ]
+    },
+    {
+      "section": "A.1",
+      "title": "FEBio",
+      "file": "A.1-febio.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.2",
+      "title": "NIKE3D",
+      "file": "A.2-nike3d.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.3",
+      "title": "HyperMesh ASCII",
+      "file": "A.3-hypermesh-ascii.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.4",
+      "title": "ABAQUS",
+      "file": "A.4-abaqus.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.5",
+      "title": "LSDYNA keyword",
+      "file": "A.5-lsdyna-keyword.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.6",
+      "title": "ANSYS",
+      "file": "A.6-ansys.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.7",
+      "title": "DXF",
+      "file": "A.7-dxf.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.8",
+      "title": "Hypersurface ASCII",
+      "file": "A.8-hypersurface-ascii.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.9",
+      "title": "GMsh",
+      "file": "A.9-gmsh.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.10",
+      "title": "BYU",
+      "file": "A.10-byu.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.11",
+      "title": "VTK",
+      "file": "A.11-vtk.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.12",
+      "title": "STEP",
+      "file": "A.12-step.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.13",
+      "title": "BREP",
+      "file": "A.13-brep.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.14",
+      "title": "IDEAS",
+      "file": "A.14-ideas.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.15",
+      "title": "NASTRAN",
+      "file": "A.15-nastran.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.16",
+      "title": "MESH",
+      "file": "A.16-mesh.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.17",
+      "title": "TETGEN",
+      "file": "A.17-tetgen.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.18",
+      "title": "RAW",
+      "file": "A.18-raw.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.19",
+      "title": "COMSOL",
+      "file": "A.19-comsol.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "A.20",
+      "title": "PLY",
+      "file": "A.20-ply.md",
+      "chapter": 21,
+      "inline_formulas": 0,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
+    },
+    {
+      "section": "B.1",
+      "title": "Standard Data Fields",
+      "file": "B.1-standard-data-fields.md",
+      "chapter": 22,
+      "inline_formulas": 1,
+      "display_formulas": 0,
+      "citations": 0,
+      "figures": 0,
+      "unhandled": 0,
+      "needs_review": []
     }
   ],
   "totals": {
-    "inline_formulas": 1,
-    "display_formulas": 0,
-    "citations": 0,
+    "inline_formulas": 126,
+    "display_formulas": 18,
+    "citations": 2,
     "labels": 0,
     "refs": 0,
-    "figures": 5,
+    "figures": 194,
     "unhandled": 0
   },
   "needs_review": [],
@@ -168,6 +1712,622 @@
         [
           "2.6 Loading the Results",
           "studio/chapter2/2.6-loading-the-results.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 3,
+      "chap_display": "3",
+      "is_appendix": false,
+      "title": "The FEBio Studio Environment",
+      "dir": "chapter3",
+      "nav": [
+        [
+          "3.1 The Graphical User Interface",
+          "studio/chapter3/3.1-the-graphical-user-interface.md"
+        ],
+        [
+          "3.2 The Menu Bar",
+          "studio/chapter3/3.2-the-menu-bar.md"
+        ],
+        [
+          "3.3 The Main Tool Bar",
+          "studio/chapter3/3.3-the-main-tool-bar.md"
+        ],
+        [
+          "3.4 The Build Tool Bar",
+          "studio/chapter3/3.4-the-build-tool-bar.md"
+        ],
+        [
+          "3.5 The Font Toolbar",
+          "studio/chapter3/3.5-the-font-toolbar.md"
+        ],
+        [
+          "3.6 The Graphics View",
+          "studio/chapter3/3.6-the-graphics-view.md"
+        ],
+        [
+          "3.7 The Graphics Toolbar",
+          "studio/chapter3/3.7-the-graphics-toolbar.md"
+        ],
+        [
+          "3.8 The Model Viewer",
+          "studio/chapter3/3.8-the-model-viewer.md"
+        ],
+        [
+          "3.9 The Build Panel",
+          "studio/chapter3/3.9-the-build-panel.md"
+        ],
+        [
+          "3.10 The Repository Panel",
+          "studio/chapter3/3.10-the-repository-panel.md"
+        ],
+        [
+          "3.11 The Project Panel",
+          "studio/chapter3/3.11-the-project-panel.md"
+        ],
+        [
+          "3.12 The Curve Editor",
+          "studio/chapter3/3.12-the-curve-editor.md"
+        ],
+        [
+          "3.13 The Mesh Inspector",
+          "studio/chapter3/3.13-the-mesh-inspector.md"
+        ],
+        [
+          "3.14 The Measure Tool",
+          "studio/chapter3/3.14-the-measure-tool.md"
+        ],
+        [
+          "3.15 FEBio Studio Settings",
+          "studio/chapter3/3.15-febio-studio-settings.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 4,
+      "chap_display": "4",
+      "is_appendix": false,
+      "title": "Creating, Loading, and Saving Models",
+      "dir": "chapter4",
+      "nav": [
+        [
+          "4.1 Starting a new model",
+          "studio/chapter4/4.1-starting-a-new-model.md"
+        ],
+        [
+          "4.2 Loading a model",
+          "studio/chapter4/4.2-loading-a-model.md"
+        ],
+        [
+          "4.3 Saving a model",
+          "studio/chapter4/4.3-saving-a-model.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 5,
+      "chap_display": "5",
+      "is_appendix": false,
+      "title": "Creating and Editing Geometry",
+      "dir": "chapter5",
+      "nav": [
+        [
+          "5.1 Creating Geometry",
+          "studio/chapter5/5.1-creating-geometry.md"
+        ],
+        [
+          "5.2 Importing Geometry",
+          "studio/chapter5/5.2-importing-geometry.md"
+        ],
+        [
+          "5.3 Editing Geometry",
+          "studio/chapter5/5.3-editing-geometry.md"
+        ],
+        [
+          "5.4 Creating and Editing a Mesh",
+          "studio/chapter5/5.4-creating-and-editing-a-mesh.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 6,
+      "chap_display": "6",
+      "is_appendix": false,
+      "title": "Generating and Editing Mesh Data",
+      "dir": "chapter6",
+      "nav": [
+        [
+          "6.1 Adding Mesh Data",
+          "studio/chapter6/6.1-adding-mesh-data.md"
+        ],
+        [
+          "6.2 FEBio Mesh Data Generators",
+          "studio/chapter6/6.2-febio-mesh-data-generators.md"
+        ],
+        [
+          "6.3 The Scalar Field Tool",
+          "studio/chapter6/6.3-the-scalar-field-tool.md"
+        ],
+        [
+          "6.4 The Fiber Generator Tool",
+          "studio/chapter6/6.4-the-fiber-generator-tool.md"
+        ],
+        [
+          "6.5 Visualizing Mesh Data",
+          "studio/chapter6/6.5-visualizing-mesh-data.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 7,
+      "chap_display": "7",
+      "is_appendix": false,
+      "title": "Materials",
+      "dir": "chapter7",
+      "nav": [
+        [
+          "7.1 Adding materials",
+          "studio/chapter7/7.1-adding-materials.md"
+        ],
+        [
+          "7.2 Setting material parameters",
+          "studio/chapter7/7.2-setting-material-parameters.md"
+        ],
+        [
+          "7.3 Assigning materials",
+          "studio/chapter7/7.3-assigning-materials.md"
+        ],
+        [
+          "7.4 Creating a Solute Table",
+          "studio/chapter7/7.4-creating-a-solute-table.md"
+        ],
+        [
+          "7.5 Creating a Solid-Bound Molecule Table",
+          "studio/chapter7/7.5-creating-a-solid-bound-molecule-table.md"
+        ],
+        [
+          "7.6 Adding Chemical Reactions",
+          "studio/chapter7/7.6-adding-chemical-reactions.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 8,
+      "chap_display": "8",
+      "is_appendix": false,
+      "title": "Boundary Conditions and Loads",
+      "dir": "chapter8",
+      "nav": [
+        [
+          "8.1 Boundary Conditions",
+          "studio/chapter8/8.1-boundary-conditions.md"
+        ],
+        [
+          "8.2 Surface Loads",
+          "studio/chapter8/8.2-surface-loads.md"
+        ],
+        [
+          "8.3 Initial Conditions",
+          "studio/chapter8/8.3-initial-conditions.md"
+        ],
+        [
+          "8.4 Assigning Boundary Conditions",
+          "studio/chapter8/8.4-assigning-boundary-conditions.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 9,
+      "chap_display": "9",
+      "is_appendix": false,
+      "title": "Contact and Constraints",
+      "dir": "chapter9",
+      "nav": [
+        [
+          "9.1 Contact",
+          "studio/chapter9/9.1-contact.md"
+        ],
+        [
+          "9.2 Nonlinear constraints",
+          "studio/chapter9/9.2-nonlinear-constraints.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 10,
+      "chap_display": "10",
+      "is_appendix": false,
+      "title": "Rigid Bodies",
+      "dir": "chapter10",
+      "nav": [
+        [
+          "10.1 Rigid Body Constraints",
+          "studio/chapter10/10.1-rigid-body-constraints.md"
+        ],
+        [
+          "10.2 Rigid Body Initial Conditions",
+          "studio/chapter10/10.2-rigid-body-initial-conditions.md"
+        ],
+        [
+          "10.3 Rigid Body Loads",
+          "studio/chapter10/10.3-rigid-body-loads.md"
+        ],
+        [
+          "10.4 Rigid Connectors",
+          "studio/chapter10/10.4-rigid-connectors.md"
+        ],
+        [
+          "10.5 The Rigid Boundary Condition",
+          "studio/chapter10/10.5-the-rigid-boundary-condition.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 11,
+      "chap_display": "11",
+      "is_appendix": false,
+      "title": "Defining Analysis Steps",
+      "dir": "chapter11",
+      "nav": [
+        [
+          "11.1 The Initial Step",
+          "studio/chapter11/11.1-the-initial-step.md"
+        ],
+        [
+          "11.2 Adding an Analysis Step",
+          "studio/chapter11/11.2-adding-an-analysis-step.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 12,
+      "chap_display": "12",
+      "is_appendix": false,
+      "title": "Configuring Output",
+      "dir": "chapter12",
+      "nav": [
+        [
+          "12.1 FEBio Logfile",
+          "studio/chapter12/12.1-febio-logfile.md"
+        ],
+        [
+          "12.2 FEBio Plotfile",
+          "studio/chapter12/12.2-febio-plotfile.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 13,
+      "chap_display": "13",
+      "is_appendix": false,
+      "title": "Running FEBio from FEBioStudio",
+      "dir": "chapter13",
+      "nav": [
+        [
+          "13.1 Running FEBio",
+          "studio/chapter13/13.1-running-febio.md"
+        ],
+        [
+          "13.2 FEBio Launch Configurations",
+          "studio/chapter13/13.2-febio-launch-configurations.md"
+        ],
+        [
+          "13.3 The FEBio Monitor",
+          "studio/chapter13/13.3-the-febio-monitor.md"
+        ],
+        [
+          "13.4 Running Batch Jobs",
+          "studio/chapter13/13.4-running-batch-jobs.md"
+        ],
+        [
+          "13.5 FEBio Job Reports",
+          "studio/chapter13/13.5-febio-job-reports.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 14,
+      "chap_display": "14",
+      "is_appendix": false,
+      "title": "The Post Environment",
+      "dir": "chapter14",
+      "nav": [
+        [
+          "14.1 The Post Environment UI",
+          "studio/chapter14/14.1-the-post-environment-ui.md"
+        ],
+        [
+          "14.2 The Post Menu",
+          "studio/chapter14/14.2-the-post-menu.md"
+        ],
+        [
+          "14.3 The Post Toolbar",
+          "studio/chapter14/14.3-the-post-toolbar.md"
+        ],
+        [
+          "14.4 The Graphics View",
+          "studio/chapter14/14.4-the-graphics-view.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 15,
+      "chap_display": "15",
+      "is_appendix": false,
+      "title": "Saving Graphics",
+      "dir": "chapter15",
+      "nav": [
+        [
+          "15.1 The Capture Frame",
+          "studio/chapter15/15.1-the-capture-frame.md"
+        ],
+        [
+          "15.2 Taking a snapshot",
+          "studio/chapter15/15.2-taking-a-snapshot.md"
+        ],
+        [
+          "15.3 Using the Ray Tracer",
+          "studio/chapter15/15.3-using-the-ray-tracer.md"
+        ],
+        [
+          "15.4 Recording an animation",
+          "studio/chapter15/15.4-recording-an-animation.md"
+        ],
+        [
+          "15.5 Camera Control",
+          "studio/chapter15/15.5-camera-control.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 16,
+      "chap_display": "16",
+      "is_appendix": false,
+      "title": "The Post Panel",
+      "dir": "chapter16",
+      "nav": [
+        [
+          "16.1 The View Tab",
+          "studio/chapter16/16.1-the-view-tab.md"
+        ],
+        [
+          "16.2 The Material Tab",
+          "studio/chapter16/16.2-the-material-tab.md"
+        ],
+        [
+          "16.3 The Data Tab",
+          "studio/chapter16/16.3-the-data-tab.md"
+        ],
+        [
+          "16.4 The State Tab",
+          "studio/chapter16/16.4-the-state-tab.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 17,
+      "chap_display": "17",
+      "is_appendix": false,
+      "title": "Post Processing",
+      "dir": "chapter17",
+      "nav": [
+        [
+          "17.1 Properties of the Model",
+          "studio/chapter17/17.1-properties-of-the-model.md"
+        ],
+        [
+          "17.2 Displacement Map",
+          "studio/chapter17/17.2-displacement-map.md"
+        ],
+        [
+          "17.3 Color Map",
+          "studio/chapter17/17.3-color-map.md"
+        ],
+        [
+          "17.4 Plane Cuts",
+          "studio/chapter17/17.4-plane-cuts.md"
+        ],
+        [
+          "17.5 Mirror Plane",
+          "studio/chapter17/17.5-mirror-plane.md"
+        ],
+        [
+          "17.6 Vector Plot",
+          "studio/chapter17/17.6-vector-plot.md"
+        ],
+        [
+          "17.7 Isosurface plot",
+          "studio/chapter17/17.7-isosurface-plot.md"
+        ],
+        [
+          "17.8 Slice plot",
+          "studio/chapter17/17.8-slice-plot.md"
+        ],
+        [
+          "17.9 Tensor plot",
+          "studio/chapter17/17.9-tensor-plot.md"
+        ],
+        [
+          "17.10 Streamline Plot",
+          "studio/chapter17/17.10-streamline-plot.md"
+        ],
+        [
+          "17.11 Particle Flow Plot",
+          "studio/chapter17/17.11-particle-flow-plot.md"
+        ],
+        [
+          "17.12 Additional Windows",
+          "studio/chapter17/17.12-additional-windows.md"
+        ],
+        [
+          "17.13 Post Session Files",
+          "studio/chapter17/17.13-post-session-files.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 18,
+      "chap_display": "18",
+      "is_appendix": false,
+      "title": "Visualizing 3D Image Data",
+      "dir": "chapter18",
+      "nav": [
+        [
+          "18.1 Loading 3D image data",
+          "studio/chapter18/18.1-loading-3d-image-data.md"
+        ],
+        [
+          "18.2 Image GUI Environment",
+          "studio/chapter18/18.2-image-gui-environment.md"
+        ],
+        [
+          "18.3 Filters",
+          "studio/chapter18/18.3-filters.md"
+        ],
+        [
+          "18.4 Other 3D Image Visualization Options",
+          "studio/chapter18/18.4-other-3d-image-visualization-options.md"
+        ],
+        [
+          "18.5 Other 3D Image Tools",
+          "studio/chapter18/18.5-other-3d-image-tools.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 19,
+      "chap_display": "19",
+      "is_appendix": false,
+      "title": "Using Python in FEBio Studio",
+      "dir": "chapter19",
+      "nav": [
+        [
+          "19.1 The Embedded Python Interpreter",
+          "studio/chapter19/19.1-the-embedded-python-interpreter.md"
+        ],
+        [
+          "19.2 The External Python Module",
+          "studio/chapter19/19.2-the-external-python-module.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 20,
+      "chap_display": "20",
+      "is_appendix": false,
+      "title": "Using and Creating FEBio Plugins",
+      "dir": "chapter20",
+      "nav": [
+        [
+          "20.1 The Plugin Repository",
+          "studio/chapter20/20.1-the-plugin-repository.md"
+        ],
+        [
+          "20.2 Creating FEBio Plugins",
+          "studio/chapter20/20.2-creating-febio-plugins.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 21,
+      "chap_display": "A",
+      "is_appendix": true,
+      "title": "Mesh Import Formats",
+      "dir": "chapterA",
+      "nav": [
+        [
+          "A.1 FEBio",
+          "studio/chapterA/A.1-febio.md"
+        ],
+        [
+          "A.2 NIKE3D",
+          "studio/chapterA/A.2-nike3d.md"
+        ],
+        [
+          "A.3 HyperMesh ASCII",
+          "studio/chapterA/A.3-hypermesh-ascii.md"
+        ],
+        [
+          "A.4 ABAQUS",
+          "studio/chapterA/A.4-abaqus.md"
+        ],
+        [
+          "A.5 LSDYNA keyword",
+          "studio/chapterA/A.5-lsdyna-keyword.md"
+        ],
+        [
+          "A.6 ANSYS",
+          "studio/chapterA/A.6-ansys.md"
+        ],
+        [
+          "A.7 DXF",
+          "studio/chapterA/A.7-dxf.md"
+        ],
+        [
+          "A.8 Hypersurface ASCII",
+          "studio/chapterA/A.8-hypersurface-ascii.md"
+        ],
+        [
+          "A.9 GMsh",
+          "studio/chapterA/A.9-gmsh.md"
+        ],
+        [
+          "A.10 BYU",
+          "studio/chapterA/A.10-byu.md"
+        ],
+        [
+          "A.11 VTK",
+          "studio/chapterA/A.11-vtk.md"
+        ],
+        [
+          "A.12 STEP",
+          "studio/chapterA/A.12-step.md"
+        ],
+        [
+          "A.13 BREP",
+          "studio/chapterA/A.13-brep.md"
+        ],
+        [
+          "A.14 IDEAS",
+          "studio/chapterA/A.14-ideas.md"
+        ],
+        [
+          "A.15 NASTRAN",
+          "studio/chapterA/A.15-nastran.md"
+        ],
+        [
+          "A.16 MESH",
+          "studio/chapterA/A.16-mesh.md"
+        ],
+        [
+          "A.17 TETGEN",
+          "studio/chapterA/A.17-tetgen.md"
+        ],
+        [
+          "A.18 RAW",
+          "studio/chapterA/A.18-raw.md"
+        ],
+        [
+          "A.19 COMSOL",
+          "studio/chapterA/A.19-comsol.md"
+        ],
+        [
+          "A.20 PLY",
+          "studio/chapterA/A.20-ply.md"
+        ]
+      ]
+    },
+    {
+      "chap_num": 22,
+      "chap_display": "B",
+      "is_appendix": true,
+      "title": "Standard Data Fields",
+      "dir": "chapterB",
+      "nav": [
+        [
+          "B.1 Standard Data Fields",
+          "studio/chapterB/B.1-standard-data-fields.md"
         ]
       ]
     }

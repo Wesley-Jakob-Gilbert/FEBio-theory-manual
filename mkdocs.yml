@@ -122,3 +122,132 @@ nav:
       - 2.4 Exploring a Model: studio/chapter2/2.4-exploring-a-model.md
       - 2.5 Solving the Model: studio/chapter2/2.5-solving-the-model.md
       - 2.6 Loading the Results: studio/chapter2/2.6-loading-the-results.md
+    - Chapter 3 - The FEBio Studio Environment:
+      - 3.1 The Graphical User Interface: studio/chapter3/3.1-the-graphical-user-interface.md
+      - 3.2 The Menu Bar: studio/chapter3/3.2-the-menu-bar.md
+      - 3.3 The Main Tool Bar: studio/chapter3/3.3-the-main-tool-bar.md
+      - 3.4 The Build Tool Bar: studio/chapter3/3.4-the-build-tool-bar.md
+      - 3.5 The Font Toolbar: studio/chapter3/3.5-the-font-toolbar.md
+      - 3.6 The Graphics View: studio/chapter3/3.6-the-graphics-view.md
+      - 3.7 The Graphics Toolbar: studio/chapter3/3.7-the-graphics-toolbar.md
+      - 3.8 The Model Viewer: studio/chapter3/3.8-the-model-viewer.md
+      - 3.9 The Build Panel: studio/chapter3/3.9-the-build-panel.md
+      - 3.10 The Repository Panel: studio/chapter3/3.10-the-repository-panel.md
+      - 3.11 The Project Panel: studio/chapter3/3.11-the-project-panel.md
+      - 3.12 The Curve Editor: studio/chapter3/3.12-the-curve-editor.md
+      - 3.13 The Mesh Inspector: studio/chapter3/3.13-the-mesh-inspector.md
+      - 3.14 The Measure Tool: studio/chapter3/3.14-the-measure-tool.md
+      - 3.15 FEBio Studio Settings: studio/chapter3/3.15-febio-studio-settings.md
+    - Chapter 4 - Creating, Loading, and Saving Models:
+      - 4.1 Starting a new model: studio/chapter4/4.1-starting-a-new-model.md
+      - 4.2 Loading a model: studio/chapter4/4.2-loading-a-model.md
+      - 4.3 Saving a model: studio/chapter4/4.3-saving-a-model.md
+    - Chapter 5 - Creating and Editing Geometry:
+      - 5.1 Creating Geometry: studio/chapter5/5.1-creating-geometry.md
+      - 5.2 Importing Geometry: studio/chapter5/5.2-importing-geometry.md
+      - 5.3 Editing Geometry: studio/chapter5/5.3-editing-geometry.md
+      - 5.4 Creating and Editing a Mesh: studio/chapter5/5.4-creating-and-editing-a-mesh.md
+    - Chapter 6 - Generating and Editing Mesh Data:
+      - 6.1 Adding Mesh Data: studio/chapter6/6.1-adding-mesh-data.md
+      - 6.2 FEBio Mesh Data Generators: studio/chapter6/6.2-febio-mesh-data-generators.md
+      - 6.3 The Scalar Field Tool: studio/chapter6/6.3-the-scalar-field-tool.md
+      - 6.4 The Fiber Generator Tool: studio/chapter6/6.4-the-fiber-generator-tool.md
+      - 6.5 Visualizing Mesh Data: studio/chapter6/6.5-visualizing-mesh-data.md
+    - Chapter 7 - Materials:
+      - 7.1 Adding materials: studio/chapter7/7.1-adding-materials.md
+      - 7.2 Setting material parameters: studio/chapter7/7.2-setting-material-parameters.md
+      - 7.3 Assigning materials: studio/chapter7/7.3-assigning-materials.md
+      - 7.4 Creating a Solute Table: studio/chapter7/7.4-creating-a-solute-table.md
+      - 7.5 Creating a Solid-Bound Molecule Table: studio/chapter7/7.5-creating-a-solid-bound-molecule-table.md
+      - 7.6 Adding Chemical Reactions: studio/chapter7/7.6-adding-chemical-reactions.md
+    - Chapter 8 - Boundary Conditions and Loads:
+      - 8.1 Boundary Conditions: studio/chapter8/8.1-boundary-conditions.md
+      - 8.2 Surface Loads: studio/chapter8/8.2-surface-loads.md
+      - 8.3 Initial Conditions: studio/chapter8/8.3-initial-conditions.md
+      - 8.4 Assigning Boundary Conditions: studio/chapter8/8.4-assigning-boundary-conditions.md
+    - Chapter 9 - Contact and Constraints:
+      - 9.1 Contact: studio/chapter9/9.1-contact.md
+      - 9.2 Nonlinear constraints: studio/chapter9/9.2-nonlinear-constraints.md
+    - Chapter 10 - Rigid Bodies:
+      - 10.1 Rigid Body Constraints: studio/chapter10/10.1-rigid-body-constraints.md
+      - 10.2 Rigid Body Initial Conditions: studio/chapter10/10.2-rigid-body-initial-conditions.md
+      - 10.3 Rigid Body Loads: studio/chapter10/10.3-rigid-body-loads.md
+      - 10.4 Rigid Connectors: studio/chapter10/10.4-rigid-connectors.md
+      - 10.5 The Rigid Boundary Condition: studio/chapter10/10.5-the-rigid-boundary-condition.md
+    - Chapter 11 - Defining Analysis Steps:
+      - 11.1 The Initial Step: studio/chapter11/11.1-the-initial-step.md
+      - 11.2 Adding an Analysis Step: studio/chapter11/11.2-adding-an-analysis-step.md
+    - Chapter 12 - Configuring Output:
+      - 12.1 FEBio Logfile: studio/chapter12/12.1-febio-logfile.md
+      - 12.2 FEBio Plotfile: studio/chapter12/12.2-febio-plotfile.md
+    - Chapter 13 - Running FEBio from FEBioStudio:
+      - 13.1 Running FEBio: studio/chapter13/13.1-running-febio.md
+      - 13.2 FEBio Launch Configurations: studio/chapter13/13.2-febio-launch-configurations.md
+      - 13.3 The FEBio Monitor: studio/chapter13/13.3-the-febio-monitor.md
+      - 13.4 Running Batch Jobs: studio/chapter13/13.4-running-batch-jobs.md
+      - 13.5 FEBio Job Reports: studio/chapter13/13.5-febio-job-reports.md
+    - Chapter 14 - The Post Environment:
+      - 14.1 The Post Environment UI: studio/chapter14/14.1-the-post-environment-ui.md
+      - 14.2 The Post Menu: studio/chapter14/14.2-the-post-menu.md
+      - 14.3 The Post Toolbar: studio/chapter14/14.3-the-post-toolbar.md
+      - 14.4 The Graphics View: studio/chapter14/14.4-the-graphics-view.md
+    - Chapter 15 - Saving Graphics:
+      - 15.1 The Capture Frame: studio/chapter15/15.1-the-capture-frame.md
+      - 15.2 Taking a snapshot: studio/chapter15/15.2-taking-a-snapshot.md
+      - 15.3 Using the Ray Tracer: studio/chapter15/15.3-using-the-ray-tracer.md
+      - 15.4 Recording an animation: studio/chapter15/15.4-recording-an-animation.md
+      - 15.5 Camera Control: studio/chapter15/15.5-camera-control.md
+    - Chapter 16 - The Post Panel:
+      - 16.1 The View Tab: studio/chapter16/16.1-the-view-tab.md
+      - 16.2 The Material Tab: studio/chapter16/16.2-the-material-tab.md
+      - 16.3 The Data Tab: studio/chapter16/16.3-the-data-tab.md
+      - 16.4 The State Tab: studio/chapter16/16.4-the-state-tab.md
+    - Chapter 17 - Post Processing:
+      - 17.1 Properties of the Model: studio/chapter17/17.1-properties-of-the-model.md
+      - 17.2 Displacement Map: studio/chapter17/17.2-displacement-map.md
+      - 17.3 Color Map: studio/chapter17/17.3-color-map.md
+      - 17.4 Plane Cuts: studio/chapter17/17.4-plane-cuts.md
+      - 17.5 Mirror Plane: studio/chapter17/17.5-mirror-plane.md
+      - 17.6 Vector Plot: studio/chapter17/17.6-vector-plot.md
+      - 17.7 Isosurface plot: studio/chapter17/17.7-isosurface-plot.md
+      - 17.8 Slice plot: studio/chapter17/17.8-slice-plot.md
+      - 17.9 Tensor plot: studio/chapter17/17.9-tensor-plot.md
+      - 17.10 Streamline Plot: studio/chapter17/17.10-streamline-plot.md
+      - 17.11 Particle Flow Plot: studio/chapter17/17.11-particle-flow-plot.md
+      - 17.12 Additional Windows: studio/chapter17/17.12-additional-windows.md
+      - 17.13 Post Session Files: studio/chapter17/17.13-post-session-files.md
+    - Chapter 18 - Visualizing 3D Image Data:
+      - 18.1 Loading 3D image data: studio/chapter18/18.1-loading-3d-image-data.md
+      - 18.2 Image GUI Environment: studio/chapter18/18.2-image-gui-environment.md
+      - 18.3 Filters: studio/chapter18/18.3-filters.md
+      - 18.4 Other 3D Image Visualization Options: studio/chapter18/18.4-other-3d-image-visualization-options.md
+      - 18.5 Other 3D Image Tools: studio/chapter18/18.5-other-3d-image-tools.md
+    - Chapter 19 - Using Python in FEBio Studio:
+      - 19.1 The Embedded Python Interpreter: studio/chapter19/19.1-the-embedded-python-interpreter.md
+      - 19.2 The External Python Module: studio/chapter19/19.2-the-external-python-module.md
+    - Chapter 20 - Using and Creating FEBio Plugins:
+      - 20.1 The Plugin Repository: studio/chapter20/20.1-the-plugin-repository.md
+      - 20.2 Creating FEBio Plugins: studio/chapter20/20.2-creating-febio-plugins.md
+    - Appendix A - Mesh Import Formats:
+      - A.1 FEBio: studio/chapterA/A.1-febio.md
+      - A.2 NIKE3D: studio/chapterA/A.2-nike3d.md
+      - A.3 HyperMesh ASCII: studio/chapterA/A.3-hypermesh-ascii.md
+      - A.4 ABAQUS: studio/chapterA/A.4-abaqus.md
+      - A.5 LSDYNA keyword: studio/chapterA/A.5-lsdyna-keyword.md
+      - A.6 ANSYS: studio/chapterA/A.6-ansys.md
+      - A.7 DXF: studio/chapterA/A.7-dxf.md
+      - A.8 Hypersurface ASCII: studio/chapterA/A.8-hypersurface-ascii.md
+      - A.9 GMsh: studio/chapterA/A.9-gmsh.md
+      - A.10 BYU: studio/chapterA/A.10-byu.md
+      - A.11 VTK: studio/chapterA/A.11-vtk.md
+      - A.12 STEP: studio/chapterA/A.12-step.md
+      - A.13 BREP: studio/chapterA/A.13-brep.md
+      - A.14 IDEAS: studio/chapterA/A.14-ideas.md
+      - A.15 NASTRAN: studio/chapterA/A.15-nastran.md
+      - A.16 MESH: studio/chapterA/A.16-mesh.md
+      - A.17 TETGEN: studio/chapterA/A.17-tetgen.md
+      - A.18 RAW: studio/chapterA/A.18-raw.md
+      - A.19 COMSOL: studio/chapterA/A.19-comsol.md
+      - A.20 PLY: studio/chapterA/A.20-ply.md
+    - Appendix B - Standard Data Fields:
+      - B.1 Standard Data Fields: studio/chapterB/B.1-standard-data-fields.md

@@ -233,15 +233,44 @@ def parse_bib_fields(body):
     return fields
 
 
+LATEX_ACCENT_CHARS = {
+    '"a': "ä", '"o': "ö", '"u': "ü", '"A': "Ä", '"O': "Ö", '"U': "Ü", '"s': "ß",
+    "'a": "á", "'e": "é", "'i": "í", "'o": "ó", "'u": "ú",
+    "'A": "Á", "'E": "É", "'I": "Í", "'O": "Ó", "'U": "Ú",
+    "`a": "à", "`e": "è", "`i": "ì", "`o": "ò", "`u": "ù",
+    "^a": "â", "^e": "ê", "^i": "î", "^o": "ô", "^u": "û",
+    "~n": "ñ", "~N": "Ñ", "~a": "ã", "~o": "õ",
+}
+LATEX_ACCENT_RE = re.compile(r"\{?\\([\"'`^~])([a-zA-Z])\}?")
+
+
+def decode_latex_accents(text):
+    """BibTeX author/title fields sometimes spell an accented letter as a raw
+    LaTeX accent command (braced or bare, e.g. '{\\"u}' or '\\"u' for u-umlaut)
+    rather than a literal Unicode character -- found in FEBio3.bib author
+    names. Decode the common ones to their real Unicode character; anything
+    not in the table is left untouched rather than guessed at."""
+    return LATEX_ACCENT_RE.sub(lambda m: LATEX_ACCENT_CHARS.get(m.group(1) + m.group(2), m.group(0)), text)
+
+
 def format_citation(key, fields):
     """Render a footnote text for a bib entry: author, title, journal, year."""
     if not fields:
         return f"{key} (reference not found in FEBio3.bib)"
-    author = fields.get("author", "")
+    author = decode_latex_accents(fields.get("author", ""))
     # bibtex authors are "Last, First and Last2, First2" -> keep as-is but tidy 'and'
     author = author.replace(" and ", "; ")
-    title = fields.get("title", "")
-    journal = fields.get("journal") or fields.get("booktitle") or fields.get("publisher", "")
+    # BibTeX authors wrap specific words/acronyms in nested {braces} to protect
+    # their capitalization from a citation style's own case-transformation
+    # (e.g. title = {A {Nonparametric} Approach ... ({ODFs}) ...}) --
+    # parse_bib_fields() only strips the field's own outer brace pair, so
+    # these inner ones survive into the extracted string. We don't apply any
+    # case transformation ourselves, so they serve no purpose here and would
+    # otherwise render as literal stray braces (found via the Studio
+    # Manual's FEBio3.bib-equivalent, which uses this convention; the Theory
+    # Manual's bibliography happens not to).
+    title = decode_latex_accents(fields.get("title", "")).replace("{", "").replace("}", "")
+    journal = decode_latex_accents(fields.get("journal") or fields.get("booktitle") or fields.get("publisher", "")).replace("{", "").replace("}", "")
     year = fields.get("year", "")
     volume = fields.get("volume", "")
     pages = fields.get("pages", "")
@@ -741,41 +770,98 @@ def fix_emphasis_whitespace(text):
     return out.replace(MATH_UNDERSCORE_PLACEHOLDER, "_")
 
 
+MARKER_GLYPH = {"bold": "**", "emph": "_", "shape_italic": "_", "tt": "`"}
+
+
+def close_marker(open_stack, name):
+    """Close `name` and, if any markers were opened *after* it, close those
+    first (required for valid Markdown nesting) then reopen them so they
+    keep applying to whatever text follows. Needed because LyX source
+    doesn't always close character-formatting markers in reverse-of-open
+    (LIFO) order -- e.g. one Studio Manual list closes \\series bold while
+    \\emph on (opened after it) is still active, then closes \\emph default
+    moments later. Naively emitting "**" then "_" for that produces
+    "**_word**_" (invalid nesting, renders wrong); round-tripping through a
+    fully-closed state instead produces "**_word_**_..._" -- closing both
+    together, then reopening emph alone for the text still inside it.
+    Returns the string to emit; mutates open_stack in place."""
+    if name not in open_stack:
+        return ""
+    idx = open_stack.index(name)
+    to_reopen = open_stack[idx + 1:]
+    closing = "".join(MARKER_GLYPH[m] for m in reversed(open_stack[idx:]))
+    del open_stack[idx:]
+    reopening = "".join(MARKER_GLYPH[m] for m in to_reopen)
+    open_stack.extend(to_reopen)
+    return closing + reopening
+
+
 def render_items_inline(items, ctx):
     """Render a list of (kind, spec, subitems)/('text', line) tuples that
     represent the *inline* content of a paragraph, honoring char-formatting
     state and LyX's leading-space continuation convention."""
     out = ""
-    state = {"bold": False, "emph": False, "tt": False, "shape_italic": False}
+    open_stack = []  # currently-open character-formatting markers, in open order
     for kind, *rest in items:
         if kind == "text":
             raw = rest[0]
             if raw in ("\\series bold",):
-                out += "**"; state["bold"] = True
+                if "bold" not in open_stack:
+                    open_stack.append("bold"); out += MARKER_GLYPH["bold"]
             elif raw in ("\\series default", "\\series medium"):
-                if state["bold"]:
-                    out += "**"; state["bold"] = False
+                out += close_marker(open_stack, "bold")
             elif raw == "\\emph on":
-                out += "_"; state["emph"] = True
-            elif raw == "\\emph default":
-                if state["emph"]:
-                    out += "_"; state["emph"] = False
+                if "emph" not in open_stack:
+                    open_stack.append("emph"); out += MARKER_GLYPH["emph"]
+            elif raw in ("\\emph default", "\\emph off"):
+                out += close_marker(open_stack, "emph")
             elif raw == "\\shape italic":
-                out += "_"; state["shape_italic"] = True
+                if "shape_italic" not in open_stack:
+                    open_stack.append("shape_italic"); out += MARKER_GLYPH["shape_italic"]
             elif raw == "\\shape default":
-                if state["shape_italic"]:
-                    out += "_"; state["shape_italic"] = False
+                out += close_marker(open_stack, "shape_italic")
             elif raw in ("\\shape up", "\\shape slanted", "\\shape smallcaps"):
                 pass
             elif raw == "\\family typewriter":
-                out += "`"; state["tt"] = True
+                if "tt" not in open_stack:
+                    open_stack.append("tt"); out += MARKER_GLYPH["tt"]
             elif raw in ("\\family default", "\\family roman", "\\family sans"):
-                if state["tt"]:
-                    out += "`"; state["tt"] = False
+                out += close_marker(open_stack, "tt")
             elif ALIGN_RE.match(raw) or LANG_RE.match(raw):
+                pass
+            elif raw.startswith("\\size "):
+                # LyX font-size command (e.g. "\size footnotesize", "\size
+                # normal", "\size default") -- Markdown/this site's CSS has
+                # no per-run font-size concept to preserve, so this is
+                # dropped the same way \shape up/slanted/smallcaps is
+                # (found leaking as literal text in both the Studio
+                # Manual's data-field tables and, pre-existing, Theory
+                # Manual section 7.1).
                 pass
             elif raw.startswith("\\bar ") or raw.startswith("\\noun ") or raw.startswith("\\color "):
                 pass
+            elif raw == "\\backslash":
+                # LyX encodes a literal backslash character in ordinary
+                # prose the same way it does inside ERT (see render_ert()):
+                # a standalone "\backslash" text line with no surrounding
+                # whitespace, immediately adjacent to the text before/after
+                # it -- found in Windows file paths written directly in
+                # Standard/Itemize body text (e.g. "C:\Program Files\...\
+                # sdk\include"), not just inside raw-LaTeX ERT insets.
+                out += "\\"
+            elif raw == "\\noindent":
+                # LaTeX's "don't indent this paragraph" directive -- this
+                # site's CSS doesn't indent paragraphs to begin with, so
+                # there's nothing to suppress; drop it like the other
+                # presentational-only bookkeeping lines above.
+                pass
+            elif raw == "\\SpecialChar endofsentence":
+                # LyX's "force end-of-sentence spacing" marker (used e.g.
+                # after a bolded term with no punctuation of its own, right
+                # before the next sentence starts) -- renders as a literal
+                # period; Markdown has no separate "sentence space" concept
+                # to preserve, so a plain "." is the correct visible output.
+                out += "."
             elif raw == "\\start_of_appendix":
                 # LyX's native marker for "this Chapter and all following
                 # ones are lettered appendices, not numbered chapters"
@@ -818,12 +904,8 @@ def render_items_inline(items, ctx):
     # table cell would pair against the next available "**" anywhere later
     # in the surrounding text (e.g. a different cell's opening marker),
     # producing a bogus bold span across everything in between.
-    if state["bold"]:
-        out += "**"
-    if state["emph"] or state["shape_italic"]:
-        out += "_"
-    if state["tt"]:
-        out += "`"
+    while open_stack:
+        out += MARKER_GLYPH[open_stack.pop()]
     # normalize whitespace introduced by line joins; LyX continuation lines
     # begin with a single leading space which already provides the needed
     # word-separating space, so a straight concatenation is correct. Any
@@ -875,12 +957,14 @@ def render_ert(sub_items, ctx):
     word-separating space) would corrupt into something like
     "\\backslashhref{...}".
 
-    \\href{url}{text} and bare \\url{url} are the two patterns that occur
-    anywhere in this document as of this writing (confirmed by scanning
-    every ERT inset): both render as real Markdown links, \\href unwrapping
+    \\href{url}{text} and bare \\url{url} are the two link patterns found in
+    the Theory Manual; both render as real Markdown links, \\href unwrapping
     a nested \\emph{} in its link text to Markdown emphasis rather than
-    dropping it. Anything else is flagged for manual review instead of
-    silently guessed at.
+    dropping it. The Studio Manual additionally uses bare ERT `{`/`}` around
+    a plain `%` to show a literal keyword-placeholder delimiter in prose
+    (e.g. "keywords ... start with a percentage sign ({%})") -- neither
+    character needs escaping in Markdown, so they render verbatim. Anything
+    else is flagged for manual review instead of silently guessed at.
     """
     raw_parts = []
     for item in sub_items:
@@ -891,6 +975,8 @@ def render_ert(sub_items, ctx):
     raw = "".join(raw_parts).strip()
     if raw in ("", "\\-"):
         return ""
+    if raw in ("{", "}"):
+        return raw
     m = ERT_HREF_RE.search(raw)
     if m:
         url, link_text = m.group(1), m.group(2)
@@ -1177,18 +1263,22 @@ def render_float(spec, sub_items, ctx):
     # spec = "Float figure" or "Float table"
     float_kind = spec.split(None, 1)[1] if len(spec.split()) > 1 else "figure"
     # sub_items contain layout 'Plain Layout' blocks: one with the Graphics
-    # inset (image), and one with a Caption inset.
-    image_md = ""
+    # inset (image) -- or, for a "Float table" (found in the Studio Manual;
+    # never occurs in the Theory Manual), a Tabular inset instead -- and one
+    # with a Caption inset.
+    content_md = ""
     caption_md = ""
     fig_anchor = ""
     for item in sub_items:
         if item[0] != "layout":
             continue
         kind, layout_spec, layout_items = item
-        # scan this Plain Layout's items for Graphics / Caption insets
+        # scan this Plain Layout's items for Graphics/Tabular / Caption insets
         for it in layout_items:
             if it[0] == "inset" and it[1].startswith("Graphics"):
-                image_md = render_graphics(it[2], ctx)
+                content_md = render_graphics(it[2], ctx)
+            elif it[0] == "inset" and it[1].startswith("Tabular"):
+                content_md = render_tabular(it[2], ctx)
             elif it[0] == "inset" and it[1].startswith("Caption"):
                 caption_raw = render_items_inline(it[2], ctx).strip()
                 # Extract any figure \label anchor emitted inline (LyX puts
@@ -1210,9 +1300,16 @@ def render_float(spec, sub_items, ctx):
                         if m:
                             fig_anchor = f'<a id="{m.group(1)}"></a>'
     out = "\n\n"
-    out += (fig_anchor + "\n\n" if fig_anchor else "") + image_md
+    out += (fig_anchor + "\n\n" if fig_anchor else "") + content_md
     if caption_md:
-        out += "\n\n/// figure-caption\n\n    " + caption_md + "\n\n///\n"
+        # pymdownx.blocks.caption registers separate "figure-caption" and
+        # "table-caption" block types (each with its own auto-numbering
+        # counter) -- a Float table's caption must use table-caption so it
+        # doesn't advance the figure counter that \ref{}'s figure-number
+        # resolution (LABEL_REGISTRY's fig_number, see render_command_inset)
+        # relies on staying in sync with actual Graphics insets.
+        caption_kind = "table-caption" if float_kind == "table" else "figure-caption"
+        out += f"\n\n/// {caption_kind}\n\n    " + caption_md + "\n\n///\n"
     return out + "\n"
 
 
@@ -1354,6 +1451,27 @@ def render_paragraph(layout_kind, items, ctx):
     return text
 
 
+def render_code_line(items, ctx):
+    """Render one LyX-Code layout's content verbatim, unlike
+    render_items_inline() -- LyX-Code holds literal code/data listings
+    (e.g. XML snippets, CSV rows in the Studio Manual) where whitespace and
+    indentation are significant, so this skips the character-formatting
+    state machine and the prose-oriented whitespace/punctuation-spacing
+    normalization entirely, only rendering nested insets (e.g. a Quotes
+    inset for a literal '"')."""
+    out = ""
+    for kind, *rest in items:
+        if kind == "text":
+            out += rest[0]
+        elif kind == "inset":
+            spec, sub_items = rest
+            out += render_inset(spec, sub_items, ctx)
+        elif kind == "layout":
+            spec, sub_items = rest
+            out += render_code_line(sub_items, ctx)
+    return out
+
+
 def format_list_item(marker, body):
     """Render a single Markdown list item, indenting any continuation
     lines (e.g. a display-equation block LyX nests inside an Enumerate/
@@ -1376,6 +1494,7 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
     md_parts = []
     heading_counters = [0, 0, 0]  # subsection, subsubsection depth trackers (informational)
     prev_spec = None  # previous top-level layout's spec, for Example/Theorem* continuation (see below)
+    in_code_block = False  # tracks an open ``` fence spanning consecutive LyX-Code layouts (see below)
 
     for item in items:
         if item[0] != "layout":
@@ -1391,9 +1510,15 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             # break the run.
             if item[0] == "text" and item[1].strip() == "":
                 continue
+            if in_code_block:
+                md_parts.append("\n```\n")
+                in_code_block = False
             prev_spec = None
             continue
         kind, spec, sub_items = item
+        if in_code_block and spec != "LyX-Code":
+            md_parts.append("\n```\n")
+            in_code_block = False
         if spec == "Subsection":
             raw_title = render_items_inline(sub_items, ctx).strip()
             title, anchor = extract_heading_label(raw_title)
@@ -1421,6 +1546,42 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             body = render_paragraph(spec, sub_items, ctx)
             quoted = "\n".join("> " + l for l in body.splitlines())
             md_parts.append("\n\n" + quoted + "\n")
+        elif spec == "Description":
+            # LaTeX's description environment (LyX: "Description" style) --
+            # a labeled list where LyX auto-bolds the label at render time.
+            # The label is everything up to the first plain space; a
+            # non-breaking space (rendered as U+00A0 by render_inset_space,
+            # from an author-inserted "protected space") does NOT end the
+            # label, since it's used to keep multi-word labels from
+            # wrapping. Some items in this document explicitly wrap their
+            # label in \series bold/\series default instead of relying on
+            # this auto-bolding -- render_paragraph() already renders that
+            # correctly via the normal character-formatting handling, so
+            # skip auto-bolding when the body already starts with "**" to
+            # avoid double-bolding or re-splitting an already-correct label.
+            body = render_paragraph(spec, sub_items, ctx)
+            if body and not body.startswith("**"):
+                m = re.match(r"^([^\n ]+)((?: .*)?)$", body, re.DOTALL)
+                if m:
+                    body = f"**{m.group(1)}**{m.group(2)}"
+            md_parts.append("\n\n" + body + "\n")
+        elif spec == "LyX-Code":
+            # A literal code/data listing (LyX: "LyX-Code" style), one line
+            # per layout in the source -- e.g. XML session-file snippets and
+            # CSV data rows in the Studio Manual. Consecutive LyX-Code
+            # layouts (no other content between them) are lines of the
+            # *same* listing, not separate one-line blocks, so they're
+            # joined into a single ``` fence (opened on the first line,
+            # left open across continuation lines via in_code_block, and
+            # closed by the fence-closing checks above/below once the run
+            # ends) -- mirroring the Example/Theorem* continuation rule,
+            # but spanning one fence instead of repeating a label.
+            line = render_code_line(sub_items, ctx)
+            if in_code_block:
+                md_parts.append("\n" + line)
+            else:
+                md_parts.append("\n\n```\n" + line)
+                in_code_block = True
         elif spec == "Enumerate":
             body = render_paragraph(spec, sub_items, ctx)
             md_parts.append("\n\n" + format_list_item("1.", body) + "\n")
@@ -1485,6 +1646,9 @@ def render_section_body(items, ctx, section_num, section_title, level_base=2):
             if body:
                 md_parts.append("\n\n" + body + "\n")
         prev_spec = spec
+
+    if in_code_block:
+        md_parts.append("\n```\n")
 
     text = "".join(md_parts)
     text = re.sub(r"\n{3,}", "\n\n", text).strip() + "\n"
@@ -1721,6 +1885,34 @@ def main():
         # formula-count reconciliation gap against source). Prepend it to
         # the first section's own body instead.
         intro_body_items = top_items[chap["start_idx"] + 1: sec_boundaries[0][0]] if sec_boundaries else []
+        if not sec_boundaries:
+            # A chapter with no \begin_layout Section at all -- e.g. the
+            # Studio Manual's Appendix B "Standard Data Fields", which is
+            # entirely Standard paragraphs + a table with no subsections --
+            # still needs a real output page. Without one, this chapter's
+            # nav entry has no children (`chap["nav"]` stays empty), which
+            # mkdocs's strict nav validation rejects outright ("Expected
+            # nav to be a list, got None") rather than degrading gracefully.
+            # Treat the whole chapter body as a single synthetic section,
+            # numbered <chap>.1 and titled after the chapter itself.
+            body_items = top_items[chap["start_idx"] + 1: chap["end_idx"]]
+            sec_num = f"{chap['chap_display']}.1"
+            title = chap["title"]
+            slug = slugify(title)
+            fname = f"{sec_num}-{slug}.md"
+            sec_data = {
+                "chap_num": chap_num,
+                "chapter_dir": chap_dir,
+                "number": 1,
+                "sec_num": sec_num,
+                "title": title,
+                "label": None,
+                "items": body_items,
+                "file": fname,
+                "out_dir": out_dir,
+            }
+            all_sections_data.append(sec_data)
+            chap_sections.append(sec_data)
         for k, (bidx, spec, sub_items) in enumerate(sec_boundaries):
             title = render_items_inline(sub_items, RenderCtxDummy()).strip()
             label_name = None

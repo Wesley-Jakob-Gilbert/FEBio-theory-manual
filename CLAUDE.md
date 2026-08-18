@@ -11,9 +11,8 @@ converted manual, orchestrated by `build.py`'s `MANUALS` list:
 
 - **Theory** (`source/FEBio_Theory_Manual.lyx` → `docs/theory/`) — all 9 chapters (1–8 plus Appendix A)
   are converted.
-- **Studio** (`source/FEBioStudio_User_Manual.lyx` → `docs/studio/`) — a **pilot**, only Chapters 1–2 of
-  20 are converted (`build.py`'s `MANUALS` entry has `"chapters": "1,2"`); widening this is explicit
-  follow-up work, tracked in `CONVERSION_NOTES_STUDIO.md`.
+- **Studio** (`source/FEBioStudio_User_Manual.lyx` → `docs/studio/`) — all 22 chapters (1–20 plus
+  Appendices A and B) are converted.
 
 `source/` is vendored/checked-in for both manuals, so the repo builds standalone from a bare clone.
 
@@ -73,9 +72,10 @@ never cross-contaminate between manuals — no in-process reset logic is needed.
 Pandoc, or other external tool involved, and the parsing/rendering logic itself is identical regardless
 of which manual is being converted. `--chapters` (a comma list or `"all"`) controls which chapters
 produce output pages for that run; chapters outside that set are still scanned for titles/label
-positions so numbering and cross-references stay correct regardless of conversion order. The Theory
-Manual passes `"all"` (`{1..9}`, chapter 9 = Appendix A); the Studio Manual currently passes `"1,2"`
-(pilot scope — see `CONVERSION_NOTES_STUDIO.md`).
+positions so numbering and cross-references stay correct regardless of conversion order. Both manuals
+pass `"all"` (Theory: `{1..9}`, chapter 9 = Appendix A; Studio: `{1..22}`, chapters 21–22 = Appendices A
+and B). A chapter with zero `Section` boundaries (Studio's Appendix B) is treated as a single synthetic
+section rather than producing an empty nav entry, since `mkdocs build --strict` rejects that outright.
 
 Key stages inside `lyx2md.py` (all in one file — read the module docstring first):
 
@@ -129,10 +129,13 @@ copies).
 - `CONVERSION_NOTES.md` (Theory) / `CONVERSION_NOTES_STUDIO.md` (Studio) have the full per-section
   conversion breakdown and every item flagged for manual review — check the relevant one before assuming
   a discrepancy between the manual and the rendered output is a new bug.
-- The Studio Manual's pilot conversion surfaced two real converter gaps not present in the Theory
-  Manual's source, worth knowing about if extending `lyx2md.py` further: a `Wrap`-figure inset (LaTeX's
-  `wrapfig`) needed a renderer (aliased to the existing `Float figure` handling — same substructure), and
-  a whitespace-normalization regex (`render_items_inline()`) was stripping the genuine space before a
-  literal file-extension token (`"the .xplt"` → `"the.xplt"`) because it couldn't distinguish that from a
-  spurious space before real sentence-ending punctuation — fixed with a negative lookahead requiring the
-  punctuation not be immediately followed by a word character.
+- Converting the Studio Manual surfaced many real converter gaps not present in the Theory Manual's
+  source — see `CONVERSION_NOTES_STUDIO.md` for the full list. Worth knowing if extending `lyx2md.py`
+  further: `Wrap`-figure insets alias to the existing `Float figure` handling; `Description`/`LyX-Code`
+  layouts have dedicated renderers; a `Float table` (vs. `Float figure`) needed `render_float()` to also
+  check for a `Tabular` inset — previously a silent content-loss bug with no `needs_review` flag, the most
+  serious gap found; LaTeX accent commands in BibTeX fields (`decode_latex_accents()`) and `\backslash`
+  tokens in ordinary prose (not just inside ERT) both needed decoding. The open-marker-stack rewrite of
+  character-formatting state (`close_marker()` in `render_items_inline()`) also fixed a **pre-existing**
+  Theory Manual bug: LyX doesn't always close formatting markers in reverse-of-open order, which the old
+  four-independent-booleans state couldn't express correctly.
