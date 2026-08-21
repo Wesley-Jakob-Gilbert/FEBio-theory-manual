@@ -1,4 +1,4 @@
-# febio-theory-manual
+# FEBio-Documentation
 
 A MkDocs site converting FEBio's LyX-authored manuals to Markdown, built to mirror the conventions of
 the sibling [`febio-feature-manual`](https://github.com/febiosoftware/febio-feature-manual) repository
@@ -90,7 +90,7 @@ nav group per converted chapter, expanding to that chapter's sections.
 
 ## Deployment
 
-The live site (<https://wesley-jakob-gilbert.github.io/FEBio-theory-manual/>)
+The live site (<https://wesley-jakob-gilbert.github.io/FEBio-Documentation/>)
 is served by GitHub Pages **from the `gh-pages` branch**, not from the
 `docs/` folder on `main`. `docs/` on `main` is mkdocs's *source* input
 (Markdown); the `gh-pages` branch holds the fully rendered, compiled HTML
