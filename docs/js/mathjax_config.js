@@ -29,6 +29,14 @@ window.MathJax = {
       cay: '\\operatorname{cay}',
       rot: '\\operatorname{rot}',
       obslash: '\\mathbin{\\unicode{x29B8}}',
+      // \Square has no macro definition anywhere in the LyX source either
+      // (same gap class as \obslash above) -- used in section 4.1 eq. 374
+      // and the sentence right after it to denote "the biunit cube" (the
+      // reference/master isoparametric element domain for Gauss-quadrature
+      // integration). Not a real amsmath/amssymb command (which only
+      // define the lowercase \square/\Box), so aliased to \square, the
+      // standard hollow-square glyph for this exact usage in FEM notation.
+      Square: '\\square',
       // \mbox is plain-TeX/LaTeX only; MathJax's default macro set does
       // not define it. The LyX source uses \mbox{...} in a handful of
       // places (section 2.1 eq. 11 "\mbox{\thinspace and\thinspace}";
