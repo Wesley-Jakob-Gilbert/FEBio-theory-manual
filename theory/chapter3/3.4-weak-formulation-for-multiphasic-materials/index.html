@@ -1,0 +1,7767 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Theoretical background and user documentation for FEBio and FEBio Studio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../3.3-weak-formulation-for-biphasic-solute-materials/">
+      
+      
+        <link rel="next" href="../3.5-computational-fluid-dynamics/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>3.4 Weak Formulation for Multiphasic Materials - FEBio Manuals</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:MP-weak-formulation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio Manuals" class="md-header__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio Manuals
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.4 Weak Formulation for Multiphasic Materials
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../studio/" class="md-tabs__link">
+          
+  
+  
+  Studio
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio Manuals" class="md-nav__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    FEBio Manuals
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.1-overview-of-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.1-weak-formulation-for-solid-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 Weak formulation for Solid Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.2-weak-formulation-for-biphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 Weak formulation for biphasic materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.3-weak-formulation-for-biphasic-solute-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 Weak Formulation for Biphasic-Solute Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Weak Formulation for Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Weak Formulation for Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-linearization-du" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linearization along \(\Delta\mathbf{u}\)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-linearization-dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linearization along \(\Delta\tilde{p}\)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-linearization-dc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linearization along \(\Delta\tilde{c}^{\gamma}\)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-linearization-external" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linearization of External Virtual Work
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-discretization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discretization
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Potential-partition-derivatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Electric Potential and Partition Coefficient Derivatives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:MP-chemical-reactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chemical Reactions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Chemical Reactions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-work-and-linearization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Virtual Work and Linearization
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-solid-bound-molecule-concentrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Updating Solid-Bound Molecule Concentrations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.5-computational-fluid-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 Computational Fluid Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.6-weak-formulation-for-fsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 Weak Formulation for FSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.7-weak-formulation-for-bfsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 Weak Formulation for BFSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.8-weak-formulation-for-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 Weak Formulation for Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.9-newton-raphson-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 Newton-Raphson Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3.10-generalized-alpha-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 Generalized $\alpha-$Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Element Library
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Element Library
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.1-solid-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Solid Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.2-shell-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Shell Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Constitutive Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Constitutive Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.1-linear-elasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Linear Elasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.2-compressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Compressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.3-nearly-incompressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Nearly-Incompressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.4-viscoelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Viscoelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.5-reactive-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.5 Reactive Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.6-reactive-plasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.6 Reactive Plasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.7-reactive-elastoplastic-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.7 Reactive Elastoplastic Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.8-hydraulic-permeability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.8 Hydraulic Permeability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.9-solute-diffusivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.9 Solute Diffusivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.10-solute-solubility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.10 Solute Solubility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.11-osmotic-coefficient/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.11 Osmotic Coefficient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.12-active-contraction-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.12 Active Contraction Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.13-prescribed-active-contraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.13 Prescribed Active Contraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.14-chemical-reaction-production-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.14 Chemical Reaction Production Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.15-specific-reaction-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.15 Specific Reaction Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.16-viscous-fluids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.16 Viscous Fluids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Dynamics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Dynamics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.1-newmark-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Newmark Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.2-elastodynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 Elastodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.3-rigid-body-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 Rigid Body Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Contact and Coupling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Contact and Coupling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.1-sliding-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Sliding Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.2-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.3-biphasic-solute-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Biphasic-Solute Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.4-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.5-tied-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Tied Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.6-tied-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Tied Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.7-tied-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.7 Tied Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.8-tied-fluid-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.8 Tied Fluid Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.9-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.9 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.10-rigid-deformable-coupling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.10 Rigid-Deformable Coupling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.11-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.11 Nonlinear Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_9" id="__nav_1_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Optimization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Optimization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.1-the-objective-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 The Objective Function
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.2-the-levenberg-marquardt-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 The Levenberg-Marquardt Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_10" id="__nav_1_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Tensor Calculus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Tensor Calculus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapterA/A.1-second-order-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 Second-Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapterA/A.2-higher-order-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 Higher Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.1-overview-of-febiostudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.1-starting-febio-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Starting FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.2-creating-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 Creating a New Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.3-opening-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Opening a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.4-exploring-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Exploring a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.5-solving-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Solving the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.6-loading-the-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Loading the Results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.1-the-graphical-user-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 The Graphical User Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.2-the-menu-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 The Menu Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.3-the-main-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 The Main Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.4-the-build-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 The Build Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.5-the-font-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 The Font Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.6-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.7-the-graphics-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 The Graphics Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.8-the-model-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 The Model Viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.9-the-build-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 The Build Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.10-the-repository-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 The Repository Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.11-the-project-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.11 The Project Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.12-the-curve-editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.12 The Curve Editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.13-the-mesh-inspector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.13 The Mesh Inspector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.14-the-measure-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.14 The Measure Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.15-febio-studio-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.15 FEBio Studio Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.1-starting-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Starting a new model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.2-loading-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Loading a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.3-saving-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.3 Saving a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.1-creating-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Creating Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.2-importing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Importing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.3-editing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.4-creating-and-editing-a-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Creating and Editing a Mesh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.1-adding-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Adding Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.2-febio-mesh-data-generators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 FEBio Mesh Data Generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.3-the-scalar-field-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 The Scalar Field Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.4-the-fiber-generator-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.4 The Fiber Generator Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.5-visualizing-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.5 Visualizing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.1-adding-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Adding materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.2-setting-material-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Setting material parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.3-assigning-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Assigning materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.4-creating-a-solute-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Creating a Solute Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.5-creating-a-solid-bound-molecule-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Creating a Solid-Bound Molecule Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.6-adding-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Adding Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.1-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.2-surface-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 Surface Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.3-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.3 Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.4-assigning-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.4 Assigning Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 9 - Contact and Constraints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 9 - Contact and Constraints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.1-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.1 Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.2-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.2 Nonlinear constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 - Rigid Bodies
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 10 - Rigid Bodies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.1-rigid-body-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.1 Rigid Body Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.2-rigid-body-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.2 Rigid Body Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.3-rigid-body-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.3 Rigid Body Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.4-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.4 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.5-the-rigid-boundary-condition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.5 The Rigid Boundary Condition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.1-the-initial-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.1 The Initial Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.2-adding-an-analysis-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.2 Adding an Analysis Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 - Configuring Output
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 12 - Configuring Output
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.1-febio-logfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.1 FEBio Logfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.2-febio-plotfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.2 FEBio Plotfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_14" id="__nav_2_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.1-running-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.1 Running FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.2-febio-launch-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.2 FEBio Launch Configurations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.3-the-febio-monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.3 The FEBio Monitor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.4-running-batch-jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.4 Running Batch Jobs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.5-febio-job-reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.5 FEBio Job Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_15" id="__nav_2_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 - The Post Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 - The Post Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.1-the-post-environment-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.1 The Post Environment UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.2-the-post-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.2 The Post Menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.3-the-post-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.3 The Post Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.4-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.4 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_16" id="__nav_2_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 - Saving Graphics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 15 - Saving Graphics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.1-the-capture-frame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.1 The Capture Frame
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.2-taking-a-snapshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.2 Taking a snapshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.3-using-the-ray-tracer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.3 Using the Ray Tracer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.4-recording-an-animation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.4 Recording an animation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.5-camera-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.5 Camera Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_17" id="__nav_2_17_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 - The Post Panel
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 16 - The Post Panel
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.1-the-view-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.1 The View Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.2-the-material-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.2 The Material Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.3-the-data-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.3 The Data Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.4-the-state-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.4 The State Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_18" id="__nav_2_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 17 - Post Processing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 17 - Post Processing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.1-properties-of-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.1 Properties of the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.2-displacement-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.2 Displacement Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.3-color-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.3 Color Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.4-plane-cuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.4 Plane Cuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.5-mirror-plane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.5 Mirror Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.6-vector-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.6 Vector Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.7-isosurface-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.7 Isosurface plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.8-slice-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.8 Slice plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.9-tensor-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.9 Tensor plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.10-streamline-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.10 Streamline Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.11-particle-flow-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.11 Particle Flow Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.12-additional-windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.12 Additional Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.13-post-session-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.13 Post Session Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_19" id="__nav_2_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.1-loading-3d-image-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.1 Loading 3D image data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.2-image-gui-environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.2 Image GUI Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.3-filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.3 Filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.4-other-3d-image-visualization-options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.4 Other 3D Image Visualization Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.5-other-3d-image-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.5 Other 3D Image Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_20" id="__nav_2_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.1-the-embedded-python-interpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.1 The Embedded Python Interpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.2-the-external-python-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.2 The External Python Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_21" id="__nav_2_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.1-the-plugin-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.1 The Plugin Repository
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.2-creating-febio-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.2 Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_22" id="__nav_2_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Mesh Import Formats
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Mesh Import Formats
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.1-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.2-nike3d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 NIKE3D
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.3-hypermesh-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.3 HyperMesh ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.4-abaqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.4 ABAQUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.5-lsdyna-keyword/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.5 LSDYNA keyword
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.6-ansys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.6 ANSYS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.7-dxf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.7 DXF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.8-hypersurface-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.8 Hypersurface ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.9-gmsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.9 GMsh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.10-byu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.10 BYU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.11-vtk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.11 VTK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.12-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.12 STEP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.13-brep/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.13 BREP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.14-ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.14 IDEAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.15-nastran/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.15 NASTRAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.16-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.16 MESH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.17-tetgen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.17 TETGEN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.18-raw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.18 RAW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.19-comsol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.19 COMSOL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.20-ply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.20 PLY
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_23" id="__nav_2_23_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix B - Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix B - Standard Data Fields
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterB/B.1-standard-data-fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    B.1 Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:MP-weak-formulation">3.4 Weak Formulation for Multiphasic Materials<a class="headerlink" href="#sec:MP-weak-formulation" title="Permanent link">&para;</a></h1>
+<p>The virtual work integral for a mixture of intrinsically incompressible constituents combines the balance of momentum for the mixture, the balance of mass for the mixture, and the balance of mass for each of the solutes. In addition, for charged mixtures, the condition of <a href="../../chapter2/2.9-triphasic-and-multiphasic-materials/#mjx-eqn:eq127">(2.9-8)</a> may be enforced as a penalty constraint on each solute mass balance equation:</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\delta W &amp; =\int_{b}\delta\mathbf{v}\cdot\mbox{div}\boldsymbol{\sigma}\,dv\\ &amp; +\int_{b}\delta\tilde{p}\,\mbox{div}\left(\mathbf{v}^{s}+\mathbf{w}\right)\,dv\\ &amp; +\sum\limits_{\alpha\ne s,w}\int_{b}\delta\tilde{c}^{\alpha}\left[\frac{1}{J^{s}}\frac{D^{s}}{Dt}\left(J^{s}\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)+\mbox{div}\mathbf{j}^{\alpha}+\sum\limits_{\beta\ne s,w}z^{\beta}\mbox{div}\mathbf{j}^{\beta}\right]\,dv\,, \end{aligned} \label{eq287} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\delta\mathbf{v}\)</span> is the virtual velocity of the solid, <span class="arithmatex">\(\delta\tilde{p}\)</span> is the virtual effective fluid pressure, and <span class="arithmatex">\(\delta\tilde{c}^{\alpha}\)</span> is the virtual molar energy of solute <span class="arithmatex">\(\alpha\)</span>. Here, <span class="arithmatex">\(b\)</span> represents the mixture domain in the spatial frame and <span class="arithmatex">\(dv\)</span> is an elemental volume in <span class="arithmatex">\(b\)</span>. Applying the divergence theorem, <span class="arithmatex">\(\delta W\)</span> may be split into internal and external contributions to the virtual work, <span class="arithmatex">\(\delta W=\delta W_{\text{ext}}-\delta W_{\text{int}}\)</span>, where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\delta W_{\text{int}} &amp; =\int_{b}\boldsymbol{\sigma}:\delta\mathbf{D}\,dv+\int_{b}\left(\mathbf{w}\cdot\mbox{grad}\delta\tilde{p}-\frac{\delta\tilde{p}}{J^{s}}\frac{D^{s}J^{s}}{Dt}\right)\,dv\\ &amp; +\sum\limits_{\alpha\ne s,w}\int_{b}\left[\mathbf{j}^{\alpha}\cdot\mbox{grad}\delta\tilde{c}^{\alpha}-\frac{\delta\tilde{c}^{\alpha}}{J^{s}}\frac{D^{s}}{Dt}\left(J^{s}\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)\right]\,dv\\ &amp; +\sum\limits_{\alpha\ne s,w}\int_{b}\mbox{grad}\delta\tilde{c}^{\alpha}\cdot\sum\limits_{\beta\ne s,w}z^{\beta}\mathbf{j}^{\beta}\,dv\,, \end{aligned} \label{eq288} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \delta W_{\text{ext}}=\int_{\partial b}\left[\delta\mathbf{v}\cdot\mathbf{t}+\delta\tilde{p}\,w_{n}+\sum\limits_{\alpha\ne s,w}\delta\tilde{c}^{\alpha}\left(j_{n}^{\alpha}+\sum\limits_{\beta\ne s,w}z^{\beta}j_{n}^{\beta}\right)\right]\,da\,.\label{eq289} \end{equation} \]</div>
+<p>In these expressions, <span class="arithmatex">\(\delta\mathbf{D}=\left(\mbox{grad}\delta\mathbf{v}+\mbox{grad}^{T}\delta\mathbf{v}\right)/2\)</span>, <span class="arithmatex">\(\partial b\)</span> is the boundary of <span class="arithmatex">\(b\)</span>, and <span class="arithmatex">\(da\)</span> is an elemental area on <span class="arithmatex">\(\partial b\)</span>. In this finite element formulation, <span class="arithmatex">\(\mathbf{u}\)</span>, <span class="arithmatex">\(\tilde{p}\)</span> and <span class="arithmatex">\(\tilde{c}^{\alpha}\)</span> are used as nodal variables, and essential boundary conditions may be prescribed on these variables. Natural boundary conditions are prescribed to the mixture traction, <span class="arithmatex">\(\mathbf{t}=\boldsymbol{\sigma}\cdot\mathbf{n}\)</span>, normal fluid flux, <span class="arithmatex">\(w_{n}=\mathbf{w}\cdot\mathbf{n}\)</span>, and normal solute flux, <span class="arithmatex">\(j_{n}^{\alpha}=\mathbf{j}^{\alpha}\cdot\mathbf{n}\)</span>, where <span class="arithmatex">\(\mathbf{n}\)</span> is the outward unit normal to <span class="arithmatex">\(\partial b\)</span>. To solve the system <span class="arithmatex">\(\delta W=0\)</span> for nodal values of <span class="arithmatex">\(\mathbf{u}\)</span>, <span class="arithmatex">\(\tilde{p}\)</span> and <span class="arithmatex">\(\tilde{c}^{\alpha}\)</span>, it is necessary to linearize these equations, as shown for example in Sections <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#subsec:BS-linearization">Linearization of Internal Virtual Work</a>-<a href="../3.3-weak-formulation-for-biphasic-solute-materials/#subsec:BS-linearization-external">Linearization of External Virtual Work</a> for biphasic-solute materials. If the mixture is charged, it is also necessary to solve for the electric potential <span class="arithmatex">\(\psi\)</span> by solving the algebraic relation of the electroneutrality condition in <a href="../../chapter2/2.9-triphasic-and-multiphasic-materials/#mjx-eqn:eq124">(2.9-4)</a>, which may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}+\sum\limits_{\beta\ne s,w}z^{\beta}\tilde{\kappa}^{\beta}\tilde{c}^{\beta}=0\,.\label{eq290} \end{equation} \]</div>
+<p>In the special case of a triphasic mixture, where solutes consist of two counter-ions (<span class="arithmatex">\(\alpha=+,-)\)</span>, this equation may be solved in closed form to produce</p>
+<div class="arithmatex">\[ \begin{equation} \psi=\frac{1}{z^{\alpha}}\frac{R\theta}{F_{c}}\ln\left(\frac{2z^{\alpha}\hat{\kappa}^{\alpha}\tilde{c}^{\alpha}}{-c^{F}\pm\sqrt{\left(c^{F}\right)^{2}+4\left(z^{\alpha}\right)^{2}\left(\hat{\kappa}^{+}\tilde{c}^{+}\right)\left(\hat{\kappa}^{-}\tilde{c}^{-}\right)}}\right),\quad\alpha=+,-,\label{eq291} \end{equation} \]</div>
+<p>Only the positive root is valid in the argument of the logarithm function.</p>
+<h2 id="subsec:MP-linearization-du">Linearization along <span class="arithmatex">\(\Delta\mathbf{u}\)</span><a class="headerlink" href="#subsec:MP-linearization-du" title="Permanent link">&para;</a></h2>
+<p>The linearization of the first term in <span class="arithmatex">\(\delta W_{\text{int}}\)</span> along <span class="arithmatex">\(\Delta\mathbf{u}\)</span> yields</p>
+<div class="arithmatex">\[ \begin{equation} \left(\mathbf{S}:\delta\mathbf{\dot{E}}\right)\left[\Delta\mathbf{u}\right]\,dV=\left[\delta\mathbf{d}^{s}:\boldsymbol{\mathcal{C}}:\Delta\boldsymbol{\varepsilon}+\boldsymbol{\sigma}:\left(\grad^{T}\Delta\mathbf{u}\cdot\grad\delta\mathbf{v}\right)\right]\,dv\,,\label{eq292} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\boldsymbol{\mathcal{C}}\)</span> is the spatial elasticity tensor of the mixture,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{C}}=\boldsymbol{\mathcal{C}}^{e}-\left(\tilde{p}+R\theta\,\Phi\sum\limits_{\beta}\tilde{\kappa}^{\beta}\tilde{c}^{\beta}\right)\left(\mathbf{I}\otimes\mathbf{I}-2\mathbf{I}\odot\mathbf{I}\right)-R\theta\sum\limits_{\beta}\tilde{c}^{\beta}\,J\frac{\partial\left(\Phi\tilde{\kappa}^{\beta}\right)}{\partial J}\mathbf{I}\otimes\mathbf{I}\,,\label{eq293} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\boldsymbol{\mathcal{C}}^{e}\)</span> is the spatial elasticity tensor of the solid matrix,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{C}}^{e}=J^{-1}\left(\mathbf{F}\oslash\mathbf{F}\right):2\frac{\partial\mathbf{S}^{e}}{\partial\mathbf{C}}:\left(\mathbf{F}^{T}\oslash\mathbf{F}^{T}\right)\,.\label{eq294} \end{equation} \]</div>
+<p>The linearization of the second term is</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{W}\cdot\Grad\delta\tilde{p}\right)\left[\Delta\mathbf{u}\right]\,dV=\grad\delta\tilde{p}\cdot\mathbf{w}_{u}^{\prime}\,dv\,,\label{eq295} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{w}_{u}^{\prime} &amp; \equiv-\left(\tilde{\boldsymbol{\mathcal{K}}}:\Delta\boldsymbol{\varepsilon}\right)\cdot\left(\grad\tilde{p}+R\theta\sum\limits_{\beta}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}^{\beta}\cdot\grad\tilde{c}^{\beta}\right)\\ &amp; -\tilde{\mathbf{k}}\cdot R\theta\sum\limits_{\beta}\left(\left[J\frac{\partial}{\partial J}\left(\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\right)-\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\right]\left(\divg\Delta\mathbf{u}\right)\mathbf{d}^{\beta}+\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\left(2\Delta\boldsymbol{\varepsilon}\cdot\mathbf{d}^{\beta}+\boldsymbol{\mathcal{D}}^{\beta}:\Delta\boldsymbol{\varepsilon}\right)\right)\cdot\grad\tilde{c}^{\beta} \end{aligned} \label{eq296} \end{equation} \]</div>
+<p>with</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\tilde{\boldsymbol{\mathcal{K}}} &amp; =J^{-1}\left(\mathbf{F}\oslash\mathbf{F}\right):2\frac{\partial\tilde{\mathbf{K}}}{\partial\mathbf{C}}:\left(\mathbf{F}^{T}\oslash\mathbf{F}^{T}\right)\,,\\ \boldsymbol{\mathcal{D}}^{\alpha} &amp; =J^{-1}\left(\mathbf{F}\oslash\mathbf{F}\right):2\frac{\partial\mathbf{D}^{\alpha}}{\partial\mathbf{C}}:\left(\mathbf{F}^{T}\oslash\mathbf{F}^{T}\right)\,, \end{aligned} \label{eq297} \end{equation} \]</div>
+<p>representing the spatial tangents, with respect to the strain, of the effective permeability and solute diffusivity, respectively. These fourth-order tensors exhibit minor symmetries but not major symmetry, as described recently <sup id="fnref:3.4-1"><a class="footnote-ref" href="#fn:3.4-1">1</a></sup>. Since <span class="arithmatex">\(\tilde{\mathbf{K}}\)</span> is given by substituting <a href="../../chapter2/2.8-biphasic-solute-material/#mjx-eqn:eq120">(2.8-13)</a><span class="arithmatex">\(_{3}\)</span> into <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#mjx-eqn:eq231">(3.3-8)</a><span class="arithmatex">\(_{1}\)</span>, the evaluation of <span class="arithmatex">\(\tilde{\boldsymbol{\mathcal{K}}}\)</span> is rather involved and it can be shown that</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\boldsymbol{\mathcal{K}}}=\left(\tilde{\mathbf{k}}\oslash\tilde{\mathbf{k}}\right):\left[\left(\mathbf{k}^{-1}\oslash\mathbf{k}^{-1}\right):\boldsymbol{\mathcal{K}}+\boldsymbol{\mathcal{G}}\right]\,,\label{eq298} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{K}}=J^{-1}\left(\mathbf{F}\oslash\mathbf{F}\right):2\frac{\partial\mathbf{K}}{\partial\mathbf{C}}:\left(\mathbf{F}^{T}\oslash\mathbf{F}^{T}\right)\,,\label{eq300} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathcal{G}}=\frac{R\theta}{\varphi^{w}}\sum_{\alpha}\frac{\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\left(\begin{aligned}\left(\frac{1}{\varphi^{w}}-\frac{J}{\tilde{\kappa}^{\alpha}}\frac{\partial\tilde{\kappa}^{\alpha}}{\partial J}\right)\left(\mathbf{I}-\frac{\mathbf{d}^{\alpha}}{d_{0}^{\alpha}}\right)\otimes\mathbf{I}\\ +2\left(\mathbf{I}\odot\frac{\mathbf{d}^{\alpha}}{d_{0}^{\alpha}}+\frac{\mathbf{d}^{\alpha}}{d_{0}^{\alpha}}\odot\mathbf{I}-\mathbf{I}\odot\mathbf{I}\right)\\ -\frac{\mathbf{d}^{\alpha}}{d_{0}^{\alpha}}\otimes\mathbf{I}+\frac{\boldsymbol{\mathcal{D}}^{\alpha}}{d_{0}^{\alpha}} \end{aligned} \right)\,.\label{eq299} \end{equation} \]</div>
+<p>The next term in <span class="arithmatex">\(\delta W_{\text{int}}\)</span> linearizes to</p>
+<div class="arithmatex">\[ \begin{equation} -D\left(\delta\tilde{p}\frac{\partial J}{\partial t}\right)\left[\Delta\mathbf{u}\right]\,dV=-\delta\tilde{p}\frac{1}{\Delta t}\divg\Delta\mathbf{u}\,dv\,,\label{eq301} \end{equation} \]</div>
+<p>where we used a backward difference scheme to approximate the time derivative,</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial J}{\partial t}\approx\frac{1}{\Delta t}\left(J-J^{-\Delta t}\right)\,,\label{eq302} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\Delta t\)</span> represents the time increment relative to the previous time point. The next term is given by</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{J}^{\alpha}\cdot\Grad\delta\tilde{c}^{\alpha}\right)\left[\Delta\mathbf{u}\right]\,dV=\grad\delta\tilde{c}^{\alpha}\cdot\mathbf{j}_{u}^{\alpha\prime}\,dv\,,\label{eq303} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{j}_{u}^{\alpha\prime} &amp; \equiv J^{-1}\mathbf{F}\cdot D\mathbf{J}\left[\Delta\mathbf{u}\right]=\left(J\frac{\partial\tilde{\kappa}^{\alpha}}{\partial J}\left(\divg\Delta\mathbf{u}\right)\mathbf{d}^{\alpha}+\tilde{\kappa}^{\alpha}\boldsymbol{\mathcal{D}}^{\alpha}:\Delta\boldsymbol{\varepsilon}\right)\cdot\mathbf{g}^{\alpha}\\ &amp; +\tilde{\kappa}^{\alpha}\mathbf{d}^{\alpha}\cdot\left(-\varphi^{s}\left(\divg\Delta\mathbf{u}\right)\grad\tilde{c}^{\alpha}+\left(2\Delta\boldsymbol{\varepsilon}-\left(\divg\Delta\mathbf{u}\right)\mathbf{I}\right)\cdot\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}+\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}_{u}^{\prime}\right) \end{aligned} \,.\label{eq304} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{g}^{\alpha}=-\varphi^{w}\grad\tilde{c}^{\alpha}+\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}\,.\label{eq305} \end{equation} \]</div>
+<p>Using a backward difference scheme for the time derivative, the last term is</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\delta\tilde{c}^{\alpha}\frac{\partial\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)}{\partial t}\right)\left[\Delta\mathbf{u}\right]\,dV=\frac{\delta\tilde{c}^{\alpha}}{\Delta t}\frac{\partial\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\right)}{\partial J}\tilde{c}^{\alpha}\divg\Delta\mathbf{u}\,dv\,.\label{eq306} \end{equation} \]</div>
+<h2 id="subsec:MP-linearization-dp">Linearization along <span class="arithmatex">\(\Delta\tilde{p}\)</span><a class="headerlink" href="#subsec:MP-linearization-dp" title="Permanent link">&para;</a></h2>
+<p>The linearization of the various terms in <span class="arithmatex">\(\delta W_{\text{int}}\)</span> along <span class="arithmatex">\(\Delta\tilde{p}\)</span> yields</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{S}:\delta\mathbf{\dot{E}}\right)\left[\Delta\tilde{p}\right]\,dV=-\Delta\tilde{p}\,\divg\delta\mathbf{v}\,dv\,,\label{eq307} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{W}\cdot\Grad\delta\tilde{p}-\delta\tilde{p}\frac{\partial J}{\partial t}\right)\left[\Delta\tilde{p}\right]\,dV=-\grad\delta\tilde{p}\cdot\tilde{\mathbf{k}}\cdot\grad\Delta\tilde{p}\,dv\,,\label{eq308} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{J}^{\alpha}\cdot\Grad\delta\tilde{c}^{\alpha}-\delta\tilde{c}^{\alpha}\frac{\partial\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)}{\partial t}\right)\left[\Delta\tilde{p}\right]\,dV=-\frac{\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\grad\delta\tilde{c}^{\alpha}\cdot\mathbf{d}^{\alpha}\cdot\tilde{\mathbf{k}}\cdot\grad\Delta\tilde{p}\,dv\,.\label{eq309} \end{equation} \]</div>
+<h2 id="subsec:MP-linearization-dc">Linearization along <span class="arithmatex">\(\Delta\tilde{c}^{\gamma}\)</span><a class="headerlink" href="#subsec:MP-linearization-dc" title="Permanent link">&para;</a></h2>
+<p>The linearization of the first term in <span class="arithmatex">\(\delta W_{\text{int}}\)</span> along <span class="arithmatex">\(\Delta\tilde{c}^{\gamma}\)</span> yields</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{S}:\delta\mathbf{\dot{E}}\right)\left[\Delta\tilde{c}^{\gamma}\right]dV=\Delta\tilde{c}^{\gamma}\left(\boldsymbol{\sigma}_{\gamma}^{\prime}:\delta\mathbf{d}-R\theta\frac{\partial\left(\Phi\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)}{\partial\tilde{c}^{\gamma}}\divg\delta\mathbf{v}\right)\,dv\,,\label{eq310} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}_{\gamma}^{\prime}=J^{-1}\mathbf{F}\cdot\frac{\partial\mathbf{S}^{e}}{\partial\tilde{c}^{\gamma}}\cdot\mathbf{F}^{T}\label{eq311} \end{equation} \]</div>
+<p>represents the spatial tangent of the stress with respect to the effective concentration. The next term is</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{W}\cdot\Grad\delta\tilde{p}\right)\left[\Delta\tilde{c}^{\gamma}\right]\,dV=\grad\delta\tilde{p}\cdot\mathbf{w}_{\gamma}^{\prime}\,dv\,,\label{eq312} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{w}_{\gamma}^{\prime} &amp; \equiv J^{-1}\mathbf{F}\cdot D\mathbf{W}\left[\Delta\tilde{c}^{\gamma}\right]=-\tilde{\mathbf{k}}_{\gamma}^{\prime}\cdot\left(\grad\tilde{p}+R\theta\sum\limits_{\beta}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}^{\beta}\cdot\grad\tilde{c}^{\beta}\right)\Delta\tilde{c}^{\gamma}\\ &amp; -R\theta\tilde{\mathbf{k}}\cdot\frac{\tilde{\kappa}^{\gamma}}{d_{0}^{\gamma}}\mathbf{d}^{\gamma}\cdot\grad\Delta\tilde{c}^{\gamma}-\Delta\tilde{c}^{\gamma}R\theta\tilde{\mathbf{k}}\cdot\sum\limits_{\beta}\left(\frac{\partial}{\partial\tilde{c}^{\gamma}}\left(\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\right)\mathbf{d}^{\beta}+\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}_{\gamma}^{\beta\prime}\right)\cdot\grad\tilde{c}^{\beta} \end{aligned} \label{eq313} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\mathbf{k}}_{\gamma}^{\prime}=J^{-1}\mathbf{F}\cdot\frac{\partial\tilde{\mathbf{K}}}{\partial\tilde{c}^{\gamma}}\cdot\mathbf{F}^{T},\quad\mathbf{d}_{\gamma}^{\beta\prime}=J^{-1}\mathbf{F}\cdot\frac{\partial\mathbf{d}^{\beta}}{\partial\tilde{c}^{\gamma}}\cdot\mathbf{F}^{T}\label{eq314} \end{equation} \]</div>
+<p>are the spatial tangents of the effective hydraulic permeability and solute diffusivity with respect to the effective concentration.</p>
+<p>The next term reduces to</p>
+<div class="arithmatex">\[ \begin{equation} -D\left(\delta\tilde{p}\frac{\partial J}{\partial t}\right)\left[\Delta\tilde{c}^{\gamma}\right]\,dV=0\,.\label{eq315} \end{equation} \]</div>
+<p>The following term is</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\mathbf{J}^{\alpha}\cdot\Grad\delta\tilde{c}^{\alpha}\right)\left[\Delta\tilde{c}^{\gamma}\right]\,dV=\grad\delta\tilde{c}^{\alpha}\cdot\mathbf{j}_{\gamma}^{\alpha\prime}\,dv\,,\label{eq316} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{j}_{\gamma}^{\alpha\prime} &amp; \equiv J^{-1}\mathbf{F}\cdot D\mathbf{J}^{\alpha}\left[\Delta\tilde{c}^{\gamma}\right]=\Delta\tilde{c}^{\gamma}\left(\frac{\partial\tilde{\kappa}^{\alpha}}{\partial\tilde{c}^{\gamma}}\mathbf{d}^{\alpha}+\tilde{\kappa}^{\alpha}\mathbf{d}_{\gamma}^{\alpha\prime}\right)\cdot\mathbf{g}^{\alpha}\\ &amp; +\tilde{\kappa}^{\alpha}\mathbf{d}^{\alpha}\cdot\left(-\varphi^{w}\delta_{\alpha\gamma}\grad\Delta\tilde{c}^{\gamma}+\frac{\Delta\tilde{c}^{\gamma}}{d_{0}^{\alpha}}\left(\delta_{\alpha\gamma}-\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\frac{\partial d_{0}^{\alpha}}{\partial\tilde{c}^{\gamma}}\right)\mathbf{w}+\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}_{\gamma}^{\prime}\right)\,. \end{aligned} \label{eq317} \end{equation} \]</div>
+<p>The last term is</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\frac{\partial\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)}{\partial t}\delta\tilde{c}^{\alpha}\right)\left[\Delta\tilde{c}^{\gamma}\right]\,dV=\delta\tilde{c}^{\alpha}\frac{\varphi^{w}}{\Delta t}\frac{\partial\left(\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)}{\partial\tilde{c}^{\gamma}}\Delta\tilde{c}^{\gamma}\,dv\,,\label{eq318} \end{equation} \]</div>
+<p>where we similarly used a backward difference scheme to discretize the time derivative.</p>
+<h2 id="subsec:MP-linearization-external">Linearization of External Virtual Work<a class="headerlink" href="#subsec:MP-linearization-external" title="Permanent link">&para;</a></h2>
+<p>The linearization of <span class="arithmatex">\(\delta W_{\text{ext}}\)</span> in \eqref{eq289} depends on whether natural boundary conditions are prescribed as area densities or total net values over an area. Thus, in the case when <span class="arithmatex">\(\mathbf{t}\,da\)</span> (net force), <span class="arithmatex">\(w_{n}da\)</span> (net volumetric flow rate), or <span class="arithmatex">\(\tilde{j}_{n}^{\alpha}da\)</span> (net effective molar flow rate) are prescribed over the elemental area <span class="arithmatex">\(da\)</span>, there is no variation in <span class="arithmatex">\(\delta W_{\text{ext}}\)</span> and it follows that <span class="arithmatex">\(D\delta W_{\text{ext}}=0\)</span>. Alternatively, in the case when <span class="arithmatex">\(\mathbf{t}\)</span>, <span class="arithmatex">\(w_{n}\)</span> or <span class="arithmatex">\(\tilde{j}_{n}^{\alpha}\)</span> are prescribed, the linearization may be performed by evaluating the integral in the parametric space of the boundary surface <span class="arithmatex">\(\partial b\)</span>, with parametric coordinates <span class="arithmatex">\(\left(\eta^{1},\eta^{2}\right)\)</span>. Accordingly, for a point <span class="arithmatex">\(\mathbf{x}\left(\eta^{1},\eta^{2}\right)\)</span> on <span class="arithmatex">\(\partial b\)</span>, surface tangents (covariant basis vectors) are given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{g}_{\alpha}=\frac{\partial\mathbf{x}}{\partial\eta^{\alpha}},\quad\left(\alpha=1,2\right)\label{eq319} \end{equation} \]</div>
+<p>and the outward unit normal is</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{n}=\frac{\mathbf{g}_{1}\times\mathbf{g}_{2}}{\left|\mathbf{g}_{1}\times\mathbf{g}_{2}\right|}\,.\label{eq320} \end{equation} \]</div>
+<p>The elemental area on <span class="arithmatex">\(\partial b\)</span> is <span class="arithmatex">\(da=\left|\mathbf{g}_{1}\times\mathbf{g}_{2}\right|d\eta^{1}d\eta^{2}\)</span>. Consequently, the external virtual work integral may be rewritten as</p>
+<div class="arithmatex">\[ \begin{equation} \delta W_{\text{ext}}=\int_{\partial b}\left(\delta\mathbf{v}\cdot\mathbf{t}+\delta\tilde{p}\,w_{n}+\sum\limits_{\alpha\ne s,w}\delta\tilde{c}^{\alpha}\tilde{j}_{n}^{\alpha}\right)\left|\mathbf{g}_{1}\times\mathbf{g}_{2}\right|\,d\eta^{1}d\eta^{2}\,,\label{eq321} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{j}_{n}^{\alpha}=j_{n}^{\alpha}+\sum\limits_{\beta\ne s,w}z^{\beta}j_{n}^{\beta}\,.\label{eq322} \end{equation} \]</div>
+<p>The directional derivative of <span class="arithmatex">\(\delta W_{\text{ext}}\)</span> may then be applied directly to its integrand, since the parametric space is invariant <sup id="fnref:3.4-2"><a class="footnote-ref" href="#fn:3.4-2">2</a></sup>.</p>
+<p>If we restrict traction boundary conditions to the special case of normal tractions, then <span class="arithmatex">\(\mathbf{t}=t_{n}\mathbf{n}\)</span> where <span class="arithmatex">\(t_{n}\)</span> is the prescribed normal traction component. Then it can be shown that the linearization of <span class="arithmatex">\(\delta W_{\text{ext}}\)</span> along <span class="arithmatex">\(\Delta\mathbf{u}\)</span> produces</p>
+<div class="arithmatex">\[ \begin{equation} D\left(\delta W_{\text{ext}}\right)\left[\Delta\mathbf{u}\right]=\int_{\partial b}\left(t_{n}\delta\mathbf{v}+w_{n}\delta\tilde{p}\,\mathbf{n}+\sum\limits_{\alpha\ne s,w}\delta\tilde{c}^{\alpha}\tilde{j}_{n}^{\alpha}\,\mathbf{n}\right)\cdot\left(\frac{\partial\Delta\mathbf{u}}{\partial\eta^{1}}\times\mathbf{g}_{2}+\mathbf{g}_{1}\times\frac{\partial\Delta\mathbf{u}}{\partial\eta^{2}}\right)\,d\eta^{1}d\eta^{2}\,.\label{eq323} \end{equation} \]</div>
+<p>The linearizations along <span class="arithmatex">\(\Delta\tilde{p}\)</span> and <span class="arithmatex">\(\Delta\tilde{c}^{\gamma}\)</span> reduce to zero, <span class="arithmatex">\(D\left(\delta W_{\text{ext}}\right)\left[\Delta\tilde{p}\right]=0\)</span> and <span class="arithmatex">\(D\left(\delta W_{\text{ext}}\right)\left[\Delta\tilde{c}^{\gamma}\right]=0\)</span>.</p>
+<h2 id="subsec:MP-discretization">Discretization<a class="headerlink" href="#subsec:MP-discretization" title="Permanent link">&para;</a></h2>
+<p>To discretize the virtual work relations, let</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\delta\mathbf{v} &amp; =\sum\limits_{a=1}^{m}N_{a}\delta\mathbf{v}_{a}\,, &amp; \Delta\mathbf{u} &amp; =\sum\limits_{b=1}^{m}N_{b}\Delta\mathbf{u}_{b}\,,\\ \delta\tilde{p} &amp; =\sum\limits_{a=1}^{m}N_{a}\delta\tilde{p}_{a}\,, &amp; \Delta\tilde{p} &amp; =\sum\limits_{b=1}^{m}N_{b}\Delta\tilde{p}_{b}\,,\\ \delta\tilde{c}^{\alpha} &amp; =\sum\limits_{a=1}^{m}N_{a}\delta\tilde{c}_{a}^{\alpha}\,, &amp; \Delta\tilde{c}^{\gamma} &amp; =\sum\limits_{b=1}^{m}N_{b}\Delta\tilde{c}_{b}^{\gamma}\,, \end{aligned} \label{eq324} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(N_{a}\)</span> represents the interpolation functions over an element, <span class="arithmatex">\(\delta\mathbf{v}_{a}\)</span>, <span class="arithmatex">\(\delta\tilde{p}_{a}\)</span>, <span class="arithmatex">\(\delta\tilde{c}_{a}^{\alpha}\)</span>, <span class="arithmatex">\(\Delta\mathbf{u}_{a}\)</span>, <span class="arithmatex">\(\Delta\tilde{p}_{a}\)</span> and <span class="arithmatex">\(\Delta\tilde{c}_{a}^{\gamma}\)</span> respectively represent the nodal values of <span class="arithmatex">\(\delta\mathbf{v}\)</span>, <span class="arithmatex">\(\delta\tilde{p}\)</span>, <span class="arithmatex">\(\delta\tilde{c}^{\alpha}\)</span>, <span class="arithmatex">\(\Delta\mathbf{u}\)</span>, <span class="arithmatex">\(\Delta\tilde{p}\)</span> and <span class="arithmatex">\(\Delta\tilde{c}^{\gamma}\)</span>; <span class="arithmatex">\(m\)</span> is the number of nodes in an element.</p>
+<p>The discretized form of <span class="arithmatex">\(\delta W_{\text{int}}\)</span> in <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#mjx-eqn:eq226">(3.3-3)</a> may be written as</p>
+<div class="arithmatex">\[ \begin{equation} \delta W_{\text{int}}=\sum\limits_{e=1}^{n_{e}}\sum\limits_{k=1}^{n_{\text{int}}^{\left(e\right)}}W_{k}J_{\eta}\sum\limits_{a=1}^{m}\left[\begin{array}{cccc} \delta\mathbf{v}_{a} &amp; \delta\tilde{p}_{a} &amp; \delta\tilde{c}_{a}^{\alpha} &amp; \delta\tilde{c}_{a}^{\beta}\end{array}\right]\cdot\left[\begin{array}{c} \mathbf{r}_{a}^{u}\\ r_{a}^{p}\\ r_{a}^{\alpha}\\ r_{a}^{\beta} \end{array}\right]\,,\label{eq325} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(n_{e}\)</span> is the number of elements in <span class="arithmatex">\(b\)</span>, <span class="arithmatex">\(n_{\text{int}}^{\left(e\right)}\)</span> is the number of integration points in the <span class="arithmatex">\(e-\)</span>th element, <span class="arithmatex">\(W_{k}\)</span> is the quadrature weight associated with the <span class="arithmatex">\(k-\)</span>th integration point, and <span class="arithmatex">\(J_{\eta}\)</span> is the Jacobian of the transformation from the current spatial configuration to the parametric space of the element. In the above expression,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{r}_{a}^{u} &amp; =\boldsymbol{\sigma}\cdot\grad N_{a}\,,\\ r_{a}^{p} &amp; =\mathbf{w}\cdot\grad N_{a}-N_{a}\frac{1}{J}\frac{\partial J}{\partial t}\,,\\ r_{a}^{\alpha} &amp; =\mathbf{j}^{\alpha}\cdot\grad N_{a}-N_{a}\frac{1}{J}\frac{\partial}{\partial t}\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}\right)\,, \end{aligned} \label{eq326} \end{equation} \]</div>
+<p>and it is understood that <span class="arithmatex">\(J_{\eta}\)</span>, <span class="arithmatex">\(\mathbf{r}_{a}^{u}\)</span>, <span class="arithmatex">\(r_{a}^{p}\)</span> and <span class="arithmatex">\(r_{a}^{\alpha}\)</span> are evaluated at the parametric coordinates of the <span class="arithmatex">\(k-\)</span>th integration point. Since the parametric space is invariant, time derivatives are evaluated in a material frame. For example, the time derivative <span class="arithmatex">\(D^{s}J\left(\mathbf{x},t\right)/Dt\)</span> appearing in <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#mjx-eqn:eq226">(3.3-3)</a> becomes <span class="arithmatex">\(\partial J\left(\eta_{k},t\right)/\partial t\)</span> when evaluated at the parametric coordinates <span class="arithmatex">\(\eta_{k}=\left(\eta_{k}^{1},\eta_{k}^{2},\eta_{k}^{3}\right)\)</span> of the <span class="arithmatex">\(k-\)</span>th integration point. All time derivatives are discretized using a backward difference scheme.</p>
+<p>Similarly, the discretized form of <span class="arithmatex">\(D\delta W_{\text{int}}=D\delta W_{\text{int}}\left[\Delta\mathbf{u}\right]+D\delta W_{\text{int}}\left[\Delta\tilde{p}\right]+\sum\nolimits_{\gamma}D\delta W_{\text{int}}\left[\Delta\tilde{c}^{\gamma}\right]\)</span> may be written as</p>
+<div class="arithmatex">\[ \begin{equation} D\delta W_{\text{int}}=\sum\limits_{e=1}^{n_{e}}\sum\limits_{k=1}^{n_{\text{int}}^{\left(e\right)}}W_{k}J_{\eta}\sum\limits_{a=1}^{m}\sum\limits_{b=1}^{m}\left[\begin{array}{cccc} \delta\mathbf{v}_{a} &amp; \delta\tilde{p}_{a} &amp; \delta\tilde{c}_{a}^{\alpha} &amp; \delta\tilde{c}_{a}^{\beta}\end{array}\right]\cdot\left[\begin{array}{cccc} \mathbf{K}_{ab}^{uu} &amp; \mathbf{k}_{ab}^{up} &amp; \mathbf{k}_{ab}^{u\alpha} &amp; \mathbf{k}_{ab}^{u\beta}\\ \mathbf{k}_{ab}^{pu} &amp; k_{ab}^{pp} &amp; k_{ab}^{p\alpha} &amp; k_{ab}^{p\beta}\\ \mathbf{k}_{ab}^{\alpha u} &amp; k_{ab}^{\alpha p} &amp; k_{ab}^{\alpha\alpha} &amp; k_{ab}^{\alpha\beta}\\ \mathbf{k}_{ab}^{\beta u} &amp; k_{ab}^{\beta p} &amp; k_{ab}^{\beta\alpha} &amp; k_{ab}^{\beta\beta} \end{array}\right]\cdot\left[\begin{array}{c} \Delta\mathbf{u}_{b}\\ \Delta\tilde{p}_{b}\\ \Delta\tilde{c}_{b}^{\alpha}\\ \Delta\tilde{c}_{b}^{\beta} \end{array}\right]\,,\label{eq327} \end{equation} \]</div>
+<p>where the terms in the first column are the discretized form of the linearization along <span class="arithmatex">\(\Delta\mathbf{u}\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{K}_{ab}^{uu}=\grad N_{a}\cdot\boldsymbol{\mathcal{C}}\cdot\grad N_{b}+\left(\grad N_{a}\cdot\boldsymbol{\sigma}\cdot\grad N_{b}\right)\mathbf{I}\,,\label{eq328} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{k}_{ab}^{pu}=\left(\mathbf{w}_{b}^{u}\right)^{T}\cdot\grad N_{a}+N_{a}\mathbf{q}_{b}^{pu}\,,\label{eq329} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{k}_{ab}^{\alpha u}=\left(\mathbf{j}_{b}^{\alpha u}+\sum\nolimits_{\beta}z^{\beta}\mathbf{j}_{b}^{\beta u}\right)^{T}\cdot\grad N_{a}+N_{a}\mathbf{q}_{b}^{\alpha u}\,,\label{eq330} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{w}_{b}^{u} &amp; =\mathbf{g}^{p}\cdot\tilde{\boldsymbol{\mathcal{K}}}\cdot\grad N_{b}\\ &amp; -R\theta\sum_{\beta}\frac{1}{d_{0}^{\beta}}\left(J\frac{\partial\tilde{\kappa}^{\beta}}{\partial J}-\tilde{\kappa}^{\beta}\right)\tilde{\mathbf{k}}\cdot\mathbf{d}^{\beta}\cdot\left(\grad\tilde{c}^{\beta}\otimes\grad N_{b}\right)\\ &amp; -R\theta\sum_{\beta}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\left[\tilde{\mathbf{k}}\cdot\left(\grad N_{b}\otimes\grad\tilde{c}^{\beta}\right)\cdot\mathbf{d}^{\beta}+\left(\grad N_{b}\cdot\mathbf{d}^{\beta}\cdot\grad\tilde{c}^{\beta}\right)\tilde{\mathbf{k}}\right]\\ &amp; -R\theta\sum_{\beta}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\tilde{\mathbf{k}}\cdot\left(\grad\tilde{c}^{\beta}\cdot\boldsymbol{\mathcal{D}}^{\beta}\cdot\grad N_{b}\right)\,, \end{aligned} \label{eq330b} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{g}^{p}=-\grad\tilde{p}-R\theta\sum\limits_{\beta}\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}^{\beta}\cdot\grad\tilde{c}^{\beta}\,.\label{eq344} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{j}_{b}^{\alpha u} &amp; =J\frac{\partial\tilde{\kappa}^{\alpha}}{\partial J}\mathbf{d}^{\alpha}\cdot\left(\mathbf{g}^{\alpha}\otimes\grad N_{b}\right)+\tilde{\kappa}^{\alpha}\mathbf{g}^{\alpha}\cdot\boldsymbol{\mathcal{D}}^{\alpha}\cdot\grad N_{b}\\ &amp; +\tilde{\kappa}^{\alpha}\mathbf{d}^{\alpha}\cdot\left(\grad N_{b}\otimes\mathbf{w}-\mathbf{w}\otimes\grad N_{b}+\left(\grad N_{b}\cdot\mathbf{w}\right)\mathbf{I}+\mathbf{w}_{b}^{u}\right)\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\\ &amp; -\varphi^{s}\tilde{\kappa}^{\alpha}\mathbf{d}^{\alpha}\cdot\grad\tilde{c}^{\alpha}\otimes\grad N_{b}\,, \end{aligned} \label{eq331} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{g}^{\alpha}=-\varphi^{w}\grad\tilde{c}^{\alpha}+\frac{\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{w}\,,\label{eq331b} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{q}_{b}^{pu}=-\frac{1}{\Delta t}\grad N_{b}\,,\label{eq332} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{q}_{b}^{\alpha u}=\tilde{c}^{\alpha}\frac{\partial\left(J\varphi^{w}\tilde{\kappa}^{\alpha}\right)}{\partial J}\mathbf{q}_{b}^{pu}\,.\label{eq333} \end{equation} \]</div>
+<p>The terms in the second column of the stiffness matrix in <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#mjx-eqn:eq267">(3.3-44)</a> are the discretized form of the linearization along <span class="arithmatex">\(\Delta\tilde{p}\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{k}_{ab}^{up}=-N_{b}\grad N_{a}\,,\label{eq334} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} k_{ab}^{pp}=-\grad N_{a}\cdot\tilde{\mathbf{k}}\cdot\grad N_{b}\,,\label{eq335} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} k_{ab}^{\alpha p}=\grad N_{a}\cdot\left(\mathbf{j}_{b}^{\alpha p}+\sum\limits_{\beta}z^{\beta}\mathbf{j}_{b}^{\beta p}\right)\,,\label{eq336} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{j}_{b}^{\alpha p}=-\frac{\tilde{\kappa}^{\alpha}\tilde{c}^{\alpha}}{d_{0}^{\alpha}}\mathbf{d}^{\alpha}\cdot\tilde{\mathbf{k}}\cdot\grad N_{b}\,.\label{eq337} \end{equation} \]</div>
+<p>The terms in the third column of the stiffness matrix in <a href="../3.3-weak-formulation-for-biphasic-solute-materials/#mjx-eqn:eq267">(3.3-44)</a> are the discretized form of the linearization along <span class="arithmatex">\(\Delta\tilde{c}^{\gamma}\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{k}_{ab}^{u\alpha}=N_{b}\left(\boldsymbol{\sigma}_{\alpha}^{\prime}-R\theta\left[\Phi\tilde{\kappa}^{\alpha}+\sum\limits_{\beta}\left(\frac{\partial\Phi}{\partial\tilde{c}^{\alpha}}\tilde{\kappa}^{\beta}+\Phi\frac{\partial\tilde{\kappa}^{\beta}}{\partial\tilde{c}^{\alpha}}\right)\tilde{c}^{\beta}\right]\mathbf{I}\right)\cdot\grad N_{a}\,,\label{eq338} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} k_{ab}^{p\alpha}=\grad N_{a}\cdot\mathbf{w}_{b}^{\alpha}\,,\label{eq339} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} k_{ab}^{\alpha\gamma}=\grad N_{a}\cdot\left(\mathbf{j}_{b}^{\alpha\gamma}+\sum\limits_{\beta}z^{\beta}\mathbf{j}_{b}^{\beta\gamma}\right)+N_{a}q_{b}^{\alpha\gamma}\,,\label{eq340} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{w}_{b}^{\gamma} &amp; =N_{b}\left(\tilde{\mathbf{k}}_{\gamma}^{\prime}\cdot\mathbf{g}^{p}-R\theta\tilde{\mathbf{k}}\cdot\sum\limits_{\beta}\left(\frac{\partial}{\partial\tilde{c}^{\gamma}}\left(\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\right)\mathbf{d}^{\beta}+\frac{\tilde{\kappa}^{\beta}}{d_{0}^{\beta}}\mathbf{d}_{c}^{\beta\gamma}\right)\cdot\grad\tilde{c}^{\beta}\right)\\ &amp; -R\theta\tilde{\mathbf{k}}\cdot\frac{\tilde{\kappa}^{\gamma}}{d_{0}^{\gamma}}\mathbf{d}^{\gamma}\cdot\grad N_{b}\,, \end{aligned} \label{eq341} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{j}_{b}^{\alpha\gamma} &amp; =N_{b}\left(\frac{\partial\tilde{\kappa}^{\alpha}}{\partial\tilde{c}^{\gamma}}\mathbf{d}^{\alpha}+\tilde{\kappa}^{\alpha}\mathbf{d}_{c}^{\alpha\gamma}\right)\cdot\mathbf{g}^{\alpha}\\ &amp; +\frac{\tilde{\kappa}^{\alpha}}{d_{0}^{\alpha}}\mathbf{d}^{\alpha}\cdot\left[\delta_{\alpha\gamma}\left(N_{b}\mathbf{w}-\varphi^{w}d_{0}^{\alpha}\grad N_{b}\right)+\tilde{c}^{\alpha}\left(\mathbf{w}_{b}^{\gamma}-\frac{N_{b}}{d_{0}^{\alpha}}\frac{\partial d_{0}^{\alpha}}{\partial\tilde{c}^{\gamma}}\mathbf{w}\right)\right]\,, \end{aligned} \label{eq342} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} q_{b}^{\alpha\gamma}=-N_{b}\frac{\varphi^{w}}{\Delta t}\left(\frac{\partial\tilde{\kappa}^{\alpha}}{\partial\tilde{c}^{\gamma}}\tilde{c}^{\alpha}+\delta_{\alpha\gamma}\tilde{\kappa}^{\alpha}\right)\,.\label{eq343} \end{equation} \]</div>
+<p>The discretization of <span class="arithmatex">\(\delta W_{\text{ext}}\)</span> in \eqref{eq321} has the form</p>
+<div class="arithmatex">\[ \begin{equation} \delta W_{\text{ext}}=\sum\limits_{e=1}^{n_{e}}\sum\limits_{k=1}^{n_{\text{int}}^{\left(e\right)}}W_{k}J_{\eta}\sum\limits_{a=1}^{m}\left[\begin{array}{cccc} \delta\mathbf{v}_{a} &amp; \delta\tilde{p}_{a} &amp; \delta\tilde{c}_{a}^{\alpha} &amp; \delta\tilde{c}_{a}^{\beta}\end{array}\right]\cdot\left[\begin{array}{c} N_{a}t_{n}\mathbf{n}\\ N_{a}w_{n}\\ N_{a}\tilde{j}_{n}^{\alpha}\\ N_{a}\tilde{j}_{n}^{\beta} \end{array}\right]\,,\label{eq345} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(J_{\eta}=\left|\mathbf{g}_{1}\times\mathbf{g}_{2}\right|\)</span>. The summation is performed over all surface elements on which these boundary conditions are prescribed. The discretization of <span class="arithmatex">\(-D\delta W_{\text{ext}}\)</span> has the form</p>
+<div class="arithmatex">\[ \begin{equation} -D\delta W_{\text{ext}}=\sum\limits_{e=1}^{n_{e}}\sum\limits_{k=1}^{n_{\mbox{int}}^{\left(e\right)}}W_{k}J_{\eta}\sum\limits_{a=1}^{m}\sum\limits_{b=1}^{m}\left[\begin{array}{cccc} \delta\mathbf{v}_{a} &amp; \delta\tilde{p}_{a} &amp; \delta\tilde{c}_{a}^{\alpha} &amp; \delta\tilde{c}_{a}^{\beta}\end{array}\right]\cdot\left[\begin{array}{cccc} \mathbf{K}_{ab}^{uu} &amp; \mathbf{0} &amp; \mathbf{0} &amp; \mathbf{0}\\ \mathbf{k}_{ab}^{pu} &amp; 0 &amp; 0 &amp; 0\\ \mathbf{k}_{ab}^{\alpha u} &amp; 0 &amp; 0 &amp; 0\\ \mathbf{k}_{ab}^{\beta u} &amp; 0 &amp; 0 &amp; 0 \end{array}\right]\cdot\left[\begin{array}{c} \Delta\mathbf{u}_{b}\\ \Delta\tilde{p}_{b}\\ \Delta\tilde{c}_{b}^{\alpha}\\ \Delta\tilde{c}_{b}^{\beta} \end{array}\right]\,,\label{eq346} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{K}_{ab}^{uu} &amp; =t_{n}N_{a}\boldsymbol{\mathcal{A}}\left\{ \frac{\partial N_{b}}{\partial\eta^{1}}\mathbf{g}_{2}-\frac{\partial N_{b}}{\partial\eta^{2}}\mathbf{g}_{1}\right\} \,,\\ \mathbf{k}_{ab}^{pu} &amp; =-w_{n}N_{a}\left(\frac{\partial N_{b}}{\partial\eta^{1}}\mathbf{g}_{2}-\frac{\partial N_{b}}{\partial\eta^{2}}\mathbf{g}_{1}\right)\times\mathbf{n},\\ \mathbf{k}_{ab}^{\alpha u} &amp; =-\tilde{j}_{n}^{\alpha}N_{a}\left(\frac{\partial N_{b}}{\partial\eta^{1}}\mathbf{g}_{2}-\frac{\partial N_{b}}{\partial\eta^{2}}\mathbf{g}_{1}\right)\times\mathbf{n}. \end{aligned} \label{eq347} \end{equation} \]</div>
+<p>In this expression, <span class="arithmatex">\(\boldsymbol{\mathcal{A}}\left\{ \mathbf{v}\right\}\)</span> is the antisymmetric tensor whose dual vector is <span class="arithmatex">\(\mathbf{v}\)</span> (such that <span class="arithmatex">\(\boldsymbol{\mathcal{A}}\left\{ \mathbf{v}\right\} \cdot\mathbf{q}=\mathbf{v}\times\mathbf{q}\)</span> for any vector <span class="arithmatex">\(\mathbf{q})\)</span>.</p>
+<h2 id="subsec:Potential-partition-derivatives">Electric Potential and Partition Coefficient Derivatives<a class="headerlink" href="#subsec:Potential-partition-derivatives" title="Permanent link">&para;</a></h2>
+<p>When the mixture is charged it is necessary to solve for the electric potential <span class="arithmatex">\(\psi\)</span> using the electroneutrality condition in <a href="../../chapter2/2.9-triphasic-and-multiphasic-materials/#mjx-eqn:eq124">(2.9-4)</a>. This equation may be rewritted as a polynomial in <span class="arithmatex">\(\zeta\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \sum\limits_{i=0}^{n}a_{i}\zeta^{i}\,,\label{eq348} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \zeta=\exp\left(-\frac{F_{c}\psi}{R\theta}\right)\,,\label{eq349} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} a_{i}=\begin{cases} z^{\alpha}\hat{\kappa}^{\alpha}\tilde{c}^{\alpha} &amp; i=z^{\alpha}-z^{\min}\\ c^{F} &amp; i=-z^{\min} \end{cases}\,.\label{eq350} \end{equation} \]</div>
+<p>Here, <span class="arithmatex">\(z^{\min}=\min_{\alpha}z^{\alpha}\)</span> and the polynomial degress is <span class="arithmatex">\(n=z^{\max}-z^{\min}\)</span> where <span class="arithmatex">\(z^{\max}=\max_{\alpha}z^{\alpha}\)</span>. Since more than one solute may carry the same charge <span class="arithmatex">\(z^{\alpha}\)</span>, the coefficients <span class="arithmatex">\(a_{i}\)</span> should be evaluated from the summation of <span class="arithmatex">\(z^{\alpha}\hat{\kappa}^{\alpha}\tilde{c}^{\alpha}\)</span> over all such solutes. Only real positive roots are valid, since <span class="arithmatex">\(\psi=-R\theta\left(\ln\zeta\right)/F_{c}\)</span> according to \eqref{eq349}. Using Descartes' rule of signs, an inspection of the coefficients <span class="arithmatex">\(a_{i}\)</span> shows tht there is only one sign change in the polynomial, regardless of the sign of <span class="arithmatex">\(c^{F}\)</span>, implying that there will always be only one positive root <span class="arithmatex">\(\zeta\)</span>, which must thus be real. Therefore, there cannot be any ambiguity in the calculation of <span class="arithmatex">\(\psi\)</span>, irrespective of the polynomial degree. Newton's method is used to solve for the positive real root when <span class="arithmatex">\(n&gt;2\)</span>.</p>
+<p>Using the above relations, it follows that <span class="arithmatex">\(\tilde{\kappa}^{\alpha}=\hat{\kappa}^{\alpha}\zeta^{z^{\alpha}}\)</span>. An examination of the equations resulting from the linearization of the internal virtual work shows that it is necessary to evaluate derivatives of <span class="arithmatex">\(\tilde{\kappa}^{\alpha}\)</span> with respect to <span class="arithmatex">\(J\)</span> and <span class="arithmatex">\(\tilde{c}^{\gamma}\)</span>, which are given by</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{\partial\tilde{\kappa}^{\alpha}}{\partial J} &amp; =\frac{\partial\hat{\kappa}^{\alpha}}{\partial J}\zeta^{z^{\alpha}}+z^{\alpha}\tilde{\kappa}^{\alpha}\frac{1}{\zeta}\frac{\partial\zeta}{\partial J}\\ \frac{\partial\tilde{\kappa}^{\alpha}}{\partial\tilde{c}^{\gamma}} &amp; =\frac{\partial\hat{\kappa}^{\alpha}}{\partial\tilde{c}^{\gamma}}\zeta^{z^{\alpha}}+z^{\alpha}\tilde{\kappa}^{\alpha}\frac{1}{\zeta}\frac{\partial\zeta}{\partial\tilde{c}^{\gamma}} \end{aligned} \,.\label{eq351} \end{equation} \]</div>
+<p>In these expressions, the derivatives of <span class="arithmatex">\(\hat{\kappa}^{\alpha}\)</span> are obtained from the user-defined constitutive relations for the solubility. Derivatives of <span class="arithmatex">\(\zeta\)</span> may be evaluated by differentiating the electroneutrality condition to produce</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{1}{\zeta}\frac{\partial\zeta}{\partial J} &amp; =-\frac{\frac{\partial c^{F}}{\partial J}+\sum\nolimits_{\beta}z^{\beta}\zeta^{z^{\beta}}\tilde{c}^{\beta}\frac{\partial\hat{\kappa}^{\beta}}{\partial J}}{\sum\nolimits_{\beta}\left(z^{\beta}\right)^{2}\tilde{\kappa}^{\beta}\tilde{c}^{\beta}}\\ \frac{1}{\zeta}\frac{\partial\zeta}{\partial\tilde{c}^{\gamma}} &amp; =-\frac{z^{\gamma}\tilde{\kappa}^{\gamma}+\sum\nolimits_{\beta}z^{\beta}\zeta^{z^{\beta}}\tilde{c}^{\beta}\frac{\partial\hat{\kappa}^{\beta}}{\partial\tilde{c}^{\gamma}}}{\sum\nolimits_{\beta}\left(z^{\beta}\right)^{2}\tilde{\kappa}^{\beta}\tilde{c}^{\beta}} \end{aligned} \,.\label{eq352} \end{equation} \]</div>
+<p>The derivative <span class="arithmatex">\(\partial c^{F}/\partial J\)</span> may be evaluated from</p>
+<div class="arithmatex">\[ \begin{equation} c^{F}=\frac{1-\varphi_{r}^{s}}{J-\varphi_{r}^{s}}c_{r}^{F}\,,\label{eq353} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\varphi_{r}^{s}\)</span> is the referential solid volume fraction (volume of solid in current configuration per volume of the mixture in the reference configuration) and <span class="arithmatex">\(c_{r}^{F}\)</span> is the referential fixed charge density (equivalent charge in current configuration per volume of the mixture in the reference configuration).</p>
+<h2 id="subsec:MP-chemical-reactions">Chemical Reactions<a class="headerlink" href="#subsec:MP-chemical-reactions" title="Permanent link">&para;</a></h2>
+<h3 id="virtual-work-and-linearization">Virtual Work and Linearization<a class="headerlink" href="#virtual-work-and-linearization" title="Permanent link">&para;</a></h3>
+<p>The contribution to <span class="arithmatex">\(\delta W\)</span> due to chemical reactions is given by <span class="arithmatex">\(\delta G\)</span>, where</p>
+<div class="arithmatex">\[ \divg\left(\mathbf{v}^{s}+\mathbf{w}\right)=\hat{\varphi}^{w}+\left(1-\varphi^{s}\right)\hat{\zeta}\sum_{\alpha}\nu^{\alpha}\mathcal{V}^{\alpha} \]</div>
+<div class="arithmatex">\[ \begin{equation} \delta G=\int_{b}\delta\tilde{p}\left[\hat{\varphi}^{w}+\left(1-\varphi^{s}\right)\hat{\zeta}\overline{\mathcal{V}}\right]\,dv+\sum\limits_{\iota}\nu^{\iota}\int_{b}\delta\tilde{c}^{\iota}\left(1-\varphi^{s}\right)\hat{\zeta}\,dv\,.\label{eq354} \end{equation} \]</div>
+<p>The linearization of <span class="arithmatex">\(\delta G\)</span> along a solid displacement increment <span class="arithmatex">\(\Delta\mathbf{u}\)</span> is</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}D\delta G\left[\Delta\mathbf{u}\right] &amp; =\int_{b}\delta\tilde{p}\,\left(\hat{\varphi}^{w}\,\divg\Delta\mathbf{u}+\hat{\boldsymbol{\varphi}}_{\varepsilon}^{w}:\Delta\boldsymbol{\varepsilon}\right)\,dv\\ &amp; +\overline{\mathcal{V}}\int_{b}\delta\tilde{p}\left[\hat{\zeta}\,\divg\Delta\mathbf{u}+\left(J-\varphi_{r}^{s}\right)\hat{\boldsymbol{\zeta}}_{\varepsilon}:\Delta\boldsymbol{\varepsilon}\right]\,dv\\ &amp; +\sum_{\iota}\nu^{\iota}\int_{b}\delta\tilde{c}^{\iota}\left[\hat{\zeta}\left(1-\frac{\partial\varphi_{r}^{s}}{\partial J}\right)\,\divg\Delta\mathbf{u}+\left(J-\varphi_{r}^{s}\right)\hat{\boldsymbol{\zeta}}_{\varepsilon}:\Delta\boldsymbol{\varepsilon}\right]\,dv \end{aligned} \,,\label{eq354b} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \hat{\boldsymbol{\varphi}}_{\varepsilon}^{w}=\mathbf{F}\cdot\frac{\partial\hat{\varphi}^{w}}{\partial\mathbf{E}}\cdot\mathbf{F}^{T}\,,\quad\hat{\boldsymbol{\zeta}}_{\varepsilon}=J^{-1}\mathbf{F}\cdot\frac{\partial\hat{\zeta}}{\partial\mathbf{E}}\cdot\mathbf{F}^{T}\,,\label{eq354c} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \frac{\partial\varphi_{r}^{s}}{\partial J}=\frac{\sum_{\sigma}\frac{M^{\sigma}}{\rho_{T}^{\sigma}}c^{\sigma}\left(1+\sum_{\sigma}\frac{M^{\sigma}}{\rho_{T}^{\sigma}}c^{\sigma}\right)+\left(J-\varphi_{0}^{s}\right)\sum_{\sigma}\frac{M^{\sigma}}{\rho_{T}^{\sigma}}\frac{1}{\tilde{\kappa}^{\sigma}}\frac{\partial\tilde{\kappa}^{\sigma}}{\partial J}c^{\sigma}}{\left(1+\sum\limits_{\sigma}\frac{M^{\sigma}c^{\sigma}}{\rho_{T}^{\sigma}}\right)^{2}} \]</div>
+<p>for solutes-as-SBMs, and</p>
+<div class="arithmatex">\[ \frac{\partial\varphi_{r}^{s}}{\partial J}=\frac{\sum_{\sigma}\frac{\rho_{r}^{\sigma}}{\rho_{T}^{\sigma}}\left(J\varphi^{w}+\sum_{\sigma}\frac{\rho_{r}^{\sigma}}{\rho_{T}^{\sigma}}\right)+J\varphi^{w}\left(J-\varphi_{0}^{s}\right)\sum_{\sigma}\frac{\rho_{r}^{\sigma}}{\rho_{T}^{\sigma}}\frac{1}{\tilde{\kappa}^{\sigma}}\frac{\partial\tilde{\kappa}^{\sigma}}{\partial J}}{\left(J\varphi^{w}+\sum\limits_{\sigma}\frac{\rho_{r}^{\sigma}}{\rho_{T}^{\sigma}}\right)^{2}} \]</div>
+<p>for SBMs, as obtained from eq.<a href="../../chapter2/2.12-chemical-reactions/#mjx-eqn:eq:phirs-solutes-as-SBMs">(2.12-16)</a>. Currently, <span class="arithmatex">\(\hat{\zeta}\)</span> is assumed to be independent of <span class="arithmatex">\(\tilde{p}\)</span> in FEBio; it follows that the linearization along the effective fluid pressure increment <span class="arithmatex">\(\Delta\tilde{p}\)</span> is</p>
+<div class="arithmatex">\[ \begin{equation} D\delta G\left[\Delta\tilde{p}\right]=\int_{b}\delta\tilde{p}\,\frac{\partial\hat{\varphi}^{w}}{\partial\tilde{p}}\Delta p\,dv\,.\label{eq354d} \end{equation} \]</div>
+<p>Finally, the linearization along a concentration increment <span class="arithmatex">\(\Delta\tilde{c}^{\iota}\)</span> is</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}D\delta G\left[\Delta\tilde{c}^{\iota}\right] &amp; =\int_{b}\delta\tilde{p}\,\frac{\partial\hat{\varphi}^{w}}{\partial\tilde{c}^{\iota}}\Delta\tilde{c}^{\iota}\,dv\\ &amp; +\overline{\mathcal{V}}\int_{b}\delta\tilde{p}\left(1-\varphi^{s}\right)\frac{\partial\hat{\zeta}}{\partial\tilde{c}^{\iota}}\Delta\tilde{c}^{\iota}\,dv\\ &amp; +\sum_{\gamma}\nu^{\gamma}\int_{b}\delta\tilde{c}^{\gamma}\left(\left(1-\varphi^{s}\right)\frac{\partial\hat{\zeta}}{\partial\tilde{c}^{\iota}}-\frac{1}{J}\frac{\partial\varphi_{r}^{s}}{\partial\tilde{c}^{\iota}}\hat{\zeta}\right)\Delta\tilde{c}^{\iota}\,dv \end{aligned} \,.\label{eq354e} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \frac{\partial\varphi_{r}^{s}}{\partial\tilde{c}^{\iota}}=\begin{cases} \frac{\left(J-\varphi_{r}^{s}\right)^{2}}{J-\varphi_{0}^{s}}\sum_{\sigma}\frac{M^{\sigma}}{\rho_{T}^{\sigma}}\left(\tilde{\kappa}^{\sigma}+\tilde{c}^{\sigma}\frac{\partial\tilde{\kappa}^{\sigma}}{\partial\tilde{c}^{\sigma}}\right) &amp; \iota=\sigma\\ \frac{\left(J-\varphi_{r}^{s}\right)^{2}}{J-\varphi_{0}^{s}}\sum_{\sigma}\frac{M^{\alpha}}{\rho_{T}^{\sigma}}\tilde{c}^{\sigma}\frac{\partial\tilde{\kappa}^{\sigma}}{\partial\tilde{c}^{\iota}} &amp; \iota\ne\sigma \end{cases} \]</div>
+<p>for solutes-as-SBMs, as obtained from eq.<a href="../../chapter2/2.12-chemical-reactions/#mjx-eqn:eq:phirs-solutes-as-SBMs">(2.12-16)</a>.</p>
+<p>The discretized form of these expressions is given by</p>
+<div class="arithmatex">\[ \begin{equation} \delta G=\sum_{a}\delta\tilde{p}_{a}r_{a}^{p}+\sum_{\gamma}\sum_{a}\delta\tilde{c}_{a}^{\gamma}r_{a}^{\gamma}\,,\label{eq354f} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}r_{a}^{p} &amp; =\int_{b}N_{a}\,\left[\hat{\varphi}^{w}+\left(1-\varphi^{s}\right)\hat{\zeta}\bar{\mathcal{V}}\right]\,dv\\ r_{a}^{\gamma} &amp; =\nu^{\gamma}\int_{b}N_{a}\left(1-\varphi^{s}\right)\hat{\zeta}\,dv \end{aligned} \,.\label{eq354g} \end{equation} \]</div>
+<p>Similarly,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}D\delta G\left[\Delta\mathbf{u}\right] &amp; =\sum_{a}\delta\tilde{p}_{a}\sum_{b}\mathbf{k}_{ab}^{pu}\cdot\Delta\mathbf{u}_{b}\\ &amp; +\sum_{\gamma}\sum_{a}\delta\tilde{c}_{a}^{\gamma}\sum_{b}\mathbf{k}_{ab}^{\gamma u}\cdot\Delta\mathbf{u}_{b} \end{aligned} \,,\label{eq354h} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{k}_{ab}^{pu} &amp; =\int_{b}N_{a}\left(\hat{\varphi}^{w}\mathbf{I}+\hat{\boldsymbol{\varphi}}_{\varepsilon}^{w}\right)\cdot\grad N_{b}\,dv\\ &amp; +\bar{\mathcal{V}}\int_{a}N_{a}\left[\hat{\zeta}\mathbf{I}+J\varphi^{w}\hat{\boldsymbol{\zeta}}_{\varepsilon}\right]\cdot\grad N_{b}\,dv\\ \mathbf{k}_{ab}^{\gamma u} &amp; =\nu^{\gamma}\int_{a}N_{a}\left[\left(1-\frac{\partial\varphi_{r}^{s}}{\partial J}\right)\hat{\zeta}\mathbf{I}+J\varphi^{w}\hat{\boldsymbol{\zeta}}_{\varepsilon}\right]\cdot\grad N_{b}\,dv \end{aligned} \,.\label{eq354i} \end{equation} \]</div>
+<p>Then,</p>
+<div class="arithmatex">\[ \begin{equation} D\delta G\left[\Delta\tilde{p}\right]=\sum_{a}\delta\tilde{p}_{a}\sum_{b}k_{ab}^{pp}\Delta\tilde{p}_{b}\,,\label{eq354j} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} k_{ab}^{pp}=\int_{b}N_{a}\,\frac{\partial\hat{\varphi}^{w}}{\partial\tilde{p}}N_{b}\,dv\,.\label{eq354k} \end{equation} \]</div>
+<p>Finally,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}D\delta G\left[\Delta\tilde{c}^{\iota}\right] &amp; =\sum_{a}\delta\tilde{p}_{a}\sum_{b}k_{ab}^{p\iota}\Delta\tilde{c}_{b}^{\iota}\\ &amp; +\sum_{\gamma}\sum_{a}\delta\tilde{c}_{a}^{\gamma}\sum_{b}k_{ab}^{\gamma\iota}\Delta\tilde{c}_{b}^{\iota} \end{aligned} \,,\label{eq354l} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}k_{ab}^{p\iota} &amp; =\int_{b}N_{a}N_{b}\frac{\partial\hat{\varphi}^{w}}{\partial\tilde{c}^{\iota}}\,dv+\bar{\mathcal{V}}\int_{b}N_{a}N_{b}\left(1-\varphi^{s}\right)\frac{\partial\hat{\zeta}}{\partial\tilde{c}^{\iota}}\,dv\\ k_{ab}^{\gamma\iota} &amp; =\nu^{\gamma}\int_{b}N_{a}N_{b}\left(\left(1-\varphi^{s}\right)\frac{\partial\hat{\zeta}}{\partial\tilde{c}^{\iota}}-\frac{1}{J}\frac{\partial\varphi_{r}^{s}}{\partial\tilde{c}^{\iota}}\hat{\zeta}\right)\,dv \end{aligned} \,.\label{eq354m} \end{equation} \]</div>
+<h3 id="updating-solid-bound-molecule-concentrations">Updating Solid-Bound Molecule Concentrations<a class="headerlink" href="#updating-solid-bound-molecule-concentrations" title="Permanent link">&para;</a></h3>
+<p>The solid-bound molecule concentrations <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> are evaluated at integration points of each element; they do not represent nodal degrees of freedom. The values of <span class="arithmatex">\(\rho_{r}^{\sigma}\)</span> are updated at the end of each iteration in the solution of the nonlinear equations for the nodal degrees of freedom, using trapezoidal integration on <span class="arithmatex">\(\hat{\rho}_{r}^{\sigma}\)</span> in <a href="../../chapter2/2.12-chemical-reactions/#mjx-eqn:eq155">(2.12-6)</a>. According to <a href="../../chapter2/2.12-chemical-reactions/#mjx-eqn:eq164">(2.12-24)</a> and <a href="../../chapter2/2.12-chemical-reactions/#mjx-eqn:eq166">(2.12-26)</a>, we have <span class="arithmatex">\(\hat{\rho}_{r}^{\sigma}=\left(J-\varphi_{r}^{s}\right)M^{\sigma}\nu^{\sigma}\hat{\zeta}\)</span>, which is evaluated as the average of values at <span class="arithmatex">\(t_{n}\)</span> and <span class="arithmatex">\(t_{n+1}\)</span>, then</p>
+<div class="arithmatex">\[ \begin{equation} \left(\rho_{r}^{\sigma}\right)_{n+1}=\left(\rho_{r}^{\sigma}\right)_{n}+\left(\hat{\rho}_{r}^{\sigma}\right)_{n+\frac{1}{2}}\Delta t\label{eq:sbm-incremental-eq} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\Delta t=t_{n+1}-t_{n}\)</span>.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:3.4-1">
+<p>Ateshian, G. A.; Weiss, J. A.. "Anisotropic hydraulic permeability under finite deformation." <em>Journal of biomechanical engineering</em>, vol. 132, pp. 111004 (2010).&#160;<a class="footnote-backref" href="#fnref:3.4-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3.4-2">
+<p>Bonet, Javier; Wood, Richard D.. "Nonlinear continuum mechanics for finite element analysis." <em>Cambridge University Press</em> (1997).&#160;<a class="footnote-backref" href="#fnref:3.4-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../3.3-weak-formulation-for-biphasic-solute-materials/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 3.3 Weak Formulation for Biphasic-Solute Materials">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                3.3 Weak Formulation for Biphasic-Solute Materials
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../3.5-computational-fluid-dynamics/" class="md-footer__link md-footer__link--next" aria-label="Next: 3.5 Computational Fluid Dynamics">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                3.5 Computational Fluid Dynamics
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,7788 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Theoretical background and user documentation for FEBio and FEBio Studio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../2.5-kinematics-of-the-continuum/">
+      
+      
+        <link rel="next" href="../2.7-biphasic-material/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>2.6 Hyperelasticity - FEBio Manuals</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sec:Hyperelasticity" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio Manuals" class="md-header__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio Manuals
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.6 Hyperelasticity
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../studio/" class="md-tabs__link">
+          
+  
+  
+  Studio
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio Manuals" class="md-nav__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    FEBio Manuals
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.1-overview-of-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Constitutive-Restrictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constitutive Restrictions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Other-Stress-Tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other Stress Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Stress-Directional-Derivative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directional Derivative of the Stress
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:isotropic-hyperelasticity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotropic Hyperelasticity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Isotropic-Elasticity-Principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Isotropic Elasticity in Principal Directions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Transversely-Isotropic-Hyperelas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transversely Isotropic Hyperelasticity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Incompressibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Incompressibility
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Nearly-Incompressible-Hyperelast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearly-Incompressible Hyperelasticity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsec:Tension-Bearing-Fiber-Materials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tension-Bearing Fiber Materials
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.1-weak-formulation-for-solid-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 Weak formulation for Solid Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.2-weak-formulation-for-biphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 Weak formulation for biphasic materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.3-weak-formulation-for-biphasic-solute-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 Weak Formulation for Biphasic-Solute Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.4-weak-formulation-for-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Weak Formulation for Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.5-computational-fluid-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 Computational Fluid Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.6-weak-formulation-for-fsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 Weak Formulation for FSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.7-weak-formulation-for-bfsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 Weak Formulation for BFSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.8-weak-formulation-for-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 Weak Formulation for Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.9-newton-raphson-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 Newton-Raphson Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.10-generalized-alpha-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 Generalized $\alpha-$Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Element Library
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Element Library
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.1-solid-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Solid Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.2-shell-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Shell Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Constitutive Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Constitutive Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.1-linear-elasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Linear Elasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.2-compressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Compressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.3-nearly-incompressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Nearly-Incompressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.4-viscoelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Viscoelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.5-reactive-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.5 Reactive Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.6-reactive-plasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.6 Reactive Plasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.7-reactive-elastoplastic-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.7 Reactive Elastoplastic Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.8-hydraulic-permeability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.8 Hydraulic Permeability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.9-solute-diffusivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.9 Solute Diffusivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.10-solute-solubility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.10 Solute Solubility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.11-osmotic-coefficient/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.11 Osmotic Coefficient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.12-active-contraction-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.12 Active Contraction Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.13-prescribed-active-contraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.13 Prescribed Active Contraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.14-chemical-reaction-production-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.14 Chemical Reaction Production Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.15-specific-reaction-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.15 Specific Reaction Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.16-viscous-fluids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.16 Viscous Fluids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Dynamics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Dynamics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.1-newmark-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Newmark Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.2-elastodynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 Elastodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.3-rigid-body-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 Rigid Body Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Contact and Coupling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Contact and Coupling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.1-sliding-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Sliding Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.2-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.3-biphasic-solute-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Biphasic-Solute Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.4-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.5-tied-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Tied Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.6-tied-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Tied Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.7-tied-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.7 Tied Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.8-tied-fluid-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.8 Tied Fluid Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.9-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.9 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.10-rigid-deformable-coupling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.10 Rigid-Deformable Coupling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.11-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.11 Nonlinear Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_9" id="__nav_1_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Optimization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Optimization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.1-the-objective-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 The Objective Function
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.2-the-levenberg-marquardt-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 The Levenberg-Marquardt Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_10" id="__nav_1_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Tensor Calculus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Tensor Calculus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapterA/A.1-second-order-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 Second-Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapterA/A.2-higher-order-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 Higher Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.1-overview-of-febiostudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.1-starting-febio-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Starting FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.2-creating-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 Creating a New Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.3-opening-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Opening a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.4-exploring-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Exploring a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.5-solving-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Solving the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.6-loading-the-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Loading the Results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.1-the-graphical-user-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 The Graphical User Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.2-the-menu-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 The Menu Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.3-the-main-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 The Main Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.4-the-build-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 The Build Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.5-the-font-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 The Font Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.6-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.7-the-graphics-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 The Graphics Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.8-the-model-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 The Model Viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.9-the-build-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 The Build Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.10-the-repository-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 The Repository Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.11-the-project-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.11 The Project Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.12-the-curve-editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.12 The Curve Editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.13-the-mesh-inspector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.13 The Mesh Inspector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.14-the-measure-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.14 The Measure Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.15-febio-studio-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.15 FEBio Studio Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.1-starting-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Starting a new model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.2-loading-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Loading a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.3-saving-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.3 Saving a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.1-creating-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Creating Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.2-importing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Importing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.3-editing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.4-creating-and-editing-a-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Creating and Editing a Mesh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.1-adding-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Adding Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.2-febio-mesh-data-generators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 FEBio Mesh Data Generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.3-the-scalar-field-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 The Scalar Field Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.4-the-fiber-generator-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.4 The Fiber Generator Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.5-visualizing-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.5 Visualizing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.1-adding-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Adding materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.2-setting-material-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Setting material parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.3-assigning-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Assigning materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.4-creating-a-solute-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Creating a Solute Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.5-creating-a-solid-bound-molecule-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Creating a Solid-Bound Molecule Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.6-adding-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Adding Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.1-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.2-surface-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 Surface Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.3-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.3 Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.4-assigning-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.4 Assigning Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 9 - Contact and Constraints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 9 - Contact and Constraints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.1-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.1 Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.2-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.2 Nonlinear constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 - Rigid Bodies
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 10 - Rigid Bodies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.1-rigid-body-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.1 Rigid Body Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.2-rigid-body-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.2 Rigid Body Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.3-rigid-body-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.3 Rigid Body Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.4-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.4 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.5-the-rigid-boundary-condition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.5 The Rigid Boundary Condition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.1-the-initial-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.1 The Initial Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.2-adding-an-analysis-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.2 Adding an Analysis Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 - Configuring Output
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 12 - Configuring Output
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.1-febio-logfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.1 FEBio Logfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.2-febio-plotfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.2 FEBio Plotfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_14" id="__nav_2_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.1-running-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.1 Running FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.2-febio-launch-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.2 FEBio Launch Configurations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.3-the-febio-monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.3 The FEBio Monitor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.4-running-batch-jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.4 Running Batch Jobs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.5-febio-job-reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.5 FEBio Job Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_15" id="__nav_2_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 - The Post Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 - The Post Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.1-the-post-environment-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.1 The Post Environment UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.2-the-post-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.2 The Post Menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.3-the-post-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.3 The Post Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.4-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.4 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_16" id="__nav_2_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 - Saving Graphics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 15 - Saving Graphics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.1-the-capture-frame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.1 The Capture Frame
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.2-taking-a-snapshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.2 Taking a snapshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.3-using-the-ray-tracer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.3 Using the Ray Tracer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.4-recording-an-animation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.4 Recording an animation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.5-camera-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.5 Camera Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_17" id="__nav_2_17_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 - The Post Panel
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 16 - The Post Panel
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.1-the-view-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.1 The View Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.2-the-material-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.2 The Material Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.3-the-data-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.3 The Data Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.4-the-state-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.4 The State Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_18" id="__nav_2_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 17 - Post Processing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 17 - Post Processing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.1-properties-of-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.1 Properties of the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.2-displacement-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.2 Displacement Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.3-color-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.3 Color Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.4-plane-cuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.4 Plane Cuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.5-mirror-plane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.5 Mirror Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.6-vector-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.6 Vector Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.7-isosurface-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.7 Isosurface plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.8-slice-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.8 Slice plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.9-tensor-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.9 Tensor plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.10-streamline-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.10 Streamline Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.11-particle-flow-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.11 Particle Flow Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.12-additional-windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.12 Additional Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.13-post-session-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.13 Post Session Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_19" id="__nav_2_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.1-loading-3d-image-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.1 Loading 3D image data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.2-image-gui-environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.2 Image GUI Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.3-filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.3 Filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.4-other-3d-image-visualization-options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.4 Other 3D Image Visualization Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.5-other-3d-image-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.5 Other 3D Image Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_20" id="__nav_2_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.1-the-embedded-python-interpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.1 The Embedded Python Interpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.2-the-external-python-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.2 The External Python Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_21" id="__nav_2_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.1-the-plugin-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.1 The Plugin Repository
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.2-creating-febio-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.2 Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_22" id="__nav_2_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Mesh Import Formats
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Mesh Import Formats
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.1-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.2-nike3d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 NIKE3D
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.3-hypermesh-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.3 HyperMesh ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.4-abaqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.4 ABAQUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.5-lsdyna-keyword/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.5 LSDYNA keyword
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.6-ansys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.6 ANSYS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.7-dxf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.7 DXF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.8-hypersurface-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.8 Hypersurface ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.9-gmsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.9 GMsh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.10-byu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.10 BYU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.11-vtk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.11 VTK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.12-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.12 STEP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.13-brep/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.13 BREP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.14-ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.14 IDEAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.15-nastran/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.15 NASTRAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.16-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.16 MESH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.17-tetgen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.17 TETGEN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.18-raw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.18 RAW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.19-comsol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.19 COMSOL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.20-ply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.20 PLY
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_23" id="__nav_2_23_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix B - Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix B - Standard Data Fields
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterB/B.1-standard-data-fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    B.1 Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sec:Hyperelasticity">2.6 Hyperelasticity<a class="headerlink" href="#sec:Hyperelasticity" title="Permanent link">&para;</a></h1>
+<h2 id="subsec:Constitutive-Restrictions">Constitutive Restrictions<a class="headerlink" href="#subsec:Constitutive-Restrictions" title="Permanent link">&para;</a></h2>
+<p>Now, we need to make constitutive assumptions on the dependent variables which appears in Clausius-Duhem inequality, eq.<a href="../2.4-axioms-of-conservation/#mjx-eqn:eq:Clausius-Duhem-inequality">(2.4-9)</a>, namely, <span class="arithmatex">\(\psi\)</span>, <span class="arithmatex">\(\eta\)</span>, <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> and <span class="arithmatex">\(\mathbf{q}\)</span>. These functions could depend on a number of <em>state variables</em>, such as strain, rate of deformation, temperature, temperature gradient, etc. For example, the pressure in a gas is generally assumed to depend on temperature and density, so it would follow that <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> for a gas should exhibit the same dependencies.</p>
+<p>For solid materials we have found that that the mass density is dependent on the strain (eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq88">(2.5-35)</a>, <span class="arithmatex">\(\rho=\rho_{r}\left(\det\mathbf{C}\right)^{-1/2}=\rho_{r}/J\)</span>, where <span class="arithmatex">\(\rho_{r}\)</span> is a constant); so long as a dependence on the strain is provided, an explicit dependency on mass density is not required.</p>
+<p>For the purpose of modeling elastic solids under isothermal conditions, we would like to restrict our constitutive models to be independent of the temperature or its gradient. For an elastic solid, the rate of load application does not have an effect; therefore, there should be no dependency on the rate of deformation <span class="arithmatex">\(\mathbf{D}\)</span>. Furthermore, for an elastic solid, upon removal of the loading, deformations should disappear completely. This implies that there should be no dependence on the history (or path) of loading, only on the current state of loading.</p>
+<p>Given these restrictions, we assume that the non-observable functions of state <span class="arithmatex">\(\psi\)</span>, <span class="arithmatex">\(\eta\)</span>, <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> and <span class="arithmatex">\(\mathbf{q}\)</span> depend only on the observable solid matrix strain, such as <span class="arithmatex">\(\mathbf{E}\)</span>. Based on the principle of equipresence, all functions of state depend only on <span class="arithmatex">\(\mathbf{E}\)</span>. In particular, since <span class="arithmatex">\(\psi\)</span> is the only function of state which is differentiated with respect to time in the Clausius-Duhem inequality, eq.<a href="../2.4-axioms-of-conservation/#mjx-eqn:eq:Clausius-Duhem-inequality">(2.4-9)</a>, we express it explicitly as</p>
+<div class="arithmatex">\[ \begin{equation} \psi=\psi\left(\mathbf{E}\right)\,.\label{eq95-1} \end{equation} \]</div>
+<p>Given this dependence, we can use the chain rule of differentiation to get</p>
+<div class="arithmatex">\[ \begin{equation} \dot{\psi}=\frac{d\psi}{d\mathbf{E}}:\dot{\mathbf{E}}=\frac{d\psi}{d\mathbf{E}}:\mathbf{F}^{T}\cdot\mathbf{D}\cdot\mathbf{F}\label{eq96-1} \end{equation} \]</div>
+<p>where we have made use of eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq:Edot-D-relation">(2.5-33)</a>. Making use of the identity</p>
+<div class="arithmatex">\[ \begin{equation} \frac{d\psi}{d\mathbf{E}}:\mathbf{F}^{T}\cdot\mathbf{D}\cdot\mathbf{F}=\mathbf{F}\cdot\frac{d\psi}{d\mathbf{E}}\cdot\mathbf{F}^{T}:\mathbf{D}\label{eq100-1} \end{equation} \]</div>
+<p>we find that the entropy inequality reduces to</p>
+<div class="arithmatex">\[ \begin{equation} -\rho\eta\dot{\theta}-\frac{1}{\theta}\mathbf{q}\cdot\grad\theta+\left(\boldsymbol{\sigma}-\rho\mathbf{F}\cdot\frac{d\psi}{d\mathbf{E}}\cdot\mathbf{F}^{T}\right):\mathbf{D}\geqslant0\label{eq101-1} \end{equation} \]</div>
+<p>This inequality must hold for arbitrary processes, i.e., for arbitrary changes in <span class="arithmatex">\(\mathbf{D}\)</span>, <span class="arithmatex">\(\dot{\theta}\)</span> and <span class="arithmatex">\(\grad\theta\)</span> (all of which are independent, observable variables of state), under our self-imposed constraint that <span class="arithmatex">\(\psi\)</span>, <span class="arithmatex">\(\eta\)</span>, <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> and <span class="arithmatex">\(\mathbf{q}\)</span> only depend on the state variable <span class="arithmatex">\(\mathbf{E}\)</span>. For example, since the temperature <span class="arithmatex">\(\theta\)</span> in the leftmost term of eq.\eqref{eq101-1} may either increase or decrease at various times in any process, the sign of <span class="arithmatex">\(\dot{\theta}\)</span> may be variably positive or negative. However, the sign of the product <span class="arithmatex">\(-\rho\eta\dot{\theta}\)</span> may not be set strictly positive since <span class="arithmatex">\(\rho\eta\)</span> does not depend on <span class="arithmatex">\(\dot{\theta}\)</span>. The same argument applies to the remaining terms in the entropy inequality, each of which may vary independently of other terms. Therefore, the only way that the entropy inequality may be satisfied for arbitrary processes, given our choice of state variables, is to have each term be independently equal to zero. Thus, the entropy inequality requires that</p>
+<div class="arithmatex">\[ \begin{equation} \eta=0\label{eq102-1} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\rho\mathbf{F}\cdot\frac{d\psi}{d\mathbf{E}}\cdot\mathbf{F}^{T}\label{eq103-1} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{q}=\mathbf{0}\label{eq105-1} \end{equation} \]</div>
+<p>Equation \eqref{eq102-1} shows that the entropy must be zero for our choice of state variable, whereas Eq.\eqref{eq103-1} is the fundamental constraint we seek for formulating constitutive relations in elasticity problems. The constraint of eq.\eqref{eq105-1} implies that isothermal processes must be adiabatic, as there cannot be heat flow in such problems.</p>
+<p>Let the Helmholtz free energy per unit <em>reference</em> volume (<em>energy density</em>) be denoted by</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}\left(\mathbf{E}\right)\equiv\rho_{r}\psi\left(\mathbf{E}\right)\label{eq106-1} \end{equation} \]</div>
+<p>Then, using eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq88">(2.5-35)</a> and recalling that <span class="arithmatex">\(\rho_{r}\)</span> is constant, eq.\eqref{eq103-1} reduces to</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=J^{-1}\mathbf{F}\cdot\frac{d\Psi_{r}}{d\mathbf{E}}\cdot\mathbf{F}^{T}\,.\label{eq:hyperelastic-stress-E} \end{equation} \]</div>
+<p>This formula represents the constraint imposed by the second law of thermodynamics on the formulation of a constitutive relation for an elastic solid. For historical reasons, this formula is described as the <em>hyperelasticity</em> constraint. The method described for obtaining this formula was first proposed by Coleman and Noll in 1963 <sup id="fnref:2.6-1"><a class="footnote-ref" href="#fn:2.6-1">1</a></sup>. Prior to that formulation, other constitutive relations had been proposed for elastic solids (such as hypoelasticity), though it is now believed that the only thermodynamically valid formulation is the one given here.</p>
+<p>In hyperelasticity theory, since the free energy density <span class="arithmatex">\(\Psi_{r}\)</span> only depends on the strain, we may also call it the <em>strain energy density</em>. A common alternative symbol for the strain energy density is <span class="arithmatex">\(W\left(\mathbf{E}\right)\)</span>. Since it is common to include multiple state variables in a general formulation of <span class="arithmatex">\(\Psi_{r}\)</span> for a material, the derivative <span class="arithmatex">\(d\Psi_{r}/d\mathbf{E}\)</span> appearing in eq.\eqref{eq103-1} is often written as a partial derivative, <span class="arithmatex">\(\partial\Psi_{r}/\partial\mathbf{E}\)</span>. It is also common to use <span class="arithmatex">\(\mathbf{C}\)</span> instead of <span class="arithmatex">\(\mathbf{E}\)</span> as a suitable alternative measure of strain under finite deformation and rotation. In that case, based on eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq:E-C-relation">(2.5-21)</a>, the expression of eq.\eqref{eq103-1} takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=2J^{-1}\mathbf{F}\cdot\frac{\partial\Psi_{r}}{\partial\mathbf{C}}\cdot\mathbf{F}^{T}\,.\label{eq:hyperelastic-stress-C} \end{equation} \]</div>
+<h2 id="subsec:Other-Stress-Tensors">Other Stress Tensors<a class="headerlink" href="#subsec:Other-Stress-Tensors" title="Permanent link">&para;</a></h2>
+<p>The reaction force <span class="arithmatex">\(\mathbf{f}\)</span> exerted on a surface <span class="arithmatex">\(S\)</span> whose outward normal is <span class="arithmatex">\(\mathbf{n}\)</span> is given by</p>
+<div class="arithmatex">\[ \mathbf{f}=\int_{S}\mathbf{t}\,da=\int_{S}\boldsymbol{\sigma}\cdot\mathbf{n}\,da \]</div>
+<p>where <span class="arithmatex">\(da\)</span> is an elemental area of <span class="arithmatex">\(S\)</span> in the current configuration. Here, we used the relation between the traction vector <span class="arithmatex">\(\mathbf{t}\)</span> and the Cauchy stress <span class="arithmatex">\(\boldsymbol{\sigma}\)</span>, given in eq.<a href="../2.3-cauchy-stress/#mjx-eqn:eq:traction-stress-relation">(2.3-1)</a>. Note that the directed area <span class="arithmatex">\(d\mathbf{a}=\mathbf{n}\,da\)</span> in this integral may be related to <span class="arithmatex">\(d\mathbf{A}\)</span> in the reference configuration, using Nanson's formula in eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq:Nanson-formula">(2.5-46)</a> to produce</p>
+<div class="arithmatex">\[ \mathbf{f}=\int_{S_{r}}\boldsymbol{\sigma}\cdot J\mathbf{F}^{-T}\cdot d\mathbf{A}=\int_{S_{r}}J\boldsymbol{\sigma}\cdot\mathbf{F}^{-T}\cdot\mathbf{n}_{r}\,dA\,. \]</div>
+<p>Here, <span class="arithmatex">\(\mathbf{n}_{r}\)</span> is the unit outward normal on <span class="arithmatex">\(S_{r}\)</span> in the reference configuration. Equating these two forms of <span class="arithmatex">\(\mathbf{f}\)</span> and using the divergence theorem produces</p>
+<div class="arithmatex">\[ \mathbf{f}=\int_{V}\divg\boldsymbol{\sigma}\,dV=\int_{V_{r}}\Divg\left(J\boldsymbol{\sigma}\cdot\mathbf{F}^{-T}\right)dV_{r}\,, \]</div>
+<p>where the divergence operator in the material frame is denoted by <span class="arithmatex">\(\Divg\left(\cdot\right)\)</span>. The expression in the argument of this divergence operator is known as the <em>first Piola-Kirchhoff stress tensor,</em></p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{P}=J\boldsymbol{\sigma}\cdot\mathbf{F}^{-T}\,.\label{eq50} \end{equation} \]</div>
+<p>Note that <strong><span class="arithmatex">\(\mathbf{P}\)</span></strong>, like <strong><span class="arithmatex">\(\mathbf{F}\)</span></strong>, is not symmetric. Also, like <strong><span class="arithmatex">\(\mathbf{F}\)</span></strong>, <strong><span class="arithmatex">\(\mathbf{P}\)</span></strong> is known as a <em>two-point</em> tensor, meaning it is neither a material nor a spatial tensor. This is demonstrated more easily by expressing <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> in terms of its contravariant components <span class="arithmatex">\(\sigma^{ij}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\sigma^{ij}\mathbf{g}_{i}\otimes\mathbf{g}_{j}\label{eq:Cauchy-cov-cont} \end{equation} \]</div>
+<p>and noting that</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{F}^{-1}=\mathbf{G}_{i}\otimes\mathbf{g}^{i}\label{eq:Finv-cov-cont} \end{equation} \]</div>
+<p>so that the component form of <span class="arithmatex">\(\mathbf{P}\)</span> in eq.\eqref{eq50} reduces to</p>
+<div class="arithmatex">\[ \mathbf{P}=J\sigma^{ij}\left(\mathbf{g}_{i}\otimes\mathbf{g}_{j}\right)\cdot\left(\mathbf{g}^{k}\otimes\mathbf{G}_{k}\right)=J\sigma^{ij}\mathbf{g}_{i}\otimes\mathbf{G}_{j}\,, \]</div>
+<p>confirming that it is a two-point tensor.</p>
+<p>Two other stress measures are often used in continuum mechanics. Examining eq.\eqref{eq:hyperelastic-stress-E} or eq.\eqref{eq:hyperelastic-stress-C}, we may define the <em>second Piola-Kirchhoff (PK2) stress tensor</em> as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=J\mathbf{F}^{-1}\cdot\boldsymbol{\sigma}\cdot\mathbf{F}^{-T}\,,\label{eq51} \end{equation} \]</div>
+<p>where, for a hyperelastic material,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=\frac{\partial\Psi_{r}}{\partial\mathbf{E}}=2\frac{\partial\Psi_{r}}{\partial\mathbf{C}}\,.\label{eq:PK2-hyperelasticity} \end{equation} \]</div>
+<p>Substituting the component form of <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> in eq.\eqref{eq:Cauchy-cov-cont} into eq.\eqref{eq51}, and using \eqref{eq:Finv-cov-cont}, we find that</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=J\sigma^{ij}\mathbf{G}_{i}\otimes\mathbf{G}_{j}\,,\label{eq:PK2-cov-cont} \end{equation} \]</div>
+<p>showing that <span class="arithmatex">\(\mathbf{S}\)</span> is a material tensor. This component form suggests that may also define the <em>Kirchhoff stress tensor</em> as the spatial version of <span class="arithmatex">\(\mathbf{S}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\tau}=J\boldsymbol{\sigma}=J\sigma^{ij}\mathbf{g}_{i}\otimes\mathbf{g}_{j}\,.\label{eq49} \end{equation} \]</div>
+<p>Since <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> is symmetric, it follows that <span class="arithmatex">\(\boldsymbol{\tau}\)</span> is symmetric.</p>
+<p>The inverse relations for these various stresses are are</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\mathbf{\sigma}}=\frac{1}{J}\boldsymbol{\tau}\,,\quad\boldsymbol{\sigma}=\frac{1}{J}\mathbf{P}\cdot\mathbf{F}^{T}\,,\quad\boldsymbol{\sigma}=\frac{1}{J}\mathbf{F}\cdot\mathbf{S}\cdot\mathbf{F}^{T}\,.\label{eq52} \end{equation} \]</div>
+<h2 id="subsec:Stress-Directional-Derivative">Directional Derivative of the Stress<a class="headerlink" href="#subsec:Stress-Directional-Derivative" title="Permanent link">&para;</a></h2>
+<p>The directional derivative of the 2<span class="arithmatex">\(^{\mathrm{nd}}\)</span> PK stress tensor needs to be calculated for the linearization of the finite element equations. For a hyperelastic material, as expressed in \eqref{eq:PK2-hyperelasticity}, a linear relationship between the directional derivative of <span class="arithmatex">\(\mathbf{S}\)</span> and the linearized strain <span class="arithmatex">\(D\mathbf{E}\left[\mathbf{u}\right]\)</span> can be obtained:</p>
+<div class="arithmatex">\[ \begin{equation} D\mathbf{S}\left[\mathbf{u}\right]=\boldsymbol{\mathbb{C}}:D\mathbf{E}\left[\mathbf{u}\right]\,.\label{eq54} \end{equation} \]</div>
+<p>Here, <span class="arithmatex">\(\boldsymbol{\mathbb{C}}\)</span> is a fourth-order tensor known as the <em>material elasticity tensor</em>. Its Cartesian components and tensorial definition are given by</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbb{C}_{IJKL} &amp; =\frac{\partial S_{IJ}}{\partial E_{KL}}=\frac{4\partial^{2}\Psi_{r}}{\partial C_{IJ}\partial C_{KL}}\\ \boldsymbol{\mathbb{C}} &amp; =\frac{\partial\mathbf{S}}{\partial\mathbf{E}}=\frac{4\partial^{2}\Psi_{r}}{\partial\mathbf{C}\partial\mathbf{C}} \end{aligned} \,.\label{eq55} \end{equation} \]</div>
+<p>The spatial equivalent – the <em>spatial elasticity tensor</em> <span class="arithmatex">\(\boldsymbol{\mathcal{C}}\)</span> – can be obtained from</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathcal{C}_{ijkl} &amp; =\frac{1}{J}F_{iI}F_{jJ}F_{kK}F_{lL}\mathbb{C}_{IJKL}\\ \boldsymbol{\mathcal{C}} &amp; =\frac{1}{J}\left(\mathbf{F}\oslash\mathbf{F}\right):\boldsymbol{\mathbb{C}}:\left(\mathbf{F}^{T}\oslash\mathbf{F}^{T}\right) \end{aligned}.\label{eq56} \end{equation} \]</div>
+<h2 id="subsec:isotropic-hyperelasticity">Isotropic Hyperelasticity<a class="headerlink" href="#subsec:isotropic-hyperelasticity" title="Permanent link">&para;</a></h2>
+<p>The hyperelastic constitutive equations discussed so far are unrestricted in their application. Isotropic material symmetry is defined by requiring the constitutive behavior to be independent of any material axes. Consequently, <span class="arithmatex">\(\Psi_{r}\)</span> must only be a function of the invariants of <strong><span class="arithmatex">\(\mathbf{C}\)</span></strong> (or <span class="arithmatex">\(\mathbf{E}\)</span>),</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}=\Psi_{r}\left(I_{1},I_{2},I_{3}\right)\,,\label{eq:isotropic-SED} \end{equation} \]</div>
+<p>where the invariants of <span class="arithmatex">\(\mathbf{C}\)</span> are defined here as,</p>
+<div class="arithmatex">\[ \begin{equation} I_{1}=\tr\mathbf{C}=\mathbf{I}:\mathbf{C},\,I_{2}=\frac{1}{2}\left[\left(\tr\mathbf{C}\right)^{2}-\tr\mathbf{C}^{2}\right],\,I_{3}=\det\mathbf{C}=J^{2}\,.\label{eq:C-invariants} \end{equation} \]</div>
+<p>As a result of the isotropic restriction, the second Piola-Kirchhoff stress tensor can be written as,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=2\frac{\partial\Psi}{\partial\mathbf{C}}=2\frac{\partial\Psi}{\partial I_{1}}\frac{\partial I_{1}}{\partial\mathbf{C}}+2\frac{\partial\Psi}{\partial I_{2}}\frac{\partial I_{2}}{\partial\mathbf{C}}+2\frac{\partial\Psi}{\partial I_{3}}\frac{\partial I_{3}}{\partial\mathbf{C}}\,.\label{eq:PK2-isotropic} \end{equation} \]</div>
+<p>The second order tensors formed by the derivatives of the invariants with respect to <span class="arithmatex">\(\mathbf{C}\)</span> can be evaluated as</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial I_{1}}{\partial\mathbf{C}}=\mathbf{I}\,,\,\frac{\partial I_{2}}{\partial\mathbf{C}}=I_{1}\mathbf{I}-\mathbf{C}\,,\,\frac{\partial I_{3}}{\partial\mathbf{C}}=I_{3}\mathbf{C}^{-1}\,.\label{eq:C-invariant-deriv} \end{equation} \]</div>
+<p>Introducing expressions \eqref{eq:C-invariant-deriv} into equation \eqref{eq:PK2-isotropic} enables the second Piola-Kirchhoff stress to be evaluated as,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=2\left(\Psi_{1}+I_{1}\Psi_{2}+I_{2}\Psi_{3})\right)\mathbf{I}-2\left(\Psi_{2}+I_{1}\Psi_{3}\right)\mathbf{C}+\Psi_{3}\mathbf{C}^{2}\,,\label{eq:PK2-isotropic-final} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\Psi_{1}=\partial\Psi/\partial I_{1}\)</span>, <span class="arithmatex">\(\Psi_{2}=\partial\Psi/\partial I_{2}\)</span>, and <span class="arithmatex">\(\Psi_{3}=\partial\Psi/\partial I_{3}\)</span>.</p>
+<p>The Cauchy stresses can now be obtained from the second Piola-Kirchhoff stresses by using \eqref{eq52}:</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=J^{-1}\left(2\left(\Psi_{1}+I_{1}\Psi_{2}+I_{2}\Psi_{3})\right)\mathbf{b}-2\left(\Psi_{2}+I_{1}\Psi_{3}\right)\mathbf{b}^{2}+\Psi_{3}\mathbf{b}^{3}\right)\,,\label{eq:Cauchy-isotropic} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{b}=\mathbf{F}\cdot\mathbf{F}^{T}\,.\label{eq:left-Cauchy-Green} \end{equation} \]</div>
+<p>is the <em>left Cauchy-Green tensor</em>. Note that in this equation <span class="arithmatex">\(\Psi_{1}\)</span>, <span class="arithmatex">\(\Psi_{2}\)</span>, and <span class="arithmatex">\(\Psi_{3}\)</span> still involve derivatives with respect to the invariants of <strong><span class="arithmatex">\(\mathbf{C}\)</span></strong>. However, since the invariants of <strong><span class="arithmatex">\(\mathbf{b}\)</span></strong> are identical to those of <strong><span class="arithmatex">\(\mathbf{C}\)</span></strong>, the quantities<span class="arithmatex">\(\Psi_{1}\)</span>, <span class="arithmatex">\(\Psi_{2}\)</span> and <span class="arithmatex">\(\Psi_{3}\)</span> may also be considered to be the derivatives with respect to the invariants of <strong><span class="arithmatex">\(\mathbf{b}\)</span></strong>.</p>
+<h2 id="subsec:Isotropic-Elasticity-Principal">Isotropic Elasticity in Principal Directions<a class="headerlink" href="#subsec:Isotropic-Elasticity-Principal" title="Permanent link">&para;</a></h2>
+<p>For isotropic materials, the principal directions of the strain and stress tensors are the same. Let the eigenvalues of <span class="arithmatex">\(\mathbf{C}\)</span> be denoted by <span class="arithmatex">\(\lambda_{i}^{2}\)</span> (<span class="arithmatex">\(i=1,2,3)\)</span>, then the strain energy density may be given as a function of these eigenvalues, <span class="arithmatex">\(\Psi\left(\lambda_{1}^{2},\lambda_{2}^{2},\lambda_{3}^{2}\right)\)</span>. To derive the expression for the stress, recognize that</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial\lambda_{i}^{2}}{\partial\mathbf{C}}=\mathbf{N}_{i}\otimes\mathbf{N}_{i}\equiv\mathbf{A}_{i}\,,\label{eq68} \end{equation} \]</div>
+<p>where the <span class="arithmatex">\(\mathbf{N}_{i}\)</span> are the eigenvectors of <span class="arithmatex">\(\mathbf{C}\)</span>. It follows that the second Piola-Kirchhoff stress may be represented as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=\sum\limits_{i=1}^{3}S_{i}\mathbf{A}_{i}\,,\label{eq69} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} S_{i}=2\frac{\partial\Psi}{\partial\lambda_{i}^{2}}\,.\label{eq70} \end{equation} \]</div>
+<p>To evaluate the material elasticity tensor, recognize that</p>
+<div class="arithmatex">\[ \begin{equation} \frac{\partial\mathbf{A}_{i}}{\partial\mathbf{C}}=\frac{1}{\lambda_{i}^{2}-\lambda_{j}^{2}}\left(\mathbf{A}_{i}\odot\mathbf{A}_{j}+\mathbf{A}_{j}\odot\mathbf{A}_{i}\right)+\frac{1}{\lambda_{i}^{2}-\lambda_{k}^{2}}\left(\mathbf{A}_{i}\odot\mathbf{A}_{k}+\mathbf{A}_{k}\odot\mathbf{A}_{i}\right)\,,\label{eq71} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(i,j,k\)</span> form a permutation over <span class="arithmatex">\(1,2,3\)</span>. Then it can be shown that the material elasticity tensor is given by</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\boldsymbol{\mathbb{C}} &amp; =\sum\limits_{i=1}^{3}4\frac{\partial^{2}\Psi}{\partial\lambda_{i}^{2}\partial\lambda_{i}^{2}}\mathbf{A}_{i}\otimes\mathbf{A}_{i}\\ &amp; +\sum\limits_{i=1}^{3}\sum\limits_{j=i+1}^{3}4\frac{\partial^{2}\Psi}{\partial\lambda_{i}^{2}\partial\lambda_{j}^{2}}\left(\mathbf{A}_{i}\otimes\mathbf{A}_{j}+\mathbf{A}_{j}\otimes\mathbf{A}_{i}\right)\\ &amp; +\sum\limits_{i=1}^{3}\sum\limits_{j=i+1}^{3}2\frac{S_{i}-S_{j}}{\lambda_{i}^{2}-\lambda_{j}^{2}}\left(\mathbf{A}_{i}\odot\mathbf{A}_{j}+\mathbf{A}_{j}\odot\mathbf{A}_{i}\right) \end{aligned} \,.\label{eq72} \end{equation} \]</div>
+<p>When eigenvalues coincide, L'Hospital's rule may be used to evaluate the coefficient in the last term,</p>
+<div class="arithmatex">\[ \begin{equation} \lim\limits_{\lambda_{j}^{2}\to\lambda_{i}^{2}}2\frac{S_{i}-S_{j}}{\lambda_{i}^{2}-\lambda_{j}^{2}}=4\left(\frac{\partial^{2}\Psi}{\partial\lambda_{j}^{2}\partial\lambda_{j}^{2}}-\frac{\partial^{2}\Psi}{\partial\lambda_{i}^{2}\partial\lambda_{j}^{2}}\right)\,.\label{eq73} \end{equation} \]</div>
+<p>The double summations in eq.\eqref{eq72} are arranged such that the summands represent fourth-order tensors with major and minor symmetries.</p>
+<p>In the spatial frame, the Cauchy stress is given by</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=\sum\limits_{i=1}^{3}\sigma_{i}\mathbf{a}_{i}\,,\label{eq:IEPD-stress} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{a}_{i}=\mathbf{n}_{i}\otimes\mathbf{n}_{i}\,,\label{eq:IEPD-tensor-basis} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\mathbf{n}_{i}=\left(\mathbf{F}\cdot\mathbf{N}_{i}\right)/\lambda_{i}\)</span> are the eigenvectors of <span class="arithmatex">\(\mathbf{b}\)</span>. The principal normal stresses are</p>
+<div class="arithmatex">\[ \begin{equation} \sigma_{i}=\frac{\lambda_{i}}{J}\frac{\partial\Psi}{\partial\lambda_{i}}\,.\label{eq:IEPD-principal-stress} \end{equation} \]</div>
+<p>The spatial elasticity tensor is given by</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\boldsymbol{\mathcal{C}} &amp; =\sum\limits_{i=1}^{3}\left(J^{-1}\lambda_{i}^{2}\frac{\partial^{2}\Psi}{\partial\lambda_{i}^{2}}-\sigma_{i}\right)\mathbf{a}_{i}\otimes\mathbf{a}_{i}\\ &amp; +\sum\limits_{i=1}^{3}\sum\limits_{j=i+1}^{3}J^{-1}\lambda_{i}\lambda_{j}\frac{\partial^{2}\Psi}{\partial\lambda_{i}\partial\lambda_{j}}\left(\mathbf{a}_{i}\otimes\mathbf{a}_{j}+\mathbf{a}_{j}\otimes\mathbf{a}_{i}\right)\\ &amp; +\sum\limits_{i=1}^{3}\sum\limits_{j=i+1}^{3}2\frac{\lambda_{j}^{2}\sigma_{i}-\lambda_{i}^{2}\sigma_{j}}{\lambda_{i}^{2}-\lambda_{j}^{2}}\left(\mathbf{a}_{i}\odot\mathbf{a}_{j}+\mathbf{a}_{j}\odot\mathbf{a}_{i}\right) \end{aligned} \,.\label{eq:IEPD-elasticity} \end{equation} \]</div>
+<h2 id="subsec:Transversely-Isotropic-Hyperelas">Transversely Isotropic Hyperelasticity<a class="headerlink" href="#subsec:Transversely-Isotropic-Hyperelas" title="Permanent link">&para;</a></h2>
+<p>Transverse isotropy can be introduced by adding a vector field representing the material preferred direction explicitly into the strain energy <sup id="fnref:2.6-2"><a class="footnote-ref" href="#fn:2.6-2">2</a></sup>. We require that the strain energy depends on a unit vector field <span class="arithmatex">\(\mathbf{A}\)</span>, which describes the local fiber direction in the undeformed configuration. When the material undergoes deformation, the vector <span class="arithmatex">\(\mathbf{A}\left(\mathbf{X}\right)\)</span> may be described by a unit vector field <span class="arithmatex">\(\mathbf{a}\left(\boldsymbol{\varphi}\left(\mathbf{X}\right)\right)\)</span>. In general, the fibers will also undergo length change. The fiber stretch, <span class="arithmatex">\(\lambda\)</span>, can be determined in terms of the deformation gradient and the fiber direction in the undeformed configuration,</p>
+<div class="arithmatex">\[ \begin{equation} \lambda\mathbf{a}=\mathbf{F}\cdot\mathbf{A}\,.\label{eq95} \end{equation} \]</div>
+<p>Also, since <span class="arithmatex">\(\mathbf{a}\)</span> is a unit vector,</p>
+<div class="arithmatex">\[ \begin{equation} \lambda^{2}=\mathbf{A}\cdot\mathbf{C}\cdot\mathbf{A}\,.\label{eq96} \end{equation} \]</div>
+<p>The strain energy function for a transversely isotropic material, <span class="arithmatex">\(\Psi\left(\mathbf{C},\mathbf{A},\mathbf{X}\right)\)</span> is an isotropic function of <span class="arithmatex">\(\mathbf{C}\)</span> and <span class="arithmatex">\(\mathbf{A}\otimes\mathbf{A}\)</span>. It can be shown <sup id="fnref:2.6-3"><a class="footnote-ref" href="#fn:2.6-3">3</a></sup> that the following set of invariants are sufficient to describe the material fully:</p>
+<div class="arithmatex">\[ \begin{equation} I_{1}=\tr\mathbf{C}\,,\quad I_{2}=\frac{1}{2}\left[\left(\tr\mathbf{C}\right)^{2}-\tr\mathbf{C}^{2}\right]\,,\quad I_{3}=\det C=J^{2}\,,\label{eq97} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} I_{4}=\mathbf{A}\cdot\mathbf{C}\cdot\mathbf{A}\,,\quad I_{5}=\mathbf{A}\cdot\mathbf{C}^{2}\cdot\mathbf{A}\,.\label{eq98} \end{equation} \]</div>
+<p>The strain energy function can be written in terms of these invariants such that</p>
+<div class="arithmatex">\[ \begin{equation} \Psi\left(\mathbf{C},\mathbf{A},\mathbf{X}\right)=\Psi\left(I_{1}\left(\mathbf{C}\right),I_{2}\left(\mathbf{C}\right),I_{3}\left(\mathbf{C}\right),I_{4}\left(\mathbf{C},\mathbf{A}\right),I_{5}\left(\mathbf{C},\mathbf{A}\right)\right)\,.\label{eq99} \end{equation} \]</div>
+<p>The second Piola-Kirchhoff can now be obtained in the standard manner:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=2\frac{\partial\Psi}{\partial\mathbf{C}}=2\sum\limits_{i=1}^{5}\frac{\partial\Psi}{\partial I_{i}}\frac{\partial I_{i}}{\partial\mathbf{C}}\,.\label{eq100} \end{equation} \]</div>
+<p>In the transversely isotropic constitutive models described in Chapter <a href="../../chapter5/5.1-linear-elasticity/">5</a> it is further assumed that the strain energy function can be split into the following terms:</p>
+<div class="arithmatex">\[ \begin{equation} \Psi\left(\mathbf{C},\mathbf{A}\right)=\Psi_{1}\left(I_{1},I_{2},I_{3}\right)+\Psi_{2}\left(I_{4}\right)+\Psi_{3}\left(I_{1},I_{2},I_{3}I_{4}\right)\,.\label{eq101} \end{equation} \]</div>
+<p>The strain energy function <span class="arithmatex">\(\Psi_{1}\)</span> represents the material response of the isotropic ground substance matrix, <span class="arithmatex">\(\Psi_{2}\)</span> represents the contribution from the fiber family (e.g. collagen), and <span class="arithmatex">\(\Psi_{3}\)</span> is the contribution from interactions between the fibers and matrix. The form \eqref{eq101} generalizes many constitutive equations that have been successfully used in the past to describe biological soft tissues e.g. <sup id="fnref:2.6-4"><a class="footnote-ref" href="#fn:2.6-4">4</a></sup><sup id="fnref:2.6-5"><a class="footnote-ref" href="#fn:2.6-5">5</a></sup><sup id="fnref:2.6-6"><a class="footnote-ref" href="#fn:2.6-6">6</a></sup>. While this relation represents a large simplification when compared to the general case, it also embodies almost all of the material behavior that one would expect from transversely isotropic, large deformation matrix-fiber composites.</p>
+<h2 id="subsec:Incompressibility">Incompressibility<a class="headerlink" href="#subsec:Incompressibility" title="Permanent link">&para;</a></h2>
+<p>A material is incompressible when its mass density remains constant, <span class="arithmatex">\(\rho=\rho_{r}\)</span>, or equivalently according to eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq87">(2.5-34)</a>, its relative volume satisfies</p>
+<div class="arithmatex">\[ \begin{equation} J=1\label{eq:incompressibility-constraint} \end{equation} \]</div>
+<p>everywhere throughout the material. No real material is truly incompressible, since true incompressibility implies that the speed of sound in that medium is infinite, which is not physically possible. Thus, one should view this assumption as an idealization of the behavior of real materials. We may replace eq.\eqref{eq:incompressibility-constraint} with the equivalent form <span class="arithmatex">\(\dot{J}=0\)</span>, and make use of eq.<a href="../2.5-kinematics-of-the-continuum/#mjx-eqn:eq91-1">(2.5-38)</a> in the form</p>
+<div class="arithmatex">\[ \begin{equation} \divg\mathbf{v}=\mathbf{I}:\mathbf{D}=0\,,\label{eq:incompressibility-redux} \end{equation} \]</div>
+<p>where we recognized that the divergence of the velocity is equal to the trace of the velocity gradient <span class="arithmatex">\(\mathbf{L}\)</span>, hence, the trace of its symmetric part <span class="arithmatex">\(\mathbf{D}\)</span>.</p>
+<p>Since <span class="arithmatex">\(J=\left(\det\mathbf{C}\right)^{1/2}\)</span>, the incompressibility constraint of eq.\eqref{eq:incompressibility-constraint} implies that the symmetric strain tensor <span class="arithmatex">\(\mathbf{E}=\frac{1}{2}\left(\mathbf{C}-\mathbf{I}\right)\)</span> used as a state variable in the derivation of the hyperelasticity relation (see Section <a href="#subsec:Constitutive-Restrictions">Constitutive Restrictions</a>) does not truly have six independent components. Therefore, we cannot claim that <span class="arithmatex">\(\mathbf{E}\)</span> can vary arbitrarily when enforcing the entropy inequality. Instead, we introduce the incompressibility constraint of eq.\eqref{eq:incompressibility-redux} into the Clausius-Duhem inequality, eq.<a href="../2.4-axioms-of-conservation/#mjx-eqn:eq:Clausius-Duhem-inequality">(2.4-9)</a>, using the method of Lagrange multipliers,</p>
+<div class="arithmatex">\[ -\rho\left(\dot{\psi}+\eta\dot{\theta}\right)+\left(\boldsymbol{\sigma}+\lambda\mathbf{I}\right):\mathbf{D}-\frac{1}{\theta}\mathbf{q}\cdot\grad\theta\geqslant0\,, \]</div>
+<p>where <span class="arithmatex">\(\lambda\)</span> is the Lagrange multiplier. Now, we may proceed with the constitutive assumption that <span class="arithmatex">\(\psi=\psi\left(\mathbf{E}\right)\)</span>, as done in Section <a href="#subsec:Constitutive-Restrictions">Constitutive Restrictions</a>, until we conclude that the stress <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> is constrained to have the form</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=p\mathbf{I}+2J^{-1}\mathbf{F}\cdot\frac{\partial\Psi_{r}}{\partial\mathbf{C}}\cdot\mathbf{F}^{T}\,,\quad p\equiv-\lambda\,.\label{eq:Cauchy-hyperelastic-incomp} \end{equation} \]</div>
+<p>This expression shows that the incompressibility constraint requires us to have a parameter <span class="arithmatex">\(p\)</span> (a pressure) that accounts for that part of the strain energy density that would normally be stored in the material as a result of volumetric strain. Analytically, we would solve for this additional scalar parameter <span class="arithmatex">\(p\)</span> using the constraint of eq.\eqref{eq:incompressibility-constraint}. Finally, substituting eq.\eqref{eq:Cauchy-hyperelastic-incomp} into eq.\eqref{eq51}, the PK2 stress in an incompressible material takes the form</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=Jp\mathbf{C}^{-1}+2\frac{\partial\Psi_{r}}{\partial\mathbf{C}}\,.\label{eq:PK2-hyperelastic-incomp} \end{equation} \]</div>
+<h2 id="subsec:Nearly-Incompressible-Hyperelast">Nearly-Incompressible Hyperelasticity<a class="headerlink" href="#subsec:Nearly-Incompressible-Hyperelast" title="Permanent link">&para;</a></h2>
+<p>When dealing with incompressible and nearly incompressible materials, it proves useful to separate the volumetric and the deviatoric (distortional) components of the deformation gradient <span class="arithmatex">\(\mathbf{F}\)</span>. Such a separation must ensure that the deviatoric part of the deformation gradient, namely <span class="arithmatex">\(\mathbf{\tilde{F}}\)</span>, does not produce any change in volume. Noting that the determinant of the deformation gradient gives the volume ratio, the determinant of <span class="arithmatex">\(\mathbf{\tilde{F}}\)</span> must therefore satisfy,</p>
+<div class="arithmatex">\[ \begin{equation} \det\mathbf{\tilde{F}}=1\,.\label{eq38} \end{equation} \]</div>
+<p>This condition can be achieved by choosing <span class="arithmatex">\(\mathbf{\tilde{F}}\)</span> as,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{\tilde{F}}=J^{-1/3}\mathbf{F}\,.\label{eq39} \end{equation} \]</div>
+<p>The right Cauchy-Green tensor can also be split into volumetric and deviatoric components. With the use of,\eqref{eq39} the deviatoric right Cauchy-Green tensor is given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{\tilde{C}}=\tilde{\mathbf{F}}^{T}\cdot\tilde{\mathbf{F}}=J^{-2/3}\mathbf{C}\,.\label{eq43-1} \end{equation} \]</div>
+<p>The process of defining constitutive equations in the case of nearly incompressible hyperelasticity is simplified by uncoupling the strain energy density <span class="arithmatex">\(\Psi_{r}\left(\mathbf{C}\right)\)</span> into a volumetric energy component <span class="arithmatex">\(U\left(J\right)\)</span> and a distortional component <span class="arithmatex">\(\tilde{\Psi}\left(\mathbf{C}\right)\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \Psi\left(\mathbf{C}\right)=\tilde{\Psi}\left(\mathbf{C}\right)+U\left(J\right)\,.\label{eq:UC-SED} \end{equation} \]</div>
+<p>The second Piola-Kirchhoff tensor for a material defined by \eqref{eq:UC-SED} is obtained in the standard manner with the help of equation \eqref{eq:PK2-isotropic}.</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbf{S} &amp; =2\frac{\partial\Psi}{\partial\mathbf{C}}\\ &amp; =2\frac{\partial\tilde{\Psi}}{\partial\mathbf{C}}+2\frac{dU}{dJ}\frac{\partial J}{\partial C}\\ &amp; =2\frac{\partial\tilde{\Psi}}{\partial\mathbf{C}}+pJ\mathbf{C}^{-1} \end{aligned} \,,\label{eq:UC-PK2-redux} \end{equation} \]</div>
+<p>where the pressure <span class="arithmatex">\(p\)</span> is defined as</p>
+<div class="arithmatex">\[ \begin{equation} p=\frac{dU}{dJ}\,.\label{eq:UC-p} \end{equation} \]</div>
+<p>An example for <span class="arithmatex">\(U\)</span> that will be used later in the definition of the constitutive models is</p>
+<div class="arithmatex">\[ \begin{equation} U\left(J\right)=\frac{1}{2}\kappa\left(\ln J\right)^{2}\,.\label{eq:UC-U-exa} \end{equation} \]</div>
+<p>The parameter <span class="arithmatex">\(\kappa\)</span> will be used later as a penalty factor that will enforce the (nearly-) incompressible constraint. However, <span class="arithmatex">\(\kappa\)</span> can represent a true material coefficient, namely the bulk modulus, for a compressible material that happens to have a hyperelastic strain energy function in the form of \eqref{eq:UC-SED}. In the case where the dilatational energy is given by \eqref{eq:UC-U-exa}, the pressure is</p>
+<div class="arithmatex">\[ \begin{equation} p=\kappa\frac{\ln J}{J}\,.\label{eq:UC-p-exa} \end{equation} \]</div>
+<p>Equation \eqref{eq:UC-PK2-redux} can be further developed by applying the chain rule to the first term:</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{S}=pJ\mathbf{C}^{-1}+J^{-2/3}\dev\tilde{\mathbf{S}}\,,\label{eq:UC-PK2-redux2} \end{equation} \]</div>
+<p>where the <em>fictitious second Piola-Kirchoff</em> tensor <sup id="fnref:2.6-7"><a class="footnote-ref" href="#fn:2.6-7">7</a></sup> is defined by,</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\mathbf{S}}=2\frac{\partial\tilde{\Psi}}{\partial\tilde{\mathbf{C}}}\,,\label{eq:UC-PK2-tilde} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\Dev\)</span> is the deviator operator in the reference frame:</p>
+<div class="arithmatex">\[ \begin{equation} \Dev\left(\cdot\right)=\left(\cdot\right)-\frac{1}{3}\left(\left(\cdot\right):\mathbf{C}\right)\mathbf{C}^{-1}.\label{eq:UC-Dev} \end{equation} \]</div>
+<p>The Cauchy stress can then be obtained from eq.\eqref{eq52}<span class="arithmatex">\(_{\mathrm{3}}\)</span>:</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=p\mathbf{I}+\dev\tilde{\boldsymbol{\sigma}}\,,\label{eq:UC-Cauchy-stress} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\boldsymbol{\sigma}}=\frac{2}{J}\mathbf{\tilde{F}}\cdot\frac{\partial\tilde{\Psi}}{\partial\mathbf{\tilde{C}}}\cdot\mathbf{\tilde{F}}^{T}\,,\label{eq:UC-Cauchy-stress-tilde} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \dev\left(\cdot\right)=\left(\cdot\right)-\frac{1}{3}\left(\left(\cdot\right):\mathbf{I}\right)\mathbf{I}\label{eq:UC-dev} \end{equation} \]</div>
+<p>is the deviator operator in the spatial frame.</p>
+<p>The following expression will be useful in the following development.</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{d\tilde{C}_{IJ}}{dC_{KL}} &amp; =J^{-2/3}\left(\frac{1}{2}\left(\delta_{IK}\delta_{JL}+\delta_{IL}\delta_{JK}\right)-\frac{1}{3}\tilde{C}_{IJ}\tilde{C}_{KL}^{-1}\right)\\ \frac{\partial\tilde{\mathbf{C}}}{\partial\mathbf{C}} &amp; =J^{-2/3}\left(\mathbf{I}\odot\mathbf{I}-\frac{1}{3}\tilde{\mathbf{C}}\otimes\tilde{\mathbf{C}}^{-1}\right) \end{aligned} \,.\label{eq89} \end{equation} \]</div>
+<p>Notice that the contraction with a symmetric tensor <strong><span class="arithmatex">\(\mathbf{A}\)</span></strong> results in,</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{d\tilde{C}_{IJ}}{dC_{KL}}A_{IJ} &amp; =J^{-2/3}\Dev A_{KL}\\ \mathbf{A}:\frac{\partial\tilde{\mathbf{C}}}{\partial\mathbf{C}} &amp; =J^{-2/3}\Dev\mathbf{A} \end{aligned} \,.\label{eq90} \end{equation} \]</div>
+<p>The elasticity tensor, defined in \eqref{eq55}, takes on the following form.</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\mathbb{C}_{IJKL} &amp; =\left(J^{2}\frac{dp}{dJ}+Jp\right)C_{IJ}^{-1}C_{KL}^{-1}-2pJ\mathcal{I}_{IJKL}\\ &amp; -\frac{2}{3}J^{-2/3}\left(\Dev\tilde{S}_{IJ}C_{KL}^{-1}+C_{IJ}^{-1}\Dev\tilde{S}_{KL}\right)\\ &amp; +\frac{2}{3}\tilde{S}_{RS}\tilde{C}_{RS}\left(\mathcal{I}_{IJKL}-\frac{1}{3}C_{KL}^{-1}C_{IJ}^{-1}\right)+J^{-4/3}\hat{\mathbb{C}}_{IJKL}\\ \boldsymbol{\mathbb{C}} &amp; =\left(J^{2}\frac{dp}{dJ}+Jp\right)\mathbf{C}^{-1}\otimes\mathbf{C}^{-1}-2pJ\boldsymbol{\mathcal{I}}\\ &amp; -\frac{2}{3}J^{-2/3}\left(\Dev\tilde{\mathbf{S}}\otimes\mathbf{C}^{-1}+\mathbf{C}^{-1}\otimes\Dev\tilde{\mathbf{S}}\right)\\ &amp; +\frac{2}{3}\left(\tilde{\mathbf{S}}:\tilde{\mathbf{C}}\right)\left(\boldsymbol{\mathcal{I}}-\frac{1}{3}\mathbf{C}^{-1}\otimes\mathbf{C}^{-1}\right)+J^{-4/3}\hat{\boldsymbol{\mathbb{C}}} \end{aligned} \,,\label{eq91} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\hat{\mathcal{\mathbb{C}}}_{IJKL} &amp; =\tilde{\mathcal{\mathbb{C}}}_{IJKL}-\frac{1}{3}\left(\tilde{\mathcal{\mathbb{C}}}_{IJRS}\tilde{C}_{RS}\tilde{C}_{KL}^{-1}+\tilde{\mathcal{\mathbb{C}}}_{RSKL}\tilde{C}_{RS}\tilde{C}_{IJ}^{-1}\right)+\frac{1}{9}\tilde{C}_{IJ}^{-1}\tilde{C}_{RS}\tilde{\mathbb{C}}_{RSMN}\tilde{C}_{MN}\tilde{C}_{KL}^{-1}\\ \hat{\mathcal{\boldsymbol{\mathbb{C}}}} &amp; =\tilde{\mathcal{\boldsymbol{\mathbb{C}}}}-\frac{1}{3}\left(\tilde{\mathcal{\boldsymbol{\mathbb{C}}}}:\tilde{\mathbf{C}}\otimes\tilde{\mathbf{C}}^{-1}+\tilde{\mathbf{C}}^{-1}\otimes\tilde{\mathbf{C}}:\tilde{\boldsymbol{\mathcal{\mathbb{C}}}}\right)+\frac{1}{9}\tilde{\mathbf{C}}^{-1}\otimes\tilde{\mathbf{C}}:\tilde{\boldsymbol{\mathbb{C}}}:\tilde{\mathbf{C}}\otimes\tilde{\mathbf{C}}^{-1} \end{aligned} \,.\label{eq92} \end{equation} \]</div>
+<p>The spatial elasticity tensor follows from</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\boldsymbol{\mathcal{C}} &amp; =\left(J\frac{dp}{dJ}+p\right)\mathbf{I}\otimes\mathbf{I}-2p\mathbf{I}\odot\mathbf{I}\\ &amp; -\frac{2}{3}\left(\dev\tilde{\boldsymbol{\sigma}}\otimes\mathbf{I}+\mathbf{I}\otimes\dev\tilde{\boldsymbol{\sigma}}\right)\\ &amp; +\frac{2}{3}\left(\tilde{\boldsymbol{\sigma}}:\mathbf{I}\right)\left(\mathbf{I}\odot\mathbf{I}-\frac{1}{3}\mathbf{I}\otimes\mathbf{I}\right)+\hat{\mathcal{\boldsymbol{C}}} \end{aligned} \,,\label{eq:UC-spatial-elasticity} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\hat{\mathcal{C}}_{ijkl} &amp; =\frac{1}{J}\tilde{F}_{iI}\tilde{F}_{jJ}\tilde{F}_{kK}\tilde{F}_{lL}\hat{\mathcal{\mathbb{C}}}_{IJKL}\\ \hat{\boldsymbol{\mathcal{C}}} &amp; =\frac{1}{J}\left(\tilde{\mathbf{F}}\oslash\tilde{\mathbf{F}}\right):\hat{\boldsymbol{\mathbb{C}}}:\left(\tilde{\mathbf{F}}^{T}\oslash\tilde{\mathbf{F}}^{T}\right)\\ &amp; =\tilde{\boldsymbol{\mathcal{C}}}-\frac{1}{3}\left(\mathbf{I}\otimes\mathbf{I}:\tilde{\boldsymbol{\mathcal{C}}}+\tilde{\boldsymbol{\mathcal{C}}}:\mathbf{I}\otimes\mathbf{I}\right)+\frac{1}{9}\left(\mathbf{I}:\tilde{\boldsymbol{\mathcal{C}}}:\mathbf{I}\right)\mathbf{I}\otimes\mathbf{I} \end{aligned} \,.\label{eq:UC-spatial-elasticity-hat} \end{equation} \]</div>
+<h2 id="subsec:Tension-Bearing-Fiber-Materials">Tension-Bearing Fiber Materials<a class="headerlink" href="#subsec:Tension-Bearing-Fiber-Materials" title="Permanent link">&para;</a></h2>
+<p>In biomechanics we often find it convenient to model fibrous or fibrillar materials using one-dimensional fibers that can only sustain tension. Typically, such fibers are represented with a strain energy density function</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}\left(\mathbf{C}\right)=H\left(I_{n}-1\right)\Psi_{n}\left(I_{n}\right)\,,\quad I_{n}=\mathbf{n}_{r}\cdot\mathbf{C}\cdot\mathbf{n}_{r}\label{eq:fiber-model} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{n}_{r}\)</span> is the unit vector along the fiber in its reference configuration, and <span class="arithmatex">\(I_{n}\)</span> is the square of the stretch ratio along the fiber. The Heaviside unit step function <span class="arithmatex">\(H\left(I_{n}-1\right)\)</span> in eq.\eqref{eq:fiber-model} ensures that the fiber contributes strain energy only when it is under tension (<span class="arithmatex">\(I_{n}&gt;1\)</span>); thus, the constitutive model <span class="arithmatex">\(\Psi_{n}\left(I_{n}\right)\)</span> for the tensile response of the fiber must reduce to zero when <span class="arithmatex">\(I_{n}=1\)</span>.</p>
+<p>Using the hyperelasticity relations presented above, the Cauchy stress in this fiber material can be evaluated as</p>
+<div class="arithmatex">\[ \begin{equation} \boldsymbol{\sigma}=H\left(I_{n}-1\right)2J^{-1}\frac{d\Psi_{n}}{dI_{n}}\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\otimes\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\,,\label{eq:fiber-stress} \end{equation} \]</div>
+<p>and the spatial elasticity tensor is</p>
+<div class="arithmatex">\[ \begin{equation} \mathcal{C}=4J^{-1}\frac{d^{2}\Psi_{n}}{dI_{n}^{2}}\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\otimes\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\otimes\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\otimes\left(\mathbf{F}\cdot\mathbf{n}_{r}\right)\,.\label{eq:fiber-elasticity} \end{equation} \]</div>
+<p>If we denote the unit vector along the fiber in the current configuration as <span class="arithmatex">\(\mathbf{n}\equiv I_{n}^{-1/2}\mathbf{F}\cdot\mathbf{n}_{r}\)</span>, the above expressions may be rewritten as <span class="arithmatex">\(\boldsymbol{\sigma}=H\left(I_{n}-1\right)2J^{-1}I_{n}\Psi_{n}^{\prime}\left(I_{n}\right)\mathbf{n}\otimes\mathbf{n}\)</span> and <span class="arithmatex">\(\mathcal{C}=4J^{-1}I_{n}^{2}\Psi_{n}^{\prime\prime}\left(I_{n}\right)\mathbf{n}\otimes\mathbf{n}\otimes\mathbf{n}\otimes\mathbf{n}\)</span>. As explained in <sup id="fnref:2.6-8"><a class="footnote-ref" href="#fn:2.6-8">8</a></sup>, these fiber models must be combined with a ground matrix in order to produce a stable material response. In FEBio this can be done by using a constrained mixture of solid constituents (for example, see Section <a href="../2.10-constrained-reactive-mixture-of-solids/#subsec:Simple-Solid-Mixtures">Simple Solid Mixtures</a>).</p>
+<p>In the classical fiber mechanics literature it was suggested that uncoupled fiber formulations could also be implemented, whereby</p>
+<div class="arithmatex">\[ \begin{equation} \Psi_{r}\left(\mathbf{C}\right)=H\left(\tilde{I}_{n}-1\right)\tilde{\Psi}_{n}\left(\tilde{I}_{n}\right)+U\left(J\right)\,,\quad\tilde{I}_{n}=\mathbf{n}_{r}\cdot\tilde{\mathbf{C}}\cdot\mathbf{n}_{r}\,,\label{eq:fiber-model-UC} \end{equation} \]</div>
+<p>and the Cauchy stress <span class="arithmatex">\(\boldsymbol{\sigma}\)</span> is given by eq.\eqref{eq:UC-Cauchy-stress} where</p>
+<div class="arithmatex">\[ \begin{equation} \tilde{\boldsymbol{\sigma}}=H\left(\tilde{I}_{n}-1\right)2J^{-1}\frac{d\tilde{\Psi}_{n}}{d\tilde{I}_{n}}\left(\tilde{\mathbf{F}}\cdot\mathbf{n}_{r}\right)\otimes\left(\tilde{\mathbf{F}}\cdot\mathbf{n}_{r}\right)\,.\label{eq:fiber-stress-UC} \end{equation} \]</div>
+<p>Uncoupled fiber formulations of this kind are available in FEBio. More recently however, several studies have demonstrated that using <span class="arithmatex">\(H\left(\tilde{I}_{n}-1\right)\)</span> to detect whether a fiber is in tension or compression is non-physical, since <span class="arithmatex">\(\tilde{I}_{n}\ne I_{n}\)</span> and <span class="arithmatex">\(I_{n}\)</span> is the sole true measure of the tensile stretch in the fiber <sup id="fnref:2.6-9"><a class="footnote-ref" href="#fn:2.6-9">9</a></sup><sup id="fnref:2.6-10"><a class="footnote-ref" href="#fn:2.6-10">10</a></sup><sup id="fnref:2.6-11"><a class="footnote-ref" href="#fn:2.6-11">11</a></sup>. Therefore, uncoupled fiber formulations have fallen out of favor, even though FEBio still allows users to employ these for historical reasons. It is now recommended to use the standard (unconstrained) fiber models, also available in FEBio, with the formulation given in Eqs.\eqref{eq:fiber-model}-\eqref{eq:fiber-elasticity}, even when the ground matrix uses an uncoupled formulation.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:2.6-1">
+<p>Coleman, Bernard D; Noll, Walter. "The thermodynamics of elastic materials with heat conduction and viscosity." <em>Arch Ration Mech An</em>, vol. 13, pp. 167--178 (1963).&#160;<a class="footnote-backref" href="#fnref:2.6-1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-2">
+<p>Weiss, J.A.; Maker, B.N.; Govindjee, S.. "Finite element implementation of incompressible, transversely isotropic hyperelasticity." <em>Computer Methods in Applications of Mechanics and Engineering</em>, vol. 135, pp. 107-128 (1996).&#160;<a class="footnote-backref" href="#fnref:2.6-2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-3">
+<p>Spencer, Anthony James Merril. "Continuum Theory of the Mechanics of Fibre-Reinforced Composites." <em>Springer-Verlag</em> (1984).&#160;<a class="footnote-backref" href="#fnref:2.6-3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-4">
+<p>Horowitz, A.; Sheinman, I.; Lanir, Y.; Perl, M.; Sideman, S.. "Nonlinear Incompressilbe Finite Element for Simulating Loading of Cardiac Tissue- part I: two Dimensional Formulation for Thin Myocardial Strips." <em>Journal of Biomechanical Engineering, Transactions of the ASME</em>, vol. 110, pp. 57-61 (1988).&#160;<a class="footnote-backref" href="#fnref:2.6-4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-5">
+<p>Humphrey, J. D.; Strumpf, R. K.; Yin, F. C. P.. "Determination of a constitutive relation for passive myocardium. I. A new functional form." <em>Journal of Biomechanical Engineering, Transactions of the ASME</em>, vol. 112, pp. 333-339 (1990).&#160;<a class="footnote-backref" href="#fnref:2.6-5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-6">
+<p>Humphrey, J. D.; Yin, F. C. P.. "On constitutive Relations and Finite Deformations of Passive Cardiac Tissue: I. A Pseudostrain-Energy Function." <em>Journal of Biomechanical Engineering, Transactions of the ASME</em>, vol. 109, pp. 298-304 (1987).&#160;<a class="footnote-backref" href="#fnref:2.6-6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-7">
+<p>Holzapfel, Gerhard A. "Nonlinear solid mechanics: a continuum approach for engineering." <em>Wiley</em> (2000).&#160;<a class="footnote-backref" href="#fnref:2.6-7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-8">
+<p>Ateshian, G. A.. "Anisotropy of fibrous tissues in relation to the distribution of tensed and buckled fibers." <em>J Biomech Eng</em>, vol. 129, pp. 240-9 (2007).&#160;<a class="footnote-backref" href="#fnref:2.6-8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-9">
+<p>Sansour, Carlo. "On the physical assumptions underlying the volumetric-isochoric split and the case of anisotropy." <em>European Journal of Mechanics-A/Solids</em>, vol. 27, pp. 28--39 (2008).&#160;<a class="footnote-backref" href="#fnref:2.6-9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-10">
+<p>Helfenstein, J; Jabareen, M; Mazza, Edoardo; Govindjee, S. "On non-physical response in models for fiber-reinforced hyperelastic materials." <em>International Journal of Solids and Structures</em>, vol. 47, pp. 2056--2061 (2010).&#160;<a class="footnote-backref" href="#fnref:2.6-10" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2.6-11">
+<p>Gültekin, Osman; Dal, Hüsnü; Holzapfel, Gerhard A. "On the quasi-incompressible finite element analysis of anisotropic hyperelastic materials." <em>Computational mechanics</em>, vol. 63, pp. 443--453 (2019).&#160;<a class="footnote-backref" href="#fnref:2.6-11" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.5-kinematics-of-the-continuum/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.5 Kinematics of the Continuum">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.5 Kinematics of the Continuum
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../2.7-biphasic-material/" class="md-footer__link md-footer__link--next" aria-label="Next: 2.7 Biphasic Material">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                2.7 Biphasic Material
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,7853 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Theoretical background and user documentation for FEBio and FEBio Studio.">
+      
+      
+        <meta name="author" content="FEBio Team">
+      
+      
+      
+        <link rel="prev" href="../../chapter8/8.2-the-levenberg-marquardt-method/">
+      
+      
+        <link rel="next" href="../A.2-higher-order-tensors/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>A.1 Second-Order Tensors - FEBio Manuals</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#a1-second-order-tensors" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="FEBio Manuals" class="md-header__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FEBio Manuals
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              A.1 Second-Order Tensors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+  Theory
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../studio/" class="md-tabs__link">
+          
+  
+  
+  Studio
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="FEBio Manuals" class="md-nav__button md-logo" aria-label="FEBio Manuals" data-md-component="logo">
+      
+  <img src="../../../febio.png" alt="logo">
+
+    </a>
+    FEBio Manuals
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Theory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Theory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_2" id="__nav_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.1-overview-of-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Continuum Mechanics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.1-vectors-and-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Vectors and Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.2-the-directional-derivative/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 The Directional Derivative
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.3-cauchy-stress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Cauchy Stress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.4-axioms-of-conservation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Axioms of Conservation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.5-kinematics-of-the-continuum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Kinematics of the Continuum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.6-hyperelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Hyperelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.7-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.7 Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.8-biphasic-solute-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.8 Biphasic-Solute Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.9-triphasic-and-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.9 Triphasic and Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.10-constrained-reactive-mixture-of-solids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.10 Constrained Reactive Mixture of Solids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.11-equilibrium-swelling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.11 Equilibrium Swelling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.12-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.12 Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.13-fluid-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.13 Fluid Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.14-fluid-structure-interactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.14 Fluid-Structure Interactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.15-hybrid-biphasic-material/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.15 Hybrid Biphasic Material
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter2/2.16-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.16 Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_4" id="__nav_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The Nonlinear FE Method
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.1-weak-formulation-for-solid-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 Weak formulation for Solid Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.2-weak-formulation-for-biphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 Weak formulation for biphasic materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.3-weak-formulation-for-biphasic-solute-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 Weak Formulation for Biphasic-Solute Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.4-weak-formulation-for-multiphasic-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 Weak Formulation for Multiphasic Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.5-computational-fluid-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 Computational Fluid Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.6-weak-formulation-for-fsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 Weak Formulation for FSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.7-weak-formulation-for-bfsi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 Weak Formulation for BFSI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.8-weak-formulation-for-fluid-solutes-analyses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 Weak Formulation for Fluid-Solutes Analyses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.9-newton-raphson-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 Newton-Raphson Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter3/3.10-generalized-alpha-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 Generalized $\alpha-$Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_5" id="__nav_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Element Library
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Element Library
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.1-solid-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Solid Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter4/4.2-shell-elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Shell Elements
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Constitutive Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Constitutive Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.1-linear-elasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Linear Elasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.2-compressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Compressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.3-nearly-incompressible-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Nearly-Incompressible Materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.4-viscoelasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Viscoelasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.5-reactive-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.5 Reactive Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.6-reactive-plasticity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.6 Reactive Plasticity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.7-reactive-elastoplastic-damage-mechanics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.7 Reactive Elastoplastic Damage Mechanics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.8-hydraulic-permeability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.8 Hydraulic Permeability
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.9-solute-diffusivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.9 Solute Diffusivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.10-solute-solubility/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.10 Solute Solubility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.11-osmotic-coefficient/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.11 Osmotic Coefficient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.12-active-contraction-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.12 Active Contraction Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.13-prescribed-active-contraction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.13 Prescribed Active Contraction
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.14-chemical-reaction-production-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.14 Chemical Reaction Production Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.15-specific-reaction-rate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.15 Specific Reaction Rate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter5/5.16-viscous-fluids/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.16 Viscous Fluids
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_7" id="__nav_1_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Dynamics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Dynamics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.1-newmark-integration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Newmark Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.2-elastodynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 Elastodynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter6/6.3-rigid-body-dynamics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 Rigid Body Dynamics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_8" id="__nav_1_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Contact and Coupling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Contact and Coupling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.1-sliding-interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Sliding Interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.2-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.3-biphasic-solute-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Biphasic-Solute Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.4-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.5-tied-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Tied Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.6-tied-biphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Tied Biphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.7-tied-multiphasic-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.7 Tied Multiphasic Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.8-tied-fluid-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.8 Tied Fluid Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.9-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.9 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.10-rigid-deformable-coupling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.10 Rigid-Deformable Coupling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter7/7.11-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.11 Nonlinear Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_9" id="__nav_1_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Optimization
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Optimization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.1-the-objective-function/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 The Objective Function
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../chapter8/8.2-the-levenberg-marquardt-method/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 The Levenberg-Marquardt Method
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_10" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1_10" id="__nav_1_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Tensor Calculus
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_10_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Tensor Calculus
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 Second-Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 Second-Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definition
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cartesian-components-of-a-tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cartesian Components of a Tensor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sum-of-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sum of Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dyadic-product-of-vectors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dyadic Product of Vectors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trace-of-a-second-order-tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trace of a Second-Order Tensor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#product-of-two-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Product of Two Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#identity-tensor-and-tensor-inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity Tensor and Tensor Inverse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transpose-of-a-tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transpose of a Tensor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#double-product-of-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Double Product of Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsubsec:determinant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Determinant of a Tensor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orthogonal-tensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orthogonal Tensor
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transformation-laws-for-cartesian-components-of-vectors-and-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transformation Laws for Cartesian Components of Vectors and Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsubsec:symmetric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Symmetric and Antisymmetric Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eigenvalues-and-eigenvectors-of-real-symmetric-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eigenvalues and Eigenvectors of Real Symmetric Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orthogonal-transformation-of-tensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orthogonal Transformation of Tensors
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../A.2-higher-order-tensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 Higher Order Tensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Preface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 1 - Introduction
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 1 - Introduction
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.1-overview-of-febiostudio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.1 Overview of FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter1/1.2-about-this-document/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    1.2 About this document
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 2 - Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 2 - Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.1-starting-febio-studio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.1 Starting FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.2-creating-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2 Creating a New Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.3-opening-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3 Opening a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.4-exploring-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.4 Exploring a Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.5-solving-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.5 Solving the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter2/2.6-loading-the-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.6 Loading the Results
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 3 - The FEBio Studio Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.1-the-graphical-user-interface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.1 The Graphical User Interface
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.2-the-menu-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.2 The Menu Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.3-the-main-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.3 The Main Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.4-the-build-tool-bar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.4 The Build Tool Bar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.5-the-font-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.5 The Font Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.6-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.6 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.7-the-graphics-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.7 The Graphics Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.8-the-model-viewer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.8 The Model Viewer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.9-the-build-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.9 The Build Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.10-the-repository-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.10 The Repository Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.11-the-project-panel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.11 The Project Panel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.12-the-curve-editor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.12 The Curve Editor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.13-the-mesh-inspector/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.13 The Mesh Inspector
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.14-the-measure-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.14 The Measure Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter3/3.15-febio-studio-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    3.15 FEBio Studio Settings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 4 - Creating, Loading, and Saving Models
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.1-starting-a-new-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.1 Starting a new model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.2-loading-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.2 Loading a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter4/4.3-saving-a-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    4.3 Saving a model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_6" id="__nav_2_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 5 - Creating and Editing Geometry
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.1-creating-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.1 Creating Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.2-importing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.2 Importing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.3-editing-geometry/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.3 Editing Geometry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter5/5.4-creating-and-editing-a-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    5.4 Creating and Editing a Mesh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_7" id="__nav_2_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 6 - Generating and Editing Mesh Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.1-adding-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.1 Adding Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.2-febio-mesh-data-generators/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.2 FEBio Mesh Data Generators
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.3-the-scalar-field-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.3 The Scalar Field Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.4-the-fiber-generator-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.4 The Fiber Generator Tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter6/6.5-visualizing-mesh-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    6.5 Visualizing Mesh Data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_8" id="__nav_2_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 7 - Materials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 7 - Materials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.1-adding-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.1 Adding materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.2-setting-material-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.2 Setting material parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.3-assigning-materials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.3 Assigning materials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.4-creating-a-solute-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.4 Creating a Solute Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.5-creating-a-solid-bound-molecule-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.5 Creating a Solid-Bound Molecule Table
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter7/7.6-adding-chemical-reactions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    7.6 Adding Chemical Reactions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_9" id="__nav_2_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 8 - Boundary Conditions and Loads
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.1-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.1 Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.2-surface-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.2 Surface Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.3-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.3 Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter8/8.4-assigning-boundary-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    8.4 Assigning Boundary Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_10" id="__nav_2_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 9 - Contact and Constraints
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 9 - Contact and Constraints
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.1-contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.1 Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter9/9.2-nonlinear-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    9.2 Nonlinear constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_11" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_11" id="__nav_2_11_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 10 - Rigid Bodies
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_11_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_11">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 10 - Rigid Bodies
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.1-rigid-body-constraints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.1 Rigid Body Constraints
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.2-rigid-body-initial-conditions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.2 Rigid Body Initial Conditions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.3-rigid-body-loads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.3 Rigid Body Loads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.4-rigid-connectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.4 Rigid Connectors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter10/10.5-the-rigid-boundary-condition/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10.5 The Rigid Boundary Condition
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_12" id="__nav_2_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 11 - Defining Analysis Steps
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.1-the-initial-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.1 The Initial Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter11/11.2-adding-an-analysis-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.2 Adding an Analysis Step
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_13" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_13" id="__nav_2_13_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 12 - Configuring Output
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_13_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_13">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 12 - Configuring Output
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.1-febio-logfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.1 FEBio Logfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter12/12.2-febio-plotfile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    12.2 FEBio Plotfile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_14" id="__nav_2_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 13 - Running FEBio from FEBioStudio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.1-running-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.1 Running FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.2-febio-launch-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.2 FEBio Launch Configurations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.3-the-febio-monitor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.3 The FEBio Monitor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.4-running-batch-jobs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.4 Running Batch Jobs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter13/13.5-febio-job-reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13.5 FEBio Job Reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_15" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_15" id="__nav_2_15_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 14 - The Post Environment
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_15_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_15">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 14 - The Post Environment
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.1-the-post-environment-ui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.1 The Post Environment UI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.2-the-post-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.2 The Post Menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.3-the-post-toolbar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.3 The Post Toolbar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter14/14.4-the-graphics-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    14.4 The Graphics View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_16" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_16" id="__nav_2_16_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 15 - Saving Graphics
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_16_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_16">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 15 - Saving Graphics
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.1-the-capture-frame/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.1 The Capture Frame
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.2-taking-a-snapshot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.2 Taking a snapshot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.3-using-the-ray-tracer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.3 Using the Ray Tracer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.4-recording-an-animation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.4 Recording an animation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter15/15.5-camera-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    15.5 Camera Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_17" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_17" id="__nav_2_17_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 16 - The Post Panel
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_17_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_17">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 16 - The Post Panel
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.1-the-view-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.1 The View Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.2-the-material-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.2 The Material Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.3-the-data-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.3 The Data Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter16/16.4-the-state-tab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    16.4 The State Tab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_18" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_18" id="__nav_2_18_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 17 - Post Processing
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_18_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_18">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 17 - Post Processing
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.1-properties-of-the-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.1 Properties of the Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.2-displacement-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.2 Displacement Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.3-color-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.3 Color Map
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.4-plane-cuts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.4 Plane Cuts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.5-mirror-plane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.5 Mirror Plane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.6-vector-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.6 Vector Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.7-isosurface-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.7 Isosurface plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.8-slice-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.8 Slice plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.9-tensor-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.9 Tensor plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.10-streamline-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.10 Streamline Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.11-particle-flow-plot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.11 Particle Flow Plot
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.12-additional-windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.12 Additional Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter17/17.13-post-session-files/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    17.13 Post Session Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_19" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_19" id="__nav_2_19_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_19_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_19">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 18 - Visualizing 3D Image Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.1-loading-3d-image-data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.1 Loading 3D image data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.2-image-gui-environment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.2 Image GUI Environment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.3-filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.3 Filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.4-other-3d-image-visualization-options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.4 Other 3D Image Visualization Options
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter18/18.5-other-3d-image-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    18.5 Other 3D Image Tools
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_20" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_20" id="__nav_2_20_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_20_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_20">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 19 - Using Python in FEBio Studio
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.1-the-embedded-python-interpreter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.1 The Embedded Python Interpreter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter19/19.2-the-external-python-module/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    19.2 The External Python Module
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_21" id="__nav_2_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Chapter 20 - Using and Creating FEBio Plugins
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.1-the-plugin-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.1 The Plugin Repository
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapter20/20.2-creating-febio-plugins/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    20.2 Creating FEBio Plugins
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_22" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_22" id="__nav_2_22_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix A - Mesh Import Formats
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_22_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_22">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix A - Mesh Import Formats
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.1-febio/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.1 FEBio
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.2-nike3d/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.2 NIKE3D
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.3-hypermesh-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.3 HyperMesh ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.4-abaqus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.4 ABAQUS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.5-lsdyna-keyword/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.5 LSDYNA keyword
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.6-ansys/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.6 ANSYS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.7-dxf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.7 DXF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.8-hypersurface-ascii/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.8 Hypersurface ASCII
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.9-gmsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.9 GMsh
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.10-byu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.10 BYU
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.11-vtk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.11 VTK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.12-step/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.12 STEP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.13-brep/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.13 BREP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.14-ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.14 IDEAS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.15-nastran/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.15 NASTRAN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.16-mesh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.16 MESH
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.17-tetgen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.17 TETGEN
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.18-raw/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.18 RAW
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.19-comsol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.19 COMSOL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterA/A.20-ply/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    A.20 PLY
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_23" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_23" id="__nav_2_23_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix B - Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_23_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_23">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix B - Standard Data Fields
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../studio/chapterB/B.1-standard-data-fields/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    B.1 Standard Data Fields
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="a1-second-order-tensors">A.1 Second-Order Tensors<a class="headerlink" href="#a1-second-order-tensors" title="Permanent link">&para;</a></h1>
+<h2 id="definition">Definition<a class="headerlink" href="#definition" title="Permanent link">&para;</a></h2>
+<p>Let <span class="arithmatex">\(\mathbf{T}\)</span> be a transformation, which transforms any vector into another vector, e.g.,</p>
+<div class="arithmatex">\[ \mathbf{T}\cdot\mathbf{a}=\mathbf{b}\quad\mathbf{T}\cdot\mathbf{c}=\mathbf{d} \]</div>
+<p>If <span class="arithmatex">\(\mathbf{T}\)</span> has the following properties,</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{T}\cdot\left(\mathbf{a}+\mathbf{c}\right)=\mathbf{T}\cdot\mathbf{a}+\mathbf{T}\cdot\mathbf{c}\label{eq6-1} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \mathbf{T}\cdot\left(\alpha\mathbf{a}\right)=\alpha\mathbf{T}\cdot\mathbf{a}\label{eq7-1} \end{equation} \]</div>
+<p>where <span class="arithmatex">\(\mathbf{a}\)</span> and <span class="arithmatex">\(\mathbf{c}\)</span> are arbitrary vectors, and <span class="arithmatex">\(\alpha\)</span> is an arbitrary scalar, then <span class="arithmatex">\(\mathbf{T}\)</span> is called a <em>linear transformation</em>, a <em>second-order tensor</em>, or simply a <em>tensor</em>. Vectors are first-order tensors and scalars are zeroth-order tensors.</p>
+<h2 id="cartesian-components-of-a-tensor">Cartesian Components of a Tensor<a class="headerlink" href="#cartesian-components-of-a-tensor" title="Permanent link">&para;</a></h2>
+<p>Let <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> form an orthonormal basis in a Cartesian coordinate system <span class="arithmatex">\(x_{1},x_{2},x_{3}\)</span>. Then the Cartesian components of <span class="arithmatex">\(\mathbf{a}\)</span> are</p>
+<div class="arithmatex">\[ a_{1}=\mathbf{e}_{1}\cdot\mathbf{a},\quad a_{2}=\mathbf{e}_{2}\cdot\mathbf{a},\quad a_{3}=\mathbf{e}_{3}\cdot\mathbf{a} \]</div>
+<p>or equivalently,</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{a_{j}=\mathbf{e}_{j}\cdot\mathbf{a}}\label{eq7b} \end{equation} \]</div>
+<p>(Recall that <span class="arithmatex">\(\mathbf{a}=a_{i}\mathbf{e}_{i}\)</span>, thus <span class="arithmatex">\(\mathbf{a}\cdot\mathbf{e}_{j}=a_{i}\mathbf{e}_{i}\cdot\mathbf{e}_{j}=a_{i}\delta_{ij}=a_{j}\)</span>.)</p>
+<p>The Cartesian components of a tensor <span class="arithmatex">\(\mathbf{T}\)</span> are obtained as follows. Let <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{a}=\mathbf{b}\)</span>. The components of <span class="arithmatex">\(\mathbf{b}\)</span> are given by <span class="arithmatex">\(b_{i}=\mathbf{e}_{i}\cdot\mathbf{b}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{a}\)</span>. But <span class="arithmatex">\(\mathbf{a}=a_{j}\mathbf{e}_{j}\)</span>, so <span class="arithmatex">\(b_{i}=a_{j}\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}\)</span>. Note that <span class="arithmatex">\(\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}\)</span> is the component along <span class="arithmatex">\(\mathbf{e}_{i}\)</span> of the vector <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{e}_{j}\)</span>. By convention, we denote this component as</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{T_{ij}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}}\quad\text{components of tensor }\mathbf{T}\label{eq7c} \end{equation} \]</div>
+<p>components of tensor <span class="arithmatex">\(\mathbf{T}\)</span>.</p>
+<p>Thus, <span class="arithmatex">\(\mathbf{b}=\mathbf{T}\cdot\mathbf{a}=a_{j}\mathbf{T}\cdot\mathbf{e}_{j}=b_{k}\mathbf{e}_{k}\)</span>. Taking the dot product on both sides with <span class="arithmatex">\(\mathbf{e}_{i}\)</span> yields <span class="arithmatex">\(a_{j}\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}=a_{j}T_{ij}=b_{k}\mathbf{e}_{i}\cdot\mathbf{e}_{k}=b_{k}\delta_{ik}=b_{i}\)</span>, or</p>
+<div class="arithmatex">\[ \boxed{b_{i}=T_{ij}a_{j}} \]</div>
+<p>in indicial form. In matrix form,</p>
+<div class="arithmatex">\[ \left[\begin{array}{c} b_{1}\\ b_{2}\\ b_{3} \end{array}\right]=\left[\begin{array}{ccc} T_{11} &amp; T_{12} &amp; T_{13}\\ T_{21} &amp; T_{22} &amp; T_{23}\\ T_{31} &amp; T_{32} &amp; T_{33} \end{array}\right]\left[\begin{array}{c} a_{1}\\ a_{2}\\ a_{3} \end{array}\right] \]</div>
+<p>The matrix of tensor <span class="arithmatex">\(\mathbf{T}\)</span> with respect to <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> can also be denoted by <span class="arithmatex">\(\left[\mathbf{T}\right]\)</span> or <span class="arithmatex">\(\left[T_{ij}\right]\)</span>. The columns of <span class="arithmatex">\(\left[\mathbf{T}\right]\)</span> are given by <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{e}_{i}\)</span>, e.g.,</p>
+<div class="arithmatex">\[ \left[\mathbf{T}\cdot\mathbf{e}_{2}\right]=\left[T_{j2}\mathbf{e}_{2}\right]=\left[\begin{array}{ccc} T_{11} &amp; T_{12} &amp; T_{13}\\ T_{21} &amp; T_{22} &amp; T_{23}\\ T_{31} &amp; T_{32} &amp; T_{33} \end{array}\right]\left[\begin{array}{c} 0\\ 1\\ 0 \end{array}\right]=\left[\begin{array}{c} T_{12}\\ T_{22}\\ T_{32} \end{array}\right] \]</div>
+<p>This result, when generalized, leads to the useful identity</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{T}\cdot\mathbf{e}_{i}=T_{ji}\mathbf{e}_{j}}=T_{1i}\mathbf{e}_{1}+T_{2i}\mathbf{e}_{2}+T_{3i}\mathbf{e}_{3}\label{eq8-1} \end{equation} \]</div>
+<p><strong>Example 1.</strong> Scaling transformation</p>
+<p>A scaling transformation <span class="arithmatex">\(\mathbf{T}\)</span> with different scale factors along <span class="arithmatex">\(x_{1},x_{2},x_{3}\)</span> should satisfy the following relations by definition:</p>
+<div class="arithmatex">\[ \mathbf{T}\cdot\mathbf{a}=s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3} \]</div>
+<p>Verify that <span class="arithmatex">\(\mathbf{T}\)</span> is a tensor. Also find the matrix of <span class="arithmatex">\(\mathbf{T}\)</span> in <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span>.</p>
+<p><em>Solution</em>. Is <span class="arithmatex">\(\mathbf{T}\)</span> a tensor? Let any <span class="arithmatex">\(\mathbf{a}=a_{i}\mathbf{e}_{i}\)</span> and <span class="arithmatex">\(\mathbf{b}=b_{i}\mathbf{e}_{i}\)</span>, then</p>
+<div class="arithmatex">\[ \begin{aligned}\mathbf{T}\cdot\left(\alpha\mathbf{a}\right) &amp; =s_{1}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\alpha\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ &amp; =\alpha\left(s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\right)\\ &amp; =\alpha\mathbf{T}\cdot\mathbf{a} \end{aligned} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{aligned}\mathbf{T}\cdot\left(\mathbf{a}+\mathbf{b}\right) &amp; =s_{1}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\left(\mathbf{a}+\mathbf{b}\right)\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ &amp; =s_{1}\left(\mathbf{a}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{a}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{a}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ &amp; +s_{1}\left(\mathbf{b}\cdot\mathbf{e}_{1}\right)\mathbf{e}_{1}+s_{2}\left(\mathbf{b}\cdot\mathbf{e}_{2}\right)\mathbf{e}_{2}+s_{3}\left(\mathbf{b}\cdot\mathbf{e}_{3}\right)\mathbf{e}_{3}\\ &amp; =\mathbf{T}\cdot\mathbf{a}+\mathbf{T}\cdot\mathbf{b} \end{aligned} \]</div>
+<p>Now that we have demonstrated that <span class="arithmatex">\(\mathbf{T}\)</span> is a tensor, its components are given by <span class="arithmatex">\(T_{ij}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}\)</span>, thus</p>
+<div class="arithmatex">\[ \begin{gathered}\left[T_{i1}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{1}\right]=\left[\mathbf{e}_{i}\cdot s_{1}\mathbf{e}_{1}\right]=\left[s_{1}\delta_{i1}\right]=\left[\begin{array}{c} s_{1}\\ 0\\ 0 \end{array}\right]\\ \left[T_{i2}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{2}\right]=\left[\mathbf{e}_{i}\cdot s_{2}\mathbf{e}_{2}\right]=\left[s_{2}\delta_{i2}\right]=\left[\begin{array}{c} 0\\ s_{2}\\ 0 \end{array}\right]\\ \left[T_{i3}\right]=\left[\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{3}\right]=\left[\mathbf{e}_{i}\cdot s_{3}\mathbf{e}_{3}\right]=\left[s_{3}\delta_{i3}\right]=\left[\begin{array}{c} 0\\ 0\\ s_{3} \end{array}\right] \end{gathered} \]</div>
+<p>Then, the matrix of <span class="arithmatex">\(\mathbf{T}\)</span> is given by</p>
+<div class="arithmatex">\[ \left[\mathbf{T}\right]=\left[\begin{array}{ccc} s_{1} &amp; 0 &amp; 0\\ 0 &amp; s_{2} &amp; 0\\ 0 &amp; 0 &amp; s_{3} \end{array}\right] \]</div>
+<h2 id="sum-of-tensors">Sum of Tensors<a class="headerlink" href="#sum-of-tensors" title="Permanent link">&para;</a></h2>
+<p>The sum of two tensors <span class="arithmatex">\(\mathbf{T}\)</span> and <span class="arithmatex">\(\mathbf{S}\)</span> is denoted by <span class="arithmatex">\(\mathbf{T}+\mathbf{S}\)</span> and defined by</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\left(\mathbf{T}+\mathbf{S}\right)\cdot\mathbf{a}=\mathbf{T}\cdot\mathbf{a}+\mathbf{S}\cdot\mathbf{a}}\label{eq9-1} \end{equation} \]</div>
+<p>for any vector <span class="arithmatex">\(\mathbf{a}\)</span>. Thus <span class="arithmatex">\(\mathbf{T}+\mathbf{S}\)</span> is also a tensor, whose components are</p>
+<div class="arithmatex">\[ \left(\mathbf{T}+\mathbf{S}\right)_{ij}=\mathbf{e}_{i}\cdot\left(\mathbf{T}+\mathbf{S}\right)\cdot\mathbf{e}_{j}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}+\mathbf{e}_{i}\cdot\mathbf{S}\cdot\mathbf{e}_{j}=T_{ij}+S_{ij} \]</div>
+<p>In matrix notation, <span class="arithmatex">\(\left[\mathbf{T}+\mathbf{S}\right]=\left[\mathbf{T}\right]+\left[\mathbf{S}\right]\)</span>.</p>
+<h2 id="dyadic-product-of-vectors">Dyadic Product of Vectors<a class="headerlink" href="#dyadic-product-of-vectors" title="Permanent link">&para;</a></h2>
+<p>The dyadic product of two vectors <span class="arithmatex">\(\mathbf{a}\)</span> and <span class="arithmatex">\(\mathbf{b}\)</span> is denoted by <span class="arithmatex">\(\mathbf{a}\otimes\mathbf{b}\)</span> (or <span class="arithmatex">\(\mathbf{ab}\)</span>) and defined as the transformation which satisfies</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\left(\mathbf{a}\otimes\mathbf{b}\right)\cdot\mathbf{c}=\left(\mathbf{b}\cdot\mathbf{c}\right)\mathbf{a}}\label{eq10-1} \end{equation} \]</div>
+<p>For any <span class="arithmatex">\(\mathbf{c}\)</span>, <span class="arithmatex">\(\mathbf{d}\)</span>, <span class="arithmatex">\(\alpha\)</span> and <span class="arithmatex">\(\beta\)</span>, we have</p>
+<div class="arithmatex">\[ \begin{gathered}\left(\mathbf{a}\otimes\mathbf{b}\right)\cdot\left(\alpha\mathbf{c}+\beta\mathbf{d}\right)=\left(\mathbf{b}\cdot\left(\alpha\mathbf{c}+\beta\mathbf{d}\right)\right)\mathbf{a}=\left(\mathbf{b}\cdot\alpha\mathbf{c}\right)\mathbf{a}+\left(\mathbf{b}\cdot\beta\mathbf{d}\right)\mathbf{a}\\ =\alpha\left(\mathbf{b}\cdot\mathbf{c}\right)\mathbf{a}+\beta\left(\mathbf{b}\cdot\mathbf{d}\right)\mathbf{a}=\alpha\left(\mathbf{a}\otimes\mathbf{b}\right)\cdot\mathbf{c}+\beta\left(\mathbf{a}\otimes\mathbf{b}\right)\cdot\mathbf{d} \end{gathered} \]</div>
+<p>thus <span class="arithmatex">\(\mathbf{a}\otimes\mathbf{b}\)</span> is a tensor. Its Cartesian components with respect to <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> are</p>
+<div class="arithmatex">\[ \left(\mathbf{a}\otimes\mathbf{b}\right)_{ij}=\mathbf{e}_{i}\cdot\left(\mathbf{a}\otimes\mathbf{b}\right)\cdot\mathbf{e}_{j}=\mathbf{e}_{i}\cdot\left(\mathbf{b}\cdot\mathbf{e}_{j}\right)\mathbf{a}=b_{j}\mathbf{e}_{i}\cdot\mathbf{a}=a_{i}b_{j} \]</div>
+<p>In matrix form,</p>
+<div class="arithmatex">\[ \left[\mathbf{a}\otimes\mathbf{b}\right]=\left[\begin{array}{ccc} a_{1}b_{1} &amp; a_{1}b_{2} &amp; a_{1}b_{3}\\ a_{2}b_{1} &amp; a_{2}b_{2} &amp; a_{2}b_{3}\\ a_{3}b_{1} &amp; a_{3}b_{2} &amp; a_{3}b_{3} \end{array}\right]=\left[\begin{array}{c} a_{1}\\ a_{2}\\ a_{3} \end{array}\right]\left[\begin{array}{ccc} b_{1} &amp; b_{2} &amp; b_{3}\end{array}\right]=\left[\mathbf{a}\right]\left[\mathbf{b}\right]^{T} \]</div>
+<p>Note that in general, <span class="arithmatex">\(\mathbf{a}\otimes\mathbf{b}\ne\mathbf{b}\otimes\mathbf{a}\)</span>, i.e., the dyadic product is <em>not commutative</em>. Also note that</p>
+<div class="arithmatex">\[ \left[\mathbf{e}_{1}\otimes\mathbf{e}_{1}\right]=\left[\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right],\quad\left[\mathbf{e}_{1}\otimes\mathbf{e}_{2}\right]=\left[\begin{array}{ccc} 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right],\quad\left[\mathbf{e}_{1}\otimes\mathbf{e}_{3}\right]=\left[\begin{array}{ccc} 0 &amp; 0 &amp; 1\\ 0 &amp; 0 &amp; 0\\ 0 &amp; 0 &amp; 0 \end{array}\right]\quad\text{etc.} \]</div>
+<p>thus it is possible to represent a second-order tensor in terms of its Cartesian components in <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> as <span class="arithmatex">\(\mathbf{T}=T_{11}\mathbf{e}_{1}\otimes\mathbf{e}_{1}+T_{12}\mathbf{e}_{1}\otimes\mathbf{e}_{2}+T_{13}\mathbf{e}_{1}\otimes\mathbf{e}_{3}+\ldots+T_{33}\mathbf{e}_{3}\otimes\mathbf{e}_{3}\)</span>, or</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{T}=T_{ij}\mathbf{e}_{i}\otimes\mathbf{e}_{j}}\label{eq11-1} \end{equation} \]</div>
+<p>This turns out to be an important result that can be generalized to higher order tensors, e.g., third-order tensors can be represented in terms of their Cartesian components as <span class="arithmatex">\(\mathbb{T}=T_{ijk}\mathbf{e}_{i}\otimes\mathbf{e}_{j}\otimes\mathbf{e}_{k}\)</span>, and similarly for higher orders.</p>
+<p><strong>Example 2.</strong> The scaling transformation derived in a previous example can be represented as</p>
+<div class="arithmatex">\[ \mathbf{T}=s_{1}\mathbf{e}_{1}\otimes\mathbf{e}_{1}+s_{2}\mathbf{e}_{2}\otimes\mathbf{e}_{2}+s_{3}\mathbf{e}_{3}\otimes\mathbf{e}_{3} \]</div>
+<h2 id="trace-of-a-second-order-tensor">Trace of a Second-Order Tensor<a class="headerlink" href="#trace-of-a-second-order-tensor" title="Permanent link">&para;</a></h2>
+<p>The trace of any dyad <span class="arithmatex">\(\mathbf{a}\otimes\mathbf{b}\)</span> is defined by</p>
+<div class="arithmatex">\[ \boxed{\tr\left(\mathbf{a}\otimes\mathbf{b}\right)=\mathbf{a}\cdot\mathbf{b}} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \boxed{\tr\left(\alpha\mathbf{a}\otimes\mathbf{b}+\beta\mathbf{c}\otimes\mathbf{d}\right)=\alpha\tr\left(\mathbf{a}\otimes\mathbf{b}\right)+\beta\tr\left(\mathbf{c}\otimes\mathbf{d}\right)} \]</div>
+<p>The trace operator yields a scalar function. In component form,</p>
+<div class="arithmatex">\[ \tr\left(a_{i}b_{j}\right)=a_{i}b_{i} \]</div>
+<p>For any tensor <span class="arithmatex">\(\mathbf{T}\)</span>, we can write <span class="arithmatex">\(\mathbf{T}=T_{ij}\mathbf{e}_{i}\otimes\mathbf{e}_{j}\)</span>, thus</p>
+<div class="arithmatex">\[ \tr\mathbf{T}=T_{ij}\tr\left(\mathbf{e}_{i}\otimes\mathbf{e}_{j}\right)=T_{ij}\mathbf{e}_{i}\cdot\mathbf{e}_{j}=T_{ij}\delta_{ij}=T_{ii}=T_{11}+T_{22}+T_{33} \]</div>
+<p>The trace of a tensor is the sum of its diagonal components.</p>
+<h2 id="product-of-two-tensors">Product of Two Tensors<a class="headerlink" href="#product-of-two-tensors" title="Permanent link">&para;</a></h2>
+<p>The products of two tensors <span class="arithmatex">\(\mathbf{T}\)</span> and <span class="arithmatex">\(\mathbf{S}\)</span> are denoted by <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{S}\)</span> and <span class="arithmatex">\(\mathbf{S}\cdot\mathbf{T}\)</span> and defined respectively by</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\left(\mathbf{T}\cdot\mathbf{S}\right)\cdot\mathbf{a}=\mathbf{T}\cdot\left(\mathbf{S}\cdot\mathbf{a}\right)}\label{eq12-1} \end{equation} \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\left(\mathbf{S}\cdot\mathbf{T}\right)\cdot\mathbf{a}=\mathbf{S}\cdot\left(\mathbf{T}\cdot\mathbf{a}\right)}\label{eq12b} \end{equation} \]</div>
+<p>Clearly, <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{S}\)</span> and <span class="arithmatex">\(\mathbf{S}\cdot\mathbf{T}\)</span> are tensors as well. Their components in <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> are given by</p>
+<div class="arithmatex">\[ \left(\mathbf{T}\cdot\mathbf{S}\right)_{ij}=\mathbf{e}_{i}\cdot\left(\mathbf{T}\cdot\mathbf{S}\right)\cdot\mathbf{e}_{j}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\left(\mathbf{S}\cdot\mathbf{e}_{j}\right)=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\left(S_{kj}\mathbf{e}_{k}\right)=S_{kj}\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{k}=T_{ik}S_{kj} \]</div>
+<p>In matrix form, <span class="arithmatex">\(\left[\mathbf{T}\cdot\mathbf{S}\right]=\left[\mathbf{T}\right]\left[\mathbf{S}\right]\)</span>. Similarly,</p>
+<div class="arithmatex">\[ \left(\mathbf{S}\cdot\mathbf{T}\right)_{ij}=S_{ik}T_{kj}\quad\text{and}\quad\left[\mathbf{S}\cdot\mathbf{T}\right]=\left[\mathbf{S}\right]\left[\mathbf{T}\right] \]</div>
+<p>In general, <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{S}\ne\mathbf{S}\cdot\mathbf{T}\)</span>, however <span class="arithmatex">\(\left(\mathbf{T}\cdot\mathbf{S}\right)\cdot\mathbf{V}=\mathbf{T}\cdot\left(\mathbf{S}\cdot\mathbf{V}\right)\)</span>, i.e., the tensor product is <em>associative</em> but <em>not commutative</em>.</p>
+<h2 id="identity-tensor-and-tensor-inverse">Identity Tensor and Tensor Inverse<a class="headerlink" href="#identity-tensor-and-tensor-inverse" title="Permanent link">&para;</a></h2>
+<p>The identity tensor, denoted by <span class="arithmatex">\(\mathbf{I}\)</span>, is defined by</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{I}\cdot\mathbf{a}=\mathbf{a}}\label{eq13-1} \end{equation} \]</div>
+<p>for any vector <span class="arithmatex">\(\mathbf{a}\)</span>. The Cartesian components o f <span class="arithmatex">\(\mathbf{I}\)</span> in <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> are given by</p>
+<div class="arithmatex">\[ I_{ij}=\mathbf{e}_{i}\cdot\mathbf{I}\cdot\mathbf{e}_{j}=\mathbf{e}_{i}\cdot\mathbf{e}_{j}=\delta_{ij} \]</div>
+<p>or</p>
+<div class="arithmatex">\[ \left[\mathbf{I}\right]=\left[\begin{array}{ccc} 1 &amp; 0 &amp; 0\\ 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right] \]</div>
+<p>Given <span class="arithmatex">\(\mathbf{T}\)</span>, if <span class="arithmatex">\(\mathbf{S}\)</span> exists such that <span class="arithmatex">\(\mathbf{S}\cdot\mathbf{T}=\mathbf{I}\)</span>, we call <span class="arithmatex">\(\mathbf{S}\)</span> the <em>inverse</em> of <span class="arithmatex">\(\mathbf{T}\)</span>, and <span class="arithmatex">\(\mathbf{S}=\mathbf{T}^{-1}\)</span>. The inverse exists as long as <span class="arithmatex">\(\det\mathbf{T}\neq0\)</span>. Also note that <span class="arithmatex">\(\left(\mathbf{T}^{-1}\right)^{-1}=\mathbf{T}\)</span> and <span class="arithmatex">\(\mathbf{T}^{-1}\cdot\mathbf{T}=\mathbf{T}\cdot\mathbf{T}^{-1}=\mathbf{I}\)</span>. Also note that</p>
+<div class="arithmatex">\[ \boxed{\left(\mathbf{U}\cdot\mathbf{V}\right)^{-1}=\mathbf{V}^{-1}\cdot\mathbf{U}^{-1}}\,. \]</div>
+<h2 id="transpose-of-a-tensor">Transpose of a Tensor<a class="headerlink" href="#transpose-of-a-tensor" title="Permanent link">&para;</a></h2>
+<p>Given a tensor <span class="arithmatex">\(\mathbf{T}\)</span>, its transpose is denoted by <span class="arithmatex">\(\mathbf{T}^{T}\)</span> which is defined by</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{a}\cdot\left(\mathbf{T}\cdot\mathbf{b}\right)=\mathbf{b}\cdot\left(\mathbf{T}^{T}\cdot\mathbf{\mathbf{a}}\right)}\label{eq14-1} \end{equation} \]</div>
+<p>In component form,</p>
+<div class="arithmatex">\[ T_{ij}^{T}=\mathbf{e}_{i}\cdot\mathbf{T}^{T}\cdot\mathbf{e}_{j}=\mathbf{e}_{j}\cdot\mathbf{T}\cdot\mathbf{e}_{i}=T_{ji} \]</div>
+<p>Also note that</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\left(\mathbf{S}\cdot\mathbf{T}\right)^{T}=\mathbf{T}^{T}\cdot\mathbf{S}^{T}}\label{eq15-1} \end{equation} \]</div>
+<p>and <span class="arithmatex">\(\left(\mathbf{S}^{T}\right)^{T}=\mathbf{S}\)</span> and<span class="arithmatex">\(\left(\mathbf{S}+\mathbf{T}\right)^{T}=\mathbf{S}^{T}+\mathbf{T}^{T}\)</span>.</p>
+<h2 id="double-product-of-tensors">Double Product of Tensors<a class="headerlink" href="#double-product-of-tensors" title="Permanent link">&para;</a></h2>
+<p>The double product of tensors is analogous to the dot product of vectors. Given two tensors <span class="arithmatex">\(\mathbf{S}\)</span> and <span class="arithmatex">\(\mathbf{T}\)</span>, the double product (or <em>double contraction</em>) is defined as</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{S}:\mathbf{T}=\tr\left(\mathbf{S}^{T}\cdot\mathbf{T}\right)}\label{eq16-1} \end{equation} \]</div>
+<p>Thus, for any tensor <span class="arithmatex">\(\mathbf{T}\)</span>, <span class="arithmatex">\(\tr\mathbf{T}=\mathbf{I}:\mathbf{T}\)</span>. In component form,</p>
+<div class="arithmatex">\[ \mathbf{S}:\mathbf{T}=S_{ij}T_{ij} \]</div>
+<p>The double product of second order tensors is commutative.</p>
+<p><strong>Example 3.</strong> Show that <span class="arithmatex">\(\mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)\)</span> and <span class="arithmatex">\(\left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)\)</span>.</p>
+<p>Using indicial notation,</p>
+<div class="arithmatex">\[ \mathbf{a}\cdot\mathbf{T}\cdot\mathbf{b}=a_{i}T_{ij}b_{j}=T_{ij}a_{i}b_{j}=\mathbf{T}:\left(\mathbf{a}\otimes\mathbf{b}\right)\,, \]</div>
+<p>and</p>
+<div class="arithmatex">\[ \left(\mathbf{a}\otimes\mathbf{b}\right):\left(\mathbf{c}\otimes\mathbf{d}\right)=a_{i}b_{j}c_{i}d_{j}=\left(a_{i}c_{i}\right)\left(b_{j}d_{j}\right)=\left(\mathbf{a}\cdot\mathbf{c}\right)\left(\mathbf{b}\cdot\mathbf{d}\right)\,. \]</div>
+<h2 id="subsubsec:determinant">Determinant of a Tensor<a class="headerlink" href="#subsubsec:determinant" title="Permanent link">&para;</a></h2>
+<p>The determinant of a tensor is equal to the determinant of its components in <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} \det\mathbf{T}=\det\left[\mathbf{T}\right]_{\mathbf{e}_{i}}=\left|\begin{array}{ccc} T_{11} &amp; T_{12} &amp; T_{13}\\ T_{21} &amp; T_{22} &amp; T_{23}\\ T_{31} &amp; T_{32} &amp; T_{33} \end{array}\right|=\left(\mathbf{T}\cdot\mathbf{e}_{1}\times\mathbf{T}\cdot\mathbf{e}_{2}\right)\cdot\mathbf{T}\cdot\mathbf{e}_{3}=\varepsilon_{ijk}T_{i1}T_{j2}T_{k3}\label{eq17-1} \end{equation} \]</div>
+<p>In particular, the determinant of a diagonal matrix is the product of the diagonal components,</p>
+<div class="arithmatex">\[ \begin{equation} \det\left[\mathbf{T}\right]_{\mathbf{e}_{i}}=\left|\begin{array}{ccc} T_{11} &amp; 0 &amp; 0\\ 0 &amp; T_{22} &amp; 0\\ 0 &amp; 0 &amp; T_{33} \end{array}\right|=\varepsilon_{123}T_{11}T_{22}T_{33}=T_{11}T_{22}T_{33}\label{eq18-1} \end{equation} \]</div>
+<p>The determinant satisfies the following relations,</p>
+<div class="arithmatex">\[ \begin{equation} \det\mathbf{T}^{-1}=\frac{1}{\det\mathbf{T}}\label{eq19-1} \end{equation} \]</div>
+<div class="arithmatex">\[ \begin{equation} \det\left(\mathbf{S}\cdot\mathbf{T}\right)=\left(\det\mathbf{S}\right)\left(\det\mathbf{T}\right)\label{eq20-1} \end{equation} \]</div>
+<h2 id="orthogonal-tensor">Orthogonal Tensor<a class="headerlink" href="#orthogonal-tensor" title="Permanent link">&para;</a></h2>
+<p>An orthogonal tensor <span class="arithmatex">\(\mathbf{Q}\)</span> is a linear transformation which preserves the length of a vector and the angle between vectors. Thus, by definition,</p>
+<div class="arithmatex">\[ \left|\mathbf{Q}\cdot\mathbf{a}\right|=\left|\mathbf{a}\right|\quad\text{and}\quad\cos\left(\mathbf{Q}\cdot\mathbf{a},\mathbf{Q}\cdot\mathbf{b}\right)=\cos\left(\mathbf{a},\mathbf{b}\right) \]</div>
+<p>for any vectors <span class="arithmatex">\(\mathbf{a}\)</span> and <span class="arithmatex">\(\mathbf{b}\)</span>. It follows from this definition and the definition of the dot product of vectors (<span class="arithmatex">\(\mathbf{a}\cdot\mathbf{b}=\left|\mathbf{a}\right|\left|\mathbf{b}\right|\cos\left(\mathbf{a},\mathbf{b}\right))\)</span>, that</p>
+<div class="arithmatex">\[ \left(\mathbf{Q}\cdot\mathbf{a}\right)\cdot\left(\mathbf{Q}\cdot\mathbf{b}\right)=\mathbf{a}\cdot\mathbf{b} \]</div>
+<p>But <span class="arithmatex">\(\left(\mathbf{Q}\cdot\mathbf{a}\right)\cdot\left(\mathbf{Q}\cdot\mathbf{b}\right)=\mathbf{b}\cdot\left(\mathbf{Q}^{T}\cdot\mathbf{Q}\right)\mathbf{a}=\mathbf{a}\cdot\mathbf{b}=\mathbf{b}\cdot\mathbf{I}\cdot\mathbf{a}\)</span>, which implies that <span class="arithmatex">\(\mathbf{b}\cdot\left(\mathbf{Q}^{T}\cdot\mathbf{Q}-\mathbf{I}\right)\cdot\mathbf{a}=0\)</span>. Since <span class="arithmatex">\(\mathbf{a}\)</span> and <span class="arithmatex">\(\mathbf{b}\)</span> are arbitrary, an orthogonal tensor must satisfy <span class="arithmatex">\(\mathbf{Q}^{T}\cdot\mathbf{Q}=\mathbf{I}\)</span>. In indicial form, <span class="arithmatex">\(Q_{im}^{T}Q_{mj}=Q_{mi}Q_{mj}=\delta_{ij}\)</span>, and in matrix form, <span class="arithmatex">\(\left[\mathbf{Q}\right]^{T}\left[\mathbf{Q}\right]=\left[\mathbf{I}\right]\)</span>.</p>
+<p>Note that <span class="arithmatex">\(\mathbf{Q}^{T}\cdot\mathbf{Q}=\mathbf{I}\)</span> implies that <span class="arithmatex">\(\mathbf{Q}^{T}=\mathbf{Q}^{-1}\)</span>, i.e., the transpose of an orthogonal tensor is equal to its inverse, since <span class="arithmatex">\(\mathbf{Q}^{-1}\cdot\mathbf{Q}=\mathbf{Q}\cdot\mathbf{Q}^{-1}=\mathbf{I}\)</span>. It follows that</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\mathbf{Q}^{T}\cdot\mathbf{Q}=\mathbf{Q}\cdot\mathbf{Q}^{T}=\mathbf{I}}\label{eq21-1} \end{equation} \]</div>
+<p>The determinant of an orthogonal tensor is given by</p>
+<div class="arithmatex">\[ \det\mathbf{Q}=\left(\mathbf{Q}\cdot\mathbf{e}_{1}\times\mathbf{Q}\cdot\mathbf{e}_{2}\right)\cdot\mathbf{Q}\cdot\mathbf{e}_{3}=\left(\mathbf{e}'_{1}\times\mathbf{e}'_{2}\right)\cdot\mathbf{e}'_{3}=\pm\mathbf{e}'_{3}\cdot\mathbf{e}'_{3}=\pm1 \]</div>
+<p>Here, <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> is the orthonormal basis resulting from the transformation of <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> by <span class="arithmatex">\(\mathbf{Q}\)</span>. If <span class="arithmatex">\(\mathbf{Q}\)</span> maintains the handedness of <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> (e.g., if both <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> and <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> form a right-handed basis), then <span class="arithmatex">\(\det\mathbf{Q}=+1\)</span> and <span class="arithmatex">\(\mathbf{Q}\)</span> is called a <em>proper</em> orthogonal transformation (also equivalent to a rigid body rotation). Otherwise, in the case of a reflection which reverses the handedness of the basis vectors, <span class="arithmatex">\(\det\mathbf{Q}=-1\)</span> and <span class="arithmatex">\(\mathbf{Q}\)</span> is called <em>improper</em> (e.g., <span class="arithmatex">\(\mathbf{e}'_{1}=\mathbf{e}_{1},\,\mathbf{e}'_{2}=-\mathbf{e}_{2},\,\mathbf{e}'_{3}=\mathbf{e}_{3}\)</span>).</p>
+<h2 id="transformation-laws-for-cartesian-components-of-vectors-and-tensors">Transformation Laws for Cartesian Components of Vectors and Tensors<a class="headerlink" href="#transformation-laws-for-cartesian-components-of-vectors-and-tensors" title="Permanent link">&para;</a></h2>
+<p><a id="fig3"></a></p>
+<figure id="__figure-caption_1">
+<p><img alt="FigOrthoBases" src="../figs/FigOrthoBases.png" /></p>
+<figcaption>
+<p><span class="caption-prefix">Figure 1.</span> Orthonormal bases <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> and <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span>.</p>
+</figcaption>
+</figure>
+<p>Let <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> and <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> be two orthogonal bases in a Cartesian coordinate system. <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> could be made to coincide with <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> through a rigid body rotation (i.e., a transformation that preserves vector length and angles),</p>
+<div class="arithmatex">\[ \mathbf{e}'_{i}=\mathbf{Q}\cdot\mathbf{e}_{i}=Q_{mi}\mathbf{e}_{m} \]</div>
+<p>where <span class="arithmatex">\(Q_{mi}Q_{mj}=Q_{im}Q_{jm}=\delta_{ij}\)</span>. Since <span class="arithmatex">\(Q_{mi}=\mathbf{e}_{m}\cdot\mathbf{Q}\cdot\mathbf{e}_{i}=\mathbf{e}_{m}\cdot\mathbf{e}'_{i}=\cos\left(\mathbf{e}_{m},\mathbf{e}'_{i}\right)\)</span>, the components of <span class="arithmatex">\(\mathbf{Q}\)</span> are direction cosines between <span class="arithmatex">\(\mathbf{e}_{m}\)</span> and <span class="arithmatex">\(\mathbf{e}'_{i}\)</span>.</p>
+<p><strong>Example 4.</strong> Rotation about <span class="arithmatex">\(x_{3}\)</span></p>
+<figure id="__figure-caption_2">
+<p><img alt="FigRotationAboutX3" src="../figs/FigRotationAboutX3.png" /></p>
+<figcaption>
+<p><span class="caption-prefix">Figure 2.</span> Rotation about <span class="arithmatex">\(x_{3}\)</span>.</p>
+</figcaption>
+</figure>
+<div class="arithmatex">\[ \left[\mathbf{Q}\right]=\left[\begin{array}{ccc} \cos\theta &amp; -\sin\theta &amp; 0\\ \sin\theta &amp; \cos\theta &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right] \]</div>
+<p>Reflection about <span class="arithmatex">\(x_{2}-x_{3}\)</span> plane, <span class="arithmatex">\(\mathbf{e}'_{1}=\mathbf{Q}\cdot\mathbf{e}_{1}=-\mathbf{e}_{1},\,\mathbf{e}'_{2}=\mathbf{Q}\cdot\mathbf{e}_{2}=\mathbf{e}_{2},\,\mathbf{e}'_{3}=\mathbf{Q}\cdot\mathbf{e}_{3}=\mathbf{e}_{3}\)</span>.</p>
+<div class="arithmatex">\[ \left[\mathbf{Q}\right]=\left[\begin{array}{ccc} -1 &amp; 0 &amp; 0\\ 0 &amp; 1 &amp; 0\\ 0 &amp; 0 &amp; 1 \end{array}\right] \]</div>
+<p>For any vector <span class="arithmatex">\(\mathbf{a}\)</span>, its components with respect to <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> and <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> are <span class="arithmatex">\(a_{i}=\mathbf{e}_{i}\cdot\mathbf{a}\)</span> and <span class="arithmatex">\(a'_{i}=\mathbf{e}'_{i}\cdot\mathbf{a}\)</span>, respectively. Using the above relation,</p>
+<div class="arithmatex">\[ a'_{i}=\mathbf{e}'_{i}\cdot\mathbf{a}=\mathbf{a}\cdot\mathbf{Q}\cdot\mathbf{e}_{i}=Q_{mi}\mathbf{a}\cdot\mathbf{e}_{m}=Q_{mi}a_{m}, \]</div>
+<p>or</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{a'_{i}=Q_{mi}a_{m}}\label{eq22-1} \end{equation} \]</div>
+<p>In matrix form,</p>
+<div class="arithmatex">\[ \left[\begin{array}{c} a'_{1}\\ a'_{2}\\ a'_{3} \end{array}\right]_{\mathbf{e'}_{i}}=\left[\begin{array}{ccc} Q_{11} &amp; Q_{21} &amp; Q_{31}\\ Q_{12} &amp; Q_{22} &amp; Q_{32}\\ Q_{13} &amp; Q_{23} &amp; Q_{33} \end{array}\right]\left[\begin{array}{c} a_{1}\\ a_{2}\\ a_{3} \end{array}\right]_{\mathbf{e}_{i}} \]</div>
+<p>or</p>
+<div class="arithmatex">\[ \left[\mathbf{a}\right]^{\prime}=\left[\mathbf{Q}\right]^{T}\left[\mathbf{a}\right]\quad\text{or}\quad\left[\mathbf{a}\right]_{\mathbf{e'}_{i}}=\left[\mathbf{Q}\right]^{T}\left[\mathbf{a}\right]_{\mathbf{e}_{i}} \]</div>
+<p>Here <span class="arithmatex">\(\left[\mathbf{a}\right]^{\prime}\)</span> and <span class="arithmatex">\(\left[\mathbf{a}\right]\)</span> are matrices of the <em>same</em> vector, expressed in two different coordinate systems. This is <em>not the same</em> as <span class="arithmatex">\(\mathbf{a}'=\mathbf{Q}^{T}\cdot\mathbf{a}\)</span>, where <span class="arithmatex">\(\mathbf{a}'\)</span> is the linear transformation of <span class="arithmatex">\(\mathbf{a}\)</span> by <span class="arithmatex">\(\mathbf{Q}^{T}\)</span>.</p>
+<p>Now consider a tensors <span class="arithmatex">\(\mathbf{T}\)</span>. Its components with respect to <span class="arithmatex">\(\left\{ \mathbf{e}_{1},\mathbf{e}_{2},\mathbf{e}_{3}\right\}\)</span> and <span class="arithmatex">\(\left\{ \mathbf{e}'_{1},\mathbf{e}'_{2},\mathbf{e}'_{3}\right\}\)</span> are given by <span class="arithmatex">\(T_{ij}=\mathbf{e}_{i}\cdot\mathbf{T}\cdot\mathbf{e}_{j}\)</span> and <span class="arithmatex">\(T'_{ij}=\mathbf{e}'_{i}\cdot\mathbf{T}\cdot\mathbf{e}'_{j}\)</span>, respectively. Thus, <span class="arithmatex">\(T'_{ij}=\left(\mathbf{Q}\cdot\mathbf{e}_{i}\right)\cdot\mathbf{T}\cdot\left(\mathbf{Q}\cdot\mathbf{e}_{j}\right)=Q_{mi}\mathbf{e}_{m}\cdot\mathbf{T}\cdot Q_{nj}\mathbf{e}_{n}=Q_{mi}Q_{nj}\mathbf{e}_{m}\cdot\mathbf{T}\cdot\mathbf{e}_{n}=Q_{mi}Q_{nj}T_{mn}\)</span>, or</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{T'_{ij}=Q_{mi}Q_{nj}T_{mn}}\label{eq23-1} \end{equation} \]</div>
+<p>In matrix form, <span class="arithmatex">\(\left[\mathbf{T}\right]^{\prime}=\left[\mathbf{Q}\right]^{T}\left[\mathbf{T}\right]\left[\mathbf{Q}\right]\)</span>, or</p>
+<div class="arithmatex">\[ \left[\begin{array}{ccc} T'_{11} &amp; T'_{12} &amp; T'_{13}\\ T'_{21} &amp; T'_{22} &amp; T'_{23}\\ T'_{31} &amp; T'_{32} &amp; T'_{33} \end{array}\right]=\left[\begin{array}{ccc} Q_{11} &amp; Q_{21} &amp; Q_{31}\\ Q_{12} &amp; Q_{22} &amp; Q_{32}\\ Q_{13} &amp; Q_{23} &amp; Q_{33} \end{array}\right]\left[\begin{array}{ccc} T_{11} &amp; T_{12} &amp; T_{13}\\ T_{21} &amp; T_{22} &amp; T_{23}\\ T_{31} &amp; T_{32} &amp; T_{33} \end{array}\right]\left[\begin{array}{ccc} Q_{11} &amp; Q_{12} &amp; Q_{13}\\ Q_{21} &amp; Q_{22} &amp; Q_{23}\\ Q_{31} &amp; Q_{32} &amp; Q_{33} \end{array}\right] \]</div>
+<p>Equivalently, we can show that</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{T_{ij}=Q_{im}Q_{jn}T'_{mn}}\label{eq24-1} \end{equation} \]</div>
+<p>or <span class="arithmatex">\(\left[\mathbf{T}\right]=\left[\mathbf{Q}\right]\left[\mathbf{T}\right]^{\prime}\left[\mathbf{Q}\right]^{T}\)</span>. As for vectors, we note that <span class="arithmatex">\(\left[\mathbf{T}\right]\)</span> and <span class="arithmatex">\(\left[\mathbf{T}\right]^{\prime}\)</span> are the matrices of the <em>same</em> tensor <span class="arithmatex">\(\mathbf{T}\)</span>, with respect to two different coordinate systems. This is <em>not the same</em> as <span class="arithmatex">\(\mathbf{T}'=\mathbf{Q}^{T}\cdot\mathbf{T}\cdot\mathbf{Q}\)</span>.</p>
+<h2 id="subsubsec:symmetric">Symmetric and Antisymmetric Tensors<a class="headerlink" href="#subsubsec:symmetric" title="Permanent link">&para;</a></h2>
+<p>A <em>symmetric</em> tensor <span class="arithmatex">\(\mathbf{T}\)</span> satisfies <span class="arithmatex">\(\mathbf{T}^{T}=\mathbf{T}\)</span>, i.e., <span class="arithmatex">\(T_{ji}=T_{ij}\)</span>, or in matrix form,</p>
+<div class="arithmatex">\[ \left[\mathbf{T}\right]=\left[\begin{array}{ccc} T_{11} &amp; T_{12} &amp; T_{13}\\ T_{12} &amp; T_{22} &amp; T_{23}\\ T_{13} &amp; T_{23} &amp; T_{33} \end{array}\right] \]</div>
+<p>An <em>antisymmetric</em> (or <em>skew-symmetric</em>) tensor <span class="arithmatex">\(\boldsymbol{\Omega}\)</span> satisfies <span class="arithmatex">\(\boldsymbol{\Omega}^{T}=-\boldsymbol{\Omega}\)</span>, i.e., <span class="arithmatex">\(\Omega_{ji}=-\Omega_{ij}\)</span> and thus <span class="arithmatex">\(\Omega_{11}=\Omega_{22}=\Omega_{33}=0\)</span>,</p>
+<div class="arithmatex">\[ \left[\boldsymbol{\Omega}\right]=\left[\begin{array}{ccc} 0 &amp; \Omega_{12} &amp; -\Omega_{31}\\ -\Omega_{12} &amp; 0 &amp; \Omega_{23}\\ \Omega_{31} &amp; -\Omega_{23} &amp; 0 \end{array}\right] \]</div>
+<p>Any tensor can be written as the sum of a symmetric and antisymmetric tensor,</p>
+<div class="arithmatex">\[ \mathbf{T}=\mathbf{T}^{S}+\mathbf{T}^{A}\quad\text{where}\quad\mathbf{T}^{S}=\frac{1}{2}\left(\mathbf{T}+\mathbf{T}^{T}\right)\quad\text{and}\quad\mathbf{T}^{A}=\frac{1}{2}\left(\mathbf{T}-\mathbf{T}^{T}\right) \]</div>
+<p>This is a unique decomposition. It can be checked that <span class="arithmatex">\(\mathbf{T}^{S}\)</span> is symmetric and <span class="arithmatex">\(\mathbf{T}^{A}\)</span> is antisymmetric.</p>
+<p>The <em>dual vector</em> <span class="arithmatex">\(\boldsymbol{\omega}\)</span> of an antisymmetric tensor <span class="arithmatex">\(\boldsymbol{\Omega}\)</span> satisfies</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\boldsymbol{\Omega}\cdot\mathbf{a}=\boldsymbol{\omega}\times\mathbf{a}}\label{eq25-1} \end{equation} \]</div>
+<p>for any vector <span class="arithmatex">\(\mathbf{a}\)</span>. Thus <span class="arithmatex">\(\Omega_{ij}=\mathbf{e}_{i}\cdot\boldsymbol{\Omega}\cdot\mathbf{e}_{j}=\mathbf{e}_{i}\cdot\left(\boldsymbol{\omega}\times\mathbf{e}_{j}\right)=\omega_{k}\mathbf{e}_{i}\cdot\left(\mathbf{e}_{k}\times\mathbf{e}_{j}\right)=\omega_{k}\mathbf{e}_{i}\cdot\varepsilon_{kjl}\mathbf{e}_{l}=\omega_{k}\varepsilon_{kjl}\delta_{il}\)</span> or</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\Omega_{ij}=-\varepsilon_{ijk}\omega_{k}}\label{eq26-1} \end{equation} \]</div>
+<p>In matrix form,</p>
+<div class="arithmatex">\[ \left[\boldsymbol{\Omega}\right]=\left[\begin{array}{ccc} 0 &amp; -\omega_{3} &amp; \omega_{2}\\ \omega_{3} &amp; 0 &amp; -\omega_{1}\\ -\omega_{2} &amp; \omega_{1} &amp; 0 \end{array}\right] \]</div>
+<p>Conversely, it can also be shown that</p>
+<div class="arithmatex">\[ \begin{equation} \boxed{\omega_{i}=-\frac{1}{2}\varepsilon_{ijk}\Omega_{jk}}\label{eq27-1} \end{equation} \]</div>
+<p>As a homework problem, it may be shown that <span class="arithmatex">\(\varepsilon_{ijk}T_{jk}=\varepsilon_{ijk}T_{jk}^{A}\)</span>, since <span class="arithmatex">\(\varepsilon_{ijk}T_{jk}^{S}=0\)</span> for any symmetric tensor <span class="arithmatex">\(\mathbf{T}^{S}\)</span>.</p>
+<h2 id="eigenvalues-and-eigenvectors-of-real-symmetric-tensors">Eigenvalues and Eigenvectors of Real Symmetric Tensors<a class="headerlink" href="#eigenvalues-and-eigenvectors-of-real-symmetric-tensors" title="Permanent link">&para;</a></h2>
+<p>A second-order tensor <span class="arithmatex">\(\mathbf{T}\)</span> has three pairs of eigenvalues <span class="arithmatex">\(\lambda\)</span> and eigenvectors <span class="arithmatex">\(\mathbf{v}\)</span> that each satisfy</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{T}\cdot\mathbf{v}=\lambda\mathbf{v}\label{eq:eigen-def} \end{equation} \]</div>
+<p>The eigenvalues <span class="arithmatex">\(\lambda\)</span> are the roots of the characteristic equation of <span class="arithmatex">\(\mathbf{T}\)</span>, which is the cubic polynomial produced by setting <span class="arithmatex">\(\det\left(\mathbf{T}-\lambda\mathbf{I}\right)=0\)</span>,</p>
+<div class="arithmatex">\[ \begin{equation} -\lambda^{3}+I_{1}\lambda^{2}-I_{2}\lambda+I_{3}=0\label{eq:eigen-char-eqn} \end{equation} \]</div>
+<p>where</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}I_{1} &amp; =\tr\mathbf{T}\\ I_{2} &amp; =\frac{1}{2}\left(I_{1}^{2}-\tr\mathbf{T}^{2}\right)\\ I_{3} &amp; =\det\mathbf{T} \end{aligned} \label{eq:eigen-invariants} \end{equation} \]</div>
+<p>are called <em>invariants</em> of <span class="arithmatex">\(\mathbf{T}\)</span>.</p>
+<p>According to the Cayley-Hamilton theorem, a tensor <span class="arithmatex">\(\mathbf{T}\)</span> satisfies its own characteristic equation,</p>
+<div class="arithmatex">\[ \begin{equation} -\mathbf{T}^{3}+I_{1}\mathbf{T}^{2}-I_{2}\mathbf{T}+I_{3}\mathbf{I}=\mathbf{0}\label{eq:Cayley-Hamilton-theorem} \end{equation} \]</div>
+<p>Therefore, the cubic power of <span class="arithmatex">\(\mathbf{T}\)</span> can be expressed in terms of its lower powers according to <span class="arithmatex">\(\mathbf{T}^{3}=I_{1}\mathbf{T}^{2}-I_{2}\mathbf{T}+I_{3}\mathbf{I}\)</span>. Taking the trace of this equation allows us to solve for <span class="arithmatex">\(I_{3}\)</span> as</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}I_{3} &amp; =\frac{1}{3}\left(\tr\mathbf{T}^{3}-I_{1}\tr\mathbf{T}^{2}+I_{2}\tr\mathbf{T}\right)\\ &amp; =\frac{1}{3}\left(\tr\mathbf{T}^{3}-I_{1}^{3}+3I_{1}I_{2}\right) \end{aligned} \label{eq:eigen-I3-soln} \end{equation} \]</div>
+<p>Multiplying eq.\eqref{eq:Cayley-Hamilton-theorem} by <span class="arithmatex">\(\mathbf{T}^{-1}\)</span> also produces</p>
+<div class="arithmatex">\[ I_{3}\mathbf{T}^{-1}=\mathbf{T}^{2}-I_{1}\mathbf{T}+I_{2}\mathbf{I} \]</div>
+<p>Using all these relations, we may differentiate the three invariants of <span class="arithmatex">\(\mathbf{T}\)</span> with respect to <span class="arithmatex">\(\mathbf{T}\)</span> to get</p>
+<div class="arithmatex">\[ \begin{equation} \begin{aligned}\frac{\partial I_{1}}{\partial\mathbf{T}} &amp; =\mathbf{I}\\ \frac{\partial I_{2}}{\partial\mathbf{T}} &amp; =I_{1}\mathbf{I}-\mathbf{T}^{T}\\ \frac{\partial I_{3}}{\partial\mathbf{T}} &amp; =I_{3}\mathbf{T}^{-T} \end{aligned} \label{eq:eigen-dinv-dT} \end{equation} \]</div>
+<p><strong>Theorem.</strong> The eigenvalues of real symmetric tensors are real (proof not provided here).</p>
+<p><strong>Theorem.</strong> If the eigenvalues of a real symmetric tensor are all distinct, the eigenvectors are orthogonal to each other.</p>
+<p><em>Proof:</em> Given <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{v}_{1}=\lambda_{1}\mathbf{v}_{1}\)</span>, <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{v}_{2}=\lambda_{2}\mathbf{v}_{2}\)</span>, <span class="arithmatex">\(\lambda_{1}\ne\lambda_{2}\)</span>, then <span class="arithmatex">\(\mathbf{v}_{2}\cdot\mathbf{T}\cdot\mathbf{v}_{1}=\lambda_{1}\mathbf{v}_{1}\cdot\mathbf{v}_{2}\)</span> and <span class="arithmatex">\(\mathbf{v}_{1}\cdot\mathbf{T}\cdot\mathbf{v}_{2}=\lambda_{2}\mathbf{v}_{1}\cdot\mathbf{v}_{2}=\mathbf{v}_{2}\cdot\mathbf{T}^{T}\cdot\mathbf{v}_{1}=\mathbf{v}_{2}\cdot\mathbf{T}\cdot\mathbf{v}_{1}\)</span>,</p>
+<div class="arithmatex">\[ \Rightarrow\lambda_{1}\mathbf{v}_{1}\cdot\mathbf{v}_{2}=\lambda_{2}\mathbf{v}_{1}\cdot\mathbf{v}_{2}\quad\text{or}\quad\left(\lambda_{1}-\lambda_{2}\right)\mathbf{v}_{1}\cdot\mathbf{v}_{2}=0\quad\Rightarrow\mathbf{v}_{1}\cdot\mathbf{v}_{2}=0 \]</div>
+<p>When two of the eigenvalues are repeated (a double root of the characteristic equation), the resulting eigenvectors are not necessarily orthogonal to each other; however, they remain orthogonal to the third eigenvector. This means that any vector lying in the plane normal to the third eigenvector is an eigenvector corresponding to the double root. Similarly, when all three eigenvalues are repeated (a triple root), any vector becomes an eigenvector of <span class="arithmatex">\(\mathbf{T}\)</span>.</p>
+<p><strong>Example 5.</strong> In hydrostatics the stress tensor is <span class="arithmatex">\(\mathbf{T}=-p\mathbf{I}\)</span>, where <span class="arithmatex">\(p\)</span> is the hydrostatic pressure. In this case, <span class="arithmatex">\(-p\)</span> is a triple root of the characteristic equation of <span class="arithmatex">\(\mathbf{T}\)</span>. Any vector <span class="arithmatex">\(\mathbf{v}\)</span> satisfies <span class="arithmatex">\(\mathbf{T}\cdot\mathbf{v}=-p\mathbf{v}\)</span>, and is thus an eigenvector of <span class="arithmatex">\(\mathbf{T}\)</span>.</p>
+<p>In continuum mechanics the eigenvectors <span class="arithmatex">\(\mathbf{v}\)</span> of a tensor are generally normalized,</p>
+<div class="arithmatex">\[ \mathbf{n}\equiv\frac{\mathbf{v}}{\left|\mathbf{v}\right|} \]</div>
+<p>Thus, we can always find a set of three orthonormal eigenvectors <span class="arithmatex">\(\left\{ \mathbf{n}_{1},\mathbf{n}_{2},\mathbf{n}_{3}\right\}\)</span> for any real symmetric tensor <span class="arithmatex">\(\mathbf{T}\)</span>, even when the eigenvalues are repeated. Given a tensor <span class="arithmatex">\(\mathbf{T}\)</span> with eigenvalues <span class="arithmatex">\(\lambda_{1},\lambda_{2},\lambda_{3}\)</span> and eigenvectors <span class="arithmatex">\(\mathbf{n}_{1},\mathbf{n}_{2},\mathbf{n}_{3}\)</span>, the components of <span class="arithmatex">\(\mathbf{T}\)</span> in the orthonormal basis <span class="arithmatex">\(\left\{ \mathbf{n}_{1},\mathbf{n}_{2},\mathbf{n}_{3}\right\}\)</span> can be obtained from</p>
+<div class="arithmatex">\[ T_{i1}=\mathbf{v}_{i}\cdot\mathbf{T}\cdot\mathbf{n}_{1}=\lambda_{1}\mathbf{n}_{i}\cdot\mathbf{n}_{1}=\lambda_{1}\delta_{i1}\quad T_{i2}=\lambda_{2}\delta_{i2}T_{i3}=\lambda_{3}\delta_{i3} \]</div>
+<p>Thus,</p>
+<div class="arithmatex">\[ \left[\mathbf{T}\right]_{\mathbf{n}_{i}}=\left[\begin{array}{ccc} \lambda_{1} &amp; 0 &amp; 0\\ 0 &amp; \lambda_{2} &amp; 0\\ 0 &amp; 0 &amp; \lambda_{3} \end{array}\right]=\left[\begin{array}{ccc} T_{1} &amp; 0 &amp; 0\\ 0 &amp; T_{2} &amp; 0\\ 0 &amp; 0 &amp; T_{3} \end{array}\right] \]</div>
+<p>Since <span class="arithmatex">\(\mathbf{T}=T_{ij}\mathbf{n}_{i}\otimes\mathbf{n}_{j}=T_{i1}\mathbf{n}_{i}\otimes\mathbf{n}_{1}+T_{i2}\mathbf{n}_{i}\otimes\mathbf{n}_{2}+T_{i3}\mathbf{n}_{i}\otimes\mathbf{n}_{3}\)</span>, we find that</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{T}=\lambda_{1}\mathbf{n}_{1}\otimes\mathbf{n}_{1}+\lambda_{2}\mathbf{n}_{2}\otimes\mathbf{n}_{2}+\lambda_{3}\mathbf{n}_{3}\otimes\mathbf{n}_{3}\label{eq:eigen-spectral-rep} \end{equation} \]</div>
+<p>This is known as the <em>spectral representation</em> of the tensor <span class="arithmatex">\(\mathbf{T}\)</span>. In particular, since the eigenvalues of the identity tensor are <span class="arithmatex">\(\lambda_{1}=\lambda_{2}=\lambda_{3}=1\)</span>, and since any vector is an eigenvector of <span class="arithmatex">\(\mathbf{I}\)</span>, we can select the basis vectors <span class="arithmatex">\(\mathbf{e}_{1},\,\mathbf{e}_{2},\,\mathbf{e}_{3}\)</span> so that the spectral representation of <span class="arithmatex">\(\mathbf{I}\)</span> may be given by</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{I}=\mathbf{e}_{i}\otimes\mathbf{e}_{i}=\mathbf{e}_{1}\otimes\mathbf{e}_{1}+\mathbf{e}_{2}\otimes\mathbf{e}_{2}+\mathbf{e}_{3}\otimes\mathbf{e}_{3}\label{eq:eigen-identity-spectral} \end{equation} \]</div>
+<h2 id="orthogonal-transformation-of-tensors">Orthogonal Transformation of Tensors<a class="headerlink" href="#orthogonal-transformation-of-tensors" title="Permanent link">&para;</a></h2>
+<p>An orthogonal transformation <span class="arithmatex">\(\mathbf{Q}\)</span> transforms any vector <span class="arithmatex">\(\mathbf{a}\)</span> into the vector <span class="arithmatex">\(\mathbf{Q}\cdot\mathbf{a}\)</span>, which we may denote as</p>
+<div class="arithmatex">\[ \begin{equation} \mathbf{a}^{*}=\mathbf{Q}\cdot\mathbf{a}\label{eq:OT-vector} \end{equation} \]</div>
+<p>Recall that a tensor <span class="arithmatex">\(\mathbf{T}\)</span> may be expressed in its spectral representation as per eq.\eqref{eq:eigen-spectral-rep}. Each of its eigenvectors <span class="arithmatex">\(\mathbf{n}\)</span> is transformed by <span class="arithmatex">\(\mathbf{Q}\)</span> into <span class="arithmatex">\(\mathbf{n}^{*}=\mathbf{Q}\cdot\mathbf{n}\)</span>. Since eigenvalues of <span class="arithmatex">\(\mathbf{T}\)</span> are invariant to orthogonal transformations, it follows that</p>
+<div class="arithmatex">\[ \begin{aligned}\mathbf{T}^{*} &amp; =\lambda_{1}\mathbf{n}_{1}^{*}\otimes\mathbf{n}_{1}^{*}+\lambda_{2}\mathbf{n}_{2}^{*}\otimes\mathbf{n}_{2}^{*}+\lambda_{3}\mathbf{n}_{3}^{*}\otimes\mathbf{n}_{3}^{*}\\ &amp; =\lambda_{1}\left(\mathbf{Q}\cdot\mathbf{n}_{1}\right)\otimes\left(\mathbf{Q}\cdot\mathbf{n}_{1}\right)+\lambda_{2}\left(\mathbf{Q}\cdot\mathbf{n}_{2}\right)\otimes\left(\mathbf{Q}\cdot\mathbf{n}_{2}\right)+\lambda_{3}\left(\mathbf{Q}\cdot\mathbf{n}_{3}\right)\otimes\left(\mathbf{Q}\cdot\mathbf{n}_{3}\right)\\ &amp; =\mathbf{Q}\cdot\left(\lambda_{1}\mathbf{n}_{1}\otimes\mathbf{n}_{1}+\lambda_{2}\mathbf{n}_{2}\otimes\mathbf{n}_{2}+\lambda_{3}\mathbf{n}_{3}\otimes\mathbf{n}_{3}\right)\cdot\mathbf{Q}^{T}\\ &amp; =\mathbf{Q}\cdot\mathbf{T}\cdot\mathbf{Q}^{T} \end{aligned} \]</div>
+<p>Thus, the transformation of the second-order tensor <span class="arithmatex">\(\mathbf{T}\)</span> by <span class="arithmatex">\(\mathbf{Q}\)</span> is <span class="arithmatex">\(\mathbf{T}^{*}=\mathbf{Q}\cdot\mathbf{T}\cdot\mathbf{Q}^{T}\)</span>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../chapter8/8.2-the-levenberg-marquardt-method/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 8.2 The Levenberg-Marquardt Method">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                8.2 The Levenberg-Marquardt Method
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../A.2-higher-order-tensors/" class="md-footer__link md-footer__link--next" aria-label="Next: A.2 Higher Order Tensors">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                A.2 Higher Order Tensors
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "toc.integrate", "content.external.links"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../js/mathjax_config.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
